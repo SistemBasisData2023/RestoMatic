@@ -22,7 +22,8 @@
     "paths": {
       "@styles/*":["styles/*"],
       "@components/*":["components/*"],
-      "@app/*":["pages/app/*"],
+      "@pages/*":["pages/*"],
+      "@api/*":["pages/api/*"],
       "@utils/*":["utils/*"],
       "@interfaces/*":["interfaces/*"]
     }

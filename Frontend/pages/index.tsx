@@ -1,10 +1,9 @@
-import {AboutPage,WelcomePage} from '@app/index'
+import { NextPage } from 'next'
 
-const IndexPage = () => (
-  <>
-    <WelcomePage/>
-    <AboutPage/>
-  </>
+const IndexPage : NextPage = () => (
+  <div>
+    First Page
+  </div>
 )
 
 export default IndexPage
