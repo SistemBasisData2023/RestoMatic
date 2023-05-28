@@ -1,12 +1,10 @@
 import React from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
 const Restaurant = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  return (
-    <div>Restaurant: {router.query.id}</div>
-  )
+  return <div>Restaurant: {router.query.id}</div>
 }
 
 export default Restaurant
