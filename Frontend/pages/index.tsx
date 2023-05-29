@@ -1,9 +1,13 @@
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
-const IndexPage : NextPage = () => (
-  <div>
-    First Page
-  </div>
-)
+const HomePage: NextPage = () => {
+  const router = useRouter()
+  useEffect(() => {
+    router.push('/login')
+  }, [])
 
-export default IndexPage
+  return <div>Home Page</div>
+}
+export default HomePage
