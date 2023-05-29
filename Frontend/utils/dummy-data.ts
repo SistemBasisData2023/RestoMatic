@@ -15,3 +15,22 @@ export const samplePelanggan: Pelanggan[] = [
     username: 'UwU',
   },
 ]
+
+export const SampleRestaurant: Restaurant[] = [
+  {
+    id: 1,
+    gambar: 'Kosong',
+    nama: 'KFC',
+    deskripsi: 'Nimakti ayam KFC',
+    rating: 4,
+    review: 'KFC jelek',
+  },
+  {
+    id: 2,
+    gambar: 'Kosong',
+    nama: 'McDonald',
+    deskripsi: 'Nimakti ayam Mcdonald',
+    rating: 3.8,
+    review: 'Mcdonald jelek',
+  },
+]

@@ -1,2 +1,5 @@
 export * from './Login/LoginForm'
 export * from './Sign Up/SignUpForm'
+export * from './Filter/FilterModal'
+export * from './Restaurant/RestaurantModal'
+export * from './Profile/ProfileModal'

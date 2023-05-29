@@ -16,16 +16,16 @@ export type Restaurant = {
   id: number
   gambar: string
   nama: string
-  deskripsi: Text
+  deskripsi: string
   rating: number
-  review: Text
+  review: string
 }
 
 export type Makanan = {
   id: number
   gambar: string
   nama: string
-  deskripsi: Text
+  deskripsi: string
   rating: number
   restaurant_id: number
 }
@@ -34,7 +34,7 @@ export type Minuman = {
   id: number
   gambar: string
   nama: string
-  deskripsi: Text
+  deskripsi: string
   rating: number
   restaurant_id: number
 }

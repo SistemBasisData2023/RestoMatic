@@ -70,11 +70,13 @@ const SignUpForm = () => {
 
       <button
         className={`border-none rounded-[18px]  w-1/2 mx-auto mt-7 p-2 font-bold text-base text-white ${
-          errors.password || errors.email
+          errors.password || errors.email || errors.username
             ? 'bg-peach-80 cursor-not-allowed	'
             : 'bg-peach-100 cursor-pointer '
         }`}
-        disabled={errors.password || errors.email ? true : false}
+        disabled={
+          errors.password || errors.email || errors.username ? true : false
+        }
         type="submit"
       >
         Sign Up
