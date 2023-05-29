@@ -1,19 +1,28 @@
+import { LoginFormValue } from '@interfaces/index'
 import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-type FormValue = {
-  email: string
-  password: string
-}
+
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValue>()
+  } = useForm<LoginFormValue>()
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    const res = await fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    if (res.status === 200) {
+      console.log('Login Successful')
+    } else if (res.status === 500) {
+      console.log('Login Failed')
+    }
   }
   return (
     <form

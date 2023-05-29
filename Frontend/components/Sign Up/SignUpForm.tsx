@@ -1,20 +1,28 @@
-import Link from 'next/link'
+import { SignUpFormValue } from '@interfaces/index'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-type FormValue = {
-  username: string
-  email: string
-  password: string
-}
+
 const SignUpForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValue>()
+  } = useForm<SignUpFormValue>()
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    const res = await fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    if (res.status === 200) {
+      console.log('Sign Up Successful')
+    } else if (res.status === 500) {
+      console.log('Sign Up Failed')
+    }
   }
   return (
     <form
