@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { sampleUserData } from '../../../utils/sample-data'
 
-const pelanggan = (_req: NextApiRequest, res: NextApiResponse) => {
+async function SignUpSubmit() {}
+
+const pelanggan_handler = (req: NextApiRequest, res: NextApiResponse) => {
+  const { method } = req
+
   try {
     if (!Array.isArray(sampleUserData)) {
       throw new Error('Cannot find user data')
@@ -13,4 +17,4 @@ const pelanggan = (_req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default pelanggan
+export default pelanggan_handler

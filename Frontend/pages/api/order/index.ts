@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { sampleUserData } from '../../../utils/sample-data'
 
-const order = (_req: NextApiRequest, res: NextApiResponse) => {
+const order_handler = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!Array.isArray(sampleUserData)) {
       throw new Error('Cannot find user data')
@@ -13,4 +13,4 @@ const order = (_req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default order
+export default order_handler
