@@ -4,7 +4,7 @@ import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 // import router
-import CustomersRouter from "./routes/customer.routes";
+import CustomerRouter from "./routes/customer.routes";
 
 //initialize the app as an express app
 const app = express();
@@ -34,6 +34,6 @@ app.get("/", (req, res) => {
   res.send("Express + TypeScript Server");
 });
 
-app.use("/", CustomersRouter);
+app.use("/api", CustomerRouter);
 
 export default app;
