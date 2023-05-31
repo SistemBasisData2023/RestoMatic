@@ -34,8 +34,6 @@ CREATE TABLE orders (
   id serial PRIMARY KEY,
   customer_id bigint NOT NULL,
   restaurant_id bigint NOT NULL,
-  item_id bigint NOT NULL,
-  total_price decimal(10,2) NOT NULL,
   created_at timestamp NOT NULL DEFAULT (now())
 );
 
@@ -52,23 +50,17 @@ CREATE TABLE order_menu_items (
   id serial,
   order_id bigint,
   item_id bigint,
+  quantity integer DEFAULT 1,
   PRIMARY KEY (order_id, item_id)
 );
 
 ALTER TABLE menu_items ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);
-
 ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
-
 ALTER TABLE orders ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);
-
 ALTER TABLE orders ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
-
 ALTER TABLE reviews ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
-
 ALTER TABLE reviews ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
-
 ALTER TABLE order_menu_items ADD FOREIGN KEY (order_id) REFERENCES orders (id);
-
 ALTER TABLE order_menu_items ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
 
 ------------------------------------

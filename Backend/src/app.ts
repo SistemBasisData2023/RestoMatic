@@ -5,6 +5,7 @@ import session from "express-session";
 import bodyParser from "body-parser";
 // import router
 import CustomerRouter from "./routes/customer.routes";
+import RestaurantRouter from "./routes/restaurant.routes";
 
 //initialize the app as an express app
 const app = express();
@@ -35,5 +36,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", CustomerRouter);
+app.use("/api", RestaurantRouter);
+// app.use("/api", MenuItemRouter);
+// app.use("/api", OrderMenuItemRouter);
+// app.use("/api", OrderRouter);
+// app.use("/api", ReviewRouter);
 
 export default app;

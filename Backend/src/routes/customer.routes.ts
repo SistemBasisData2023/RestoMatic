@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 
 import CustomerController from "../controllers/customer.controller";
 import { validateEmailPassUname } from "../middlewares/customer.middleware";
@@ -6,12 +6,26 @@ import { validateEmailPassUname } from "../middlewares/customer.middleware";
 const Customers = new CustomerController();
 const CustomerRouter = express.Router();
 
-CustomerRouter.get("/customer", Customers.getCustomers);
-CustomerRouter.get("/customer/:id", Customers.getCustomerById);
+/* GET ROUTES */
+CustomerRouter.get(
+  "/customers",
+  Customers.paginateCustomers,
+  Customers.getCustomers
+);
+CustomerRouter.get("/customers/:id", Customers.getCustomerById);
+// CustomerRouter.get("/customers", Customers.paginateCustomers);
+
+/* POST ROUTES */
 CustomerRouter.post(
-  "/customer",
+  "/customers",
   validateEmailPassUname,
   Customers.createCustomer
 );
+/* PATCH ROUTES */
+
+/* PUT ROUTES */
+
+/* DELETE ROUTES */
+CustomerRouter.delete("/customers/:id", Customers.deleteCustomer);
 
 export default CustomerRouter;
