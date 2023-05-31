@@ -19,7 +19,7 @@ db.connect((err) => {
     console.log(err);
     return;
   }
-  console.log("[server]: Database connected");
+  console.log("[server] Database connected");
 });
 
 app.use(

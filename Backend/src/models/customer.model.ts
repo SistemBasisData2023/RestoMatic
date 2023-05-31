@@ -1,13 +1,14 @@
-import { type } from "os";
 import db from "../config/db.config";
-import { exec } from "child_process";
-import { execPath } from "process";
 
 class Customer {
   async getCustomers() {
     const query = "SELECT * FROM customer";
-
     const res = await db.query(query);
+
+    if (res.rowCount < 1) {
+      console.error(`[db] Customer table is empty!`);
+      return;
+    }
     return res.rows;
   }
 
@@ -17,10 +18,10 @@ class Customer {
     const res = await db.query(query);
 
     if (res.rowCount < 1) {
-      console.error(`[db] Customer with id ${id} not found`);
+      console.error(`[db] Customer with id ${id} not found!`);
       return;
     }
-    console.log("[db] Customer found");
+    console.log("[db] Customer found with id", id);
     return res.rows[0];
   }
 
@@ -40,7 +41,7 @@ class Customer {
       // If insertion is successful, return true
       return res.rows[0];
     } catch (err) {
-      console.error("[db] Error inserting customer: ", err);
+      console.error("[db] Error inserting customer: ", err.message);
       // If insertion is not successful, return false
       return;
     }

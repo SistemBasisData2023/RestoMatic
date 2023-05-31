@@ -8,6 +8,11 @@ class CustomerController {
   // @GET /customer: Get all customers
   getCustomers = asyncHandler(async (req: Request, res: Response) => {
     const customers = await this.model.getCustomers();
+    if (!customers) {
+      res.status(404).json({ message: "ERR: Customers table empty" });
+      return;
+    }
+
     res.status(200).json(customers);
   });
 
@@ -24,7 +29,6 @@ class CustomerController {
   // @POST /customer: Create new customer
   createCustomer = asyncHandler(async (req: Request, res: Response) => {
     const customer = await this.model.createCustomer(req.body);
-
     if (!customer) {
       res.status(400).json({ message: "ERR: Failed to create customer" });
       return;

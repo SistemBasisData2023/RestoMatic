@@ -1,0 +1,135 @@
+[Create tables]
+CREATE TYPE item_type AS ENUM (
+  'Food',
+  'Beverage'
+);
+
+CREATE TABLE customers (
+  id serial PRIMARY KEY,
+  username varchar(255) UNIQUE NOT NULL,
+  password varchar(255) NOT NULL,
+  email varchar(255) UNIQUE NOT NULL,
+  balance decimal(10, 2) DEFAULT 0
+);
+
+CREATE TABLE menu_items (
+  id serial PRIMARY KEY,
+  image varchar(255),
+  type item_type NOT NULL,
+  price decimal(10,2) NOT NULL DEFAULT 0,
+  name varchar(255) NOT NULL,
+  description text,
+  restaurant_id bigint NOT NULL
+);
+
+CREATE TABLE restaurants (
+  id serial PRIMARY KEY,
+  image varchar(255),
+  name varchar(255) NOT NULL,
+  description text,
+  rating decimal(2,1) DEFAULT 0
+);
+
+CREATE TABLE orders (
+  id serial PRIMARY KEY,
+  customer_id bigint NOT NULL,
+  restaurant_id bigint NOT NULL,
+  item_id bigint NOT NULL,
+  total_price decimal(10,2) NOT NULL,
+  created_at timestamp NOT NULL DEFAULT (now())
+);
+
+CREATE TABLE reviews (
+  id serial PRIMARY KEY,
+  customer_id bigint NOT NULL,
+  item_id bigint NOT NULL,
+  comment text,
+  rating decimal(2,1) NOT NULL DEFAULT 0,
+  created_at timestamp DEFAULT (now())
+);
+
+CREATE TABLE order_menu_items (
+  id serial,
+  order_id bigint,
+  item_id bigint,
+  PRIMARY KEY (order_id, item_id)
+);
+
+ALTER TABLE menu_items ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);
+
+ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
+
+ALTER TABLE orders ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);
+
+ALTER TABLE orders ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
+
+ALTER TABLE reviews ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
+
+ALTER TABLE reviews ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
+
+ALTER TABLE order_menu_items ADD FOREIGN KEY (order_id) REFERENCES orders (id);
+
+ALTER TABLE order_menu_items ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
+
+------------------------------------
+[Insert dummy data]
+-
+
+------------------------------------
+[dbdiagram]
+Table customers {
+  id serial [pk]
+  username varchar(255) [unique, not null]
+  password varchar(255) [not null]
+  email varchar(255) [unique, not null]
+  balance decimal (10, 2) [default: 0.00]
+}
+
+Enum item_type {
+  Food
+  Beverage
+}
+
+Table menu_items {
+  id serial [pk]
+  image varchar(255)
+  type item_type [not null]
+  price decimal (10,2) [default:0.0, not null]
+  name varchar(255) [not null]
+  description text
+  restaurant_id bigint [ref:> restaurants.id, not null]
+}
+
+Table restaurants {
+  id serial [pk]
+  image varchar(255)
+  name varchar(255) [not null]
+  description text
+  rating decimal(2,1) [default: 0.0]
+}
+
+Table orders {
+  id serial [pk]
+  customer_id bigint [ref:> customers.id, not null]
+  restaurant_id bigint [ref:> restaurants.id, not null]
+  item_id bigint [ref:> menu_items.id, not null]
+  total_price decimal(10,2) [not null]
+  created_at timestamp [not null, default: `now()`]
+}
+
+Table reviews {
+  id serial [pk]
+  customer_id bigint [ref:> customers.id, not null]
+  item_id bigint [ref:> menu_items.id, not null]
+  comment text
+  rating decimal (2,1) [not null, default:0.0]
+  created_at timestamp [default: `now()`]
+}
+
+// Junction table
+Table order_menu_items {
+  id serial
+  order_id bigint [ref:> orders.id, pk]
+  item_id bigint [ref:> menu_items.id, pk]
+}
+
