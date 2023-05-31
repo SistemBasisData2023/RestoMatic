@@ -24,4 +24,4 @@
 4. Minuman : id, gambar, nama, deskripsi, rating, restaurant_id
 5. Order : id, pelanggan_id, restaurant_id, makanan_id[], minuman_id[], saldo_user, total_harga
 
-![Alt text](assets/table_diagram.png)
+![Tables](assets/table_diagram.jpg)
