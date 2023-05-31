@@ -4,9 +4,9 @@ import Customer from "../models/customer.model";
 import BaseModel from "../models/base.model";
 
 class BaseController {
-  public model: BaseModel;
+  public model: any;
 
-  constructor(model: BaseModel) {
+  constructor(model: any) {
     this.model = model;
   }
 
