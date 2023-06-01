@@ -6,7 +6,8 @@ const MenuItems = new MenuItemController();
 const MenuItemRouter = express.Router();
 
 /* GET ROUTES */
-MenuItemRouter.get("/menuItems", MenuItems.paginate, MenuItems.getAll);
+MenuItemRouter.get("/menu-items", MenuItems.paginate, MenuItems.getAll);
+MenuItemRouter.get("/menu-items/:id", MenuItems.getById);
 
 /* POST ROUTES */
 

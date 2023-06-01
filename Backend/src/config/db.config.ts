@@ -1,18 +1,17 @@
-import { Client } from "pg";
+import { Pool } from "pg";
 import dotenv from "dotenv";
 
 // dotenv
 dotenv.config();
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT } = process.env;
 
-const db = new Client({
+export const dbConfig = {
   user: PGUSER,
   host: PGHOST,
   database: PGDATABASE,
   port: Number(PGPORT),
   password: PGPASSWORD,
-  sslmode: "require",
   ssl: true,
-});
+};
 
-export default db;
+export const db = new Pool(dbConfig);

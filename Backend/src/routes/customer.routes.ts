@@ -12,7 +12,13 @@ CustomerRouter.get("/customers/:id", Customers.getById);
 // CustomerRouter.get("/customers", Customers.paginateCustomers);
 
 /* POST ROUTES */
-CustomerRouter.post("/customers", validateEmailPassUname, Customers.create);
+CustomerRouter.post(
+  "/customers/register",
+  validateEmailPassUname,
+  Customers.register
+);
+CustomerRouter.post("/customers/login", Customers.login);
+
 /* PATCH ROUTES */
 
 /* PUT ROUTES */
