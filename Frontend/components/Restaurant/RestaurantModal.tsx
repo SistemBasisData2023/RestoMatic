@@ -1,28 +1,51 @@
+import StarRating from '@components/Star Rating/StarRating'
+import { faStar } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Restaurant_Props } from '@interfaces/index'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React from 'react'
-type RestaurantProps = {
-  nama: string
-  gambar: string
-  deskripsi: string
-  rating: number
-}
+
 const RestaurantModal = ({
-  nama,
-  deskripsi,
-  gambar,
+  id,
+  name,
+  description,
+  picture,
   rating,
-}: RestaurantProps) => {
+}: Restaurant_Props) => {
+  const router = useRouter()
+  const HandleClick = () => {
+    router.push({
+      pathname: `/restaurant/${id}`,
+      query: {
+        id,
+        name,
+        description,
+        picture,
+        rating,
+      },
+    })
+  }
   return (
-    <div className="flex justify-between border border-solid rounded-lg p-5 cursor-pointer hover:-translate-y-2 duration-300">
+    <div
+      onClick={HandleClick}
+      className="flex justify-between border border-solid rounded-lg p-5 cursor-pointer hover:-translate-y-2 duration-300"
+    >
       <div className="flex gap-10 items-center">
-        <h2 className="m-0">{gambar}</h2>
+        <Image
+          width={130}
+          height={130}
+          src={picture}
+          alt="Restaurant Picture"
+        />
         <div className="flex flex-col">
-          <p>{nama}</p>
-          <p>{deskripsi}</p>
+          <p>{name}</p>
+          <p>{description}</p>
         </div>
       </div>
       <div className="flex items-start gap-4 ">
         <p className="m-0">{rating}</p>
-        <p className="m-0">stars</p>
+        <StarRating ratingAverage={rating} />
       </div>
     </div>
   )
