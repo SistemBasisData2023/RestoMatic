@@ -2,8 +2,8 @@
 <br />
 <div align="center">
   <h1 align="center">Welcome to RestoMatic</h1>
-  <p align="center">RestoMatic is a user-friendly web platform designed to streamline the process of ordering food and drinks from a restaurant.</p>
 </div>
+RestoMatic is a user-friendly web platform designed to streamline the process of ordering food and drinks from a restaurant.
 
 ## Contributors
 This is a final Database Management System project made by Group Q17:
@@ -13,7 +13,7 @@ This is a final Database Management System project made by Group Q17:
 
 ## Features
 
-#### ```Admin```
+#### ```Account```
 
 Provides customers with the convenience of registering or logging in, allowing them to easily navigate menus, view ratings, and make informed choices. Additionally, RestoMatic offers a balance display and top-up feature, enabling customers to view their current balance and add funds as needed to make payment.
 
