@@ -67,7 +67,10 @@ class Customer extends BaseModel {
       // If password matches, return true
       console.log(`[db] ${this.tableName} found with matching details`);
       return buildResponse(
-        { login: true, accountDetails: { email: res.rows[0].email } },
+        {
+          login: true,
+          accountDetails: { id: res.rows[0].id, email: res.rows[0].email },
+        },
         `Succesfully logged in`
       );
     } catch (err) {

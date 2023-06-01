@@ -23,3 +23,23 @@ export const validateEmailPassUname = async (
   }
   next();
 };
+
+export const validateSession = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.session.isAuth) {
+    res.status(401).json({
+      status: "error",
+      message: "Unauthorized",
+      data: {},
+    });
+    return res.status(401).json({
+      status: "error",
+      message: "Unauthorized",
+      data: {},
+    });
+  }
+  next();
+};

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Customer from "../models/customer.model";
 import BaseController from "./base.controller";
+import { v4 as uuidv4 } from "uuid";
 
 const MODEL = new Customer();
 
@@ -28,8 +29,29 @@ class CustomerController extends BaseController {
       res.status(400).json({ message: "ERR: Failed to login customer" });
       return;
     }
-    req.session.user = customer.data.accountDetails.email;
+    req.session.userId = customer.id;
+    req.session.isAuth = true;
+    // res.set("Set-Cookie", `sessionId=${req.session.sessionId}`);
     res.status(200).json(customer);
+  });
+
+  logout = asyncHandler(async (req: Request, res: Response) => {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(400).json({
+          status: "error",
+          message: "Erorr logging out",
+          data: {},
+        });
+        return;
+      }
+
+      res.status(200).json({
+        status: "success",
+        message: "Successfully logged out",
+        data: {},
+      });
+    });
   });
 }
 

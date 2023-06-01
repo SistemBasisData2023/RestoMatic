@@ -18,6 +18,7 @@ CustomerRouter.post(
   Customers.register
 );
 CustomerRouter.post("/customers/login", Customers.login);
+CustomerRouter.post("/customers/logout", Customers.logout);
 
 /* PATCH ROUTES */
 

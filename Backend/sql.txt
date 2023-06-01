@@ -33,6 +33,7 @@ CREATE TABLE restaurants (
 CREATE TABLE orders (
   id serial PRIMARY KEY,
   customer_id bigint NOT NULL,
+  address text NOT NULL,
   restaurant_id bigint NOT NULL,
   created_at timestamp NOT NULL DEFAULT (now())
 );

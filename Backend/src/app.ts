@@ -8,11 +8,13 @@ import RestaurantRouter from "./routes/restaurant.routes";
 import MenuItemRouter from "./routes/menu_item.routes";
 import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
+import { v4 as uuidv4 } from "uuid";
 
 import expressSession, { Cookie } from "express-session";
 declare module "express-session" {
   interface SessionData {
-    user: string;
+    userId: string;
+    isAuth: boolean;
   }
 }
 
@@ -34,13 +36,16 @@ const pgStore = new pgSession({
 
 app.use(
   expressSession({
+    genid: (req) => {
+      return uuidv4();
+    },
     store: pgStore,
     secret: String(COOKIE_SECRET),
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 1000 * 60,
-      // maxAge: 1000 * 60 * 60 * 24 * 1,
+      // maxAge: 1000 * 60,
+      maxAge: 1000 * 60 * 60 * 24 * 1,
     },
   })
 );
