@@ -29,9 +29,9 @@ const RestaurantModal = ({
   return (
     <div
       onClick={HandleClick}
-      className="flex justify-between border border-solid rounded-lg p-5 cursor-pointer hover:-translate-y-2 duration-300"
+      className="flex w-full justify-center border border-solid border-gray-600 shadow-xl rounded-lg p-5 cursor-pointer hover:-translate-y-2 duration-300"
     >
-      <div className="flex gap-10 items-center">
+      <div className="flex flex-col gap-5 items-center">
         <Image
           width={130}
           height={130}
@@ -39,13 +39,12 @@ const RestaurantModal = ({
           alt="Restaurant Picture"
         />
         <div className="flex flex-col">
-          <p>{name}</p>
-          <p>{description}</p>
+          <h2>{name}</h2>
         </div>
-      </div>
-      <div className="flex items-start gap-4 ">
-        <p className="m-0">{rating}</p>
-        <StarRating ratingAverage={rating} />
+        <div className="flex items-start gap-4 ">
+          <StarRating ratingAverage={rating} />
+          <p className="m-0">{rating}</p>
+        </div>
       </div>
     </div>
   )

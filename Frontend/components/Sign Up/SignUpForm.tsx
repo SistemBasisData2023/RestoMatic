@@ -1,4 +1,4 @@
-import { SignUpFormValue } from '@interfaces/index'
+import { SignUpFormValue_Props } from '@interfaces/index'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -8,7 +8,7 @@ const SignUpForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormValue>()
+  } = useForm<SignUpFormValue_Props>()
 
   const onSubmit = async (data) => {
     const res = await fetch('', {

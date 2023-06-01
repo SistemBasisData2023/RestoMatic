@@ -33,9 +33,16 @@ export enum MenuType {
 
 export type Order_Props = {
   id: number // Primary Key (PK)
+  customer_id: number // Foreign Key (FK)
   restaurant_id: number[] // Foreign Key (FK)
-  menu_id: number[] // Foreign Key (FK)
+  order: Order_Item[]
   total_cost: number
+}
+
+export type Order_Item = {
+  id: number // Primary Key (PK)
+  menu_id: number // Foreign Key (FK)
+  quantity: number
 }
 
 export type LoginFormValue_Props = {

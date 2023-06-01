@@ -57,4 +57,48 @@ export const SampleMenu: Menu_Props[] = [
     cost: 30,
     rating: 3,
   },
+  {
+    id: 1,
+    restaurant_id: 1,
+    menu_type: MenuType.Makanan,
+    picture:
+      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
+    name: 'Ayam Krispy',
+    description: 'Ayam yang enak',
+    cost: 30,
+    rating: 3,
+  },
+  {
+    id: 1,
+    restaurant_id: 1,
+    menu_type: MenuType.Makanan,
+    picture:
+      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
+    name: 'Ayam Krispy',
+    description: 'Ayam yang enak',
+    cost: 30,
+    rating: 3,
+  },
+  {
+    id: 1,
+    restaurant_id: 1,
+    menu_type: MenuType.Makanan,
+    picture:
+      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
+    name: 'Ayam Krispy',
+    description: 'Ayam yang enak',
+    cost: 30,
+    rating: 3,
+  },
+  {
+    id: 1,
+    restaurant_id: 1,
+    menu_type: MenuType.Makanan,
+    picture:
+      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
+    name: 'Ayam Krispy',
+    description: 'Ayam yang enak',
+    cost: 30,
+    rating: 3,
+  },
 ]

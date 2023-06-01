@@ -1,26 +1,69 @@
+import StarRating from '@components/Star Rating/StarRating'
+import {
+  faMinus,
+  faPlus,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 const MenuModal = ({ ...props }: Menu_Props) => {
+  const [quantity, setQuanity] = useState<number>(0)
+  const DecrementHandler = () => {
+    setQuanity((value) => {
+      if (value === 0) return 0
+      return value - 1
+    })
+  }
+  const IncrementHandler = () => {
+    setQuanity((value) => {
+      return value + 1
+    })
+  }
   return (
-    <div className="flex flex-col gap-4 border border-solid p-5 rounded-md">
-      <Image
-        width={150}
-        height={150}
-        src={props.picture}
-        alt="Gambar ayam"
-        className="mx-auto"
-      />
-      <h2 className="mx-auto">{props.name}</h2>
-      <div>
-        <h3 className="mt-0">Deskripsi</h3>
-        <p className="mt-0">{props.description}</p>
+    <div className="flex  flex-col gap-4 border border-solid p-5 rounded-md shadow-xl border-green-800">
+      <div className="rounded-xl overflow-hidden mx-auto">
+        <Image width={150} height={150} src={props.picture} alt="Gambar ayam" />
       </div>
 
-      <h4 className="my-0">Rp {props.cost}</h4>
-      <button className="rounded-[18px] w-[80%] mx-auto mt-5 p-2 cursor-pointer hover:bg-peach-100 hover:text-white transition-all duration-300">
-        Order
+      <div className="flex flex-col justify-center items-center gap-5 mt-3 mb-5">
+        <h2 className="m-0">{props.name}</h2>
+        <p className="m-0">{props.description}</p>
+        <h4 className="m-0">Rp {props.cost}</h4>
+      </div>
+      <div className="flex justify-center items-center gap-4 ">
+        <StarRating ratingAverage={2} />
+        <p className="m-0">{2}</p>
+      </div>
+      <div className="flex  justify-center items-center gap-5 mt-4">
+        <button
+          className="border-none  cursor-pointer"
+          onClick={DecrementHandler}
+        >
+          <FontAwesomeIcon
+            size="lg"
+            className="cursor-pointer hover:hover:scale-125 duration-300"
+            icon={faMinus}
+          />
+        </button>
+        <p className="m-0 text-xl">{quantity}</p>
+        <button
+          className="border-none cursor-pointer "
+          onClick={IncrementHandler}
+        >
+          <FontAwesomeIcon
+            size="lg"
+            className="cursor-pointer hover:hover:scale-125 duration-300"
+            icon={faPlus}
+          />
+        </button>
+      </div>
+
+      <button className="rounded-[18px] font-bold border-green-800 text-green-800 w-[80%] mx-auto  p-2 cursor-pointer hover:bg-green-800 hover:text-white  border-solid transition-all duration-300">
+        Add To Cart
+        <FontAwesomeIcon className="ml-2" icon={faShoppingCart} size="lg" />
       </button>
     </div>
   )
