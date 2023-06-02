@@ -89,7 +89,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       {showAddedCartModal && (
         <PopUpModal
           className="bg-light-80 rounded-md p-10  flex flex-col"
-          togglePopUp={PopUpCartHandler}
+          closePopUp={PopUpCartHandler}
         >
           <h2>Item has been added to cart</h2>
         </PopUpModal>

@@ -25,7 +25,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
 
   return (
     <PopUpModal
-      togglePopUp={togglePopUp}
+      closePopUp={togglePopUp}
       className=" w-[30%] flex flex-col gap-5 p-5 rounded-md bg-white items-center"
     >
       <h2 className="m-0">Cart</h2>

@@ -8,7 +8,7 @@ type Props = {
 const ProfileModal = ({ togglePopUp }: Props) => {
   return (
     <PopUpModal
-      togglePopUp={togglePopUp}
+      closePopUp={togglePopUp}
       className="flex flex-col justify-center items-center p-5 px-8 bg-white rounded-md"
     >
       <h2>Profile Details</h2>
