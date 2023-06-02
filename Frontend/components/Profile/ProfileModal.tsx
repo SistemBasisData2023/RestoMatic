@@ -9,7 +9,7 @@ const ProfileModal = ({ togglePopUp }: Props) => {
   return (
     <PopUpModal
       togglePopUp={togglePopUp}
-      className="flex flex-col justify-center items-center p-5 bg-white rounded-md"
+      className="flex flex-col justify-center items-center p-5 px-8 bg-white rounded-md"
     >
       <h2>Profile Details</h2>
       <div className="flex gap-5">
