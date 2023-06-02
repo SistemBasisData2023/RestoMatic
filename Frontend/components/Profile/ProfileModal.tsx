@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from '@components/index'
 
 type Props = {
-  togglePopUp: (event: React.MouseEvent<HTMLElement>) => void
+  togglePopUp: () => void
 }
 const ProfileModal = ({ togglePopUp }: Props) => {
   return (

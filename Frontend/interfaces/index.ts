@@ -31,16 +31,16 @@ export enum MenuType {
   Minuman,
 }
 
-export type Order_Props = {
+export type Full_Order_Props = {
   id: number // Primary Key (PK)
   customer_id: number // Foreign Key (FK)
-  restaurant_id: number[] // Foreign Key (FK)
-  order: Order_Item[]
+  restaurant_id: number // Foreign Key (FK)
   total_cost: number
 }
 
 export type Order_Item = {
   id: number // Primary Key (PK)
+  order_id: number // Foreign Key (FK)
   menu_id: number // Foreign Key (FK)
   quantity: number
 }

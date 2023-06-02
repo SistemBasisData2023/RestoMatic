@@ -11,22 +11,25 @@ import Image from 'next/image'
 import StarRating from '@components/Star Rating/StarRating'
 import { SampleMenu } from '@utils/dummy-data'
 import MenuModal from '@components/Restaurant/MenuModal'
+import CartModal from '@components/Cart/CartModal'
+import { useUser } from '@context/UserContext'
 
 const Restaurant = () => {
   const router = useRouter()
-
+  const { currentOrderItem } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
+  const [showCart, setShowCart] = useState<boolean>(false)
   const {
     query: { id, name, description, picture, rating },
   } = router
-  const filteredData = SampleMenu.filter(({ restaurant_id }) => {
-    return restaurant_id === parseInt(id)
-  })
 
+  const filteredDataRestaurant = SampleMenu.filter(({ restaurant_id }) => {
+    return restaurant_id == parseInt(id)
+  })
   const MenuData =
-    filteredData.length !== 0 ? (
+    filteredDataRestaurant.length !== 0 ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 ">
-        {filteredData.map(({ ...props }) => {
+        {filteredDataRestaurant.map(({ ...props }) => {
           return <MenuModal {...props} />
         })}
       </div>
@@ -35,15 +38,20 @@ const Restaurant = () => {
     )
 
   const ReviewData = <div className="flex">Review</div>
+
   const HandleMenuClick = () => {
-    setCurrentViewMenu((value) => {
-      return (value = true)
-    })
+    setCurrentViewMenu(true)
   }
   const HandleReviewClick = () => {
-    setCurrentViewMenu((value) => {
-      return (value = false)
-    })
+    setCurrentViewMenu(false)
+  }
+
+  const HandleOpenCart = () => {
+    setShowCart(true)
+  }
+
+  const HandleCloseCart = () => {
+    setShowCart(false)
   }
 
   const HandleBackOnClick = () => {
@@ -61,7 +69,10 @@ const Restaurant = () => {
           />
           <SearchBar placeholder="Search your menu" />
         </div>
-        <button className="border-none cursor-pointer p-0">
+        <button
+          onClick={HandleOpenCart}
+          className="border-none cursor-pointer p-0"
+        >
           <FontAwesomeIcon
             className=" bg-transparent cursor-pointer hover:scale-125 duration-300 text-gray-700"
             icon={faShoppingCart}
@@ -113,6 +124,12 @@ const Restaurant = () => {
         </button>
       </div>
       {currentViewMenu ? MenuData : ReviewData}
+      {showCart && (
+        <CartModal
+          MenuRestaurantData={filteredDataRestaurant}
+          togglePopUp={HandleCloseCart}
+        />
+      )}
     </div>
   )
 }

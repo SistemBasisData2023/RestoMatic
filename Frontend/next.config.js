@@ -20,6 +20,18 @@ module.exports = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'files.kfcku.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.mcdelivery.co.id',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }

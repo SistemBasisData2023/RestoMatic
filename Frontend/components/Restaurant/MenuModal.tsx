@@ -5,23 +5,43 @@ import {
   faShoppingCart,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Menu_Props } from '@interfaces/index'
+import { Menu_Props, Order_Item } from '@interfaces/index'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { Button } from '@components/index'
+import { DotEvery3Decimals } from '@utils/functions'
+import { useUser } from '@context/UserContext'
+import PopUpModal from '@components/Pop up/PopUpModal'
 
 const MenuModal = ({ ...props }: Menu_Props) => {
-  const [quantity, setQuanity] = useState<number>(0)
+  const [showAddedCartModal, setAddedCartModal] = useState<boolean>(false)
+  const { AddCurrentItemOrder, currentOrderItem } = useUser()
+  const [quantity, setQuantity] = useState<number>(1)
   const DecrementHandler = () => {
-    setQuanity((value) => {
-      if (value === 0) return 0
+    setQuantity((value) => {
+      if (value === 1) return 1
       return value - 1
     })
   }
   const IncrementHandler = () => {
-    setQuanity((value) => {
+    setQuantity((value) => {
       return value + 1
     })
+  }
+
+  const PopUpCartHandler = () => {
+    setAddedCartModal(false)
+  }
+
+  const addToCartHandler = () => {
+    const data: Order_Item = {
+      id: currentOrderItem.length + 1,
+      menu_id: props.id,
+      order_id: null,
+      quantity: quantity,
+    }
+    setAddedCartModal(true)
+    AddCurrentItemOrder(data)
   }
   return (
     <div className="flex  flex-col gap-4 border border-solid p-5 rounded-md shadow-xl border-green-800">
@@ -32,7 +52,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       <div className="flex flex-col justify-center items-center gap-5 mt-3 mb-5">
         <h2 className="m-0">{props.name}</h2>
         <p className="m-0">{props.description}</p>
-        <h4 className="m-0">Rp {props.cost}</h4>
+        <h4 className="m-0">Rp {DotEvery3Decimals(props.cost)}</h4>
       </div>
       <div className="flex justify-center items-center gap-4 ">
         <StarRating ratingAverage={2} />
@@ -40,32 +60,40 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       </div>
       <div className="flex  justify-center items-center gap-5 mt-4">
         <button
-          className="border-none  cursor-pointer"
+          className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
           onClick={DecrementHandler}
         >
           <FontAwesomeIcon
             size="lg"
-            className="cursor-pointer hover:hover:scale-125 duration-300"
+            className="cursor-pointer"
             icon={faMinus}
           />
         </button>
         <p className="m-0 text-xl">{quantity}</p>
         <button
-          className="border-none cursor-pointer "
+          className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
           onClick={IncrementHandler}
         >
           <FontAwesomeIcon
             size="lg"
-            className="cursor-pointer hover:hover:scale-125 duration-300"
+            className="cursor-pointer "
             icon={faPlus}
           />
         </button>
       </div>
 
-      <Button className="mx-auto w-[75%]">
+      <Button onClick={addToCartHandler} className="mx-auto w-[75%] ">
         Add To Cart
         <FontAwesomeIcon className="ml-2" icon={faShoppingCart} size="lg" />
       </Button>
+      {showAddedCartModal && (
+        <PopUpModal
+          className="bg-light-80 rounded-md p-10  flex flex-col"
+          togglePopUp={PopUpCartHandler}
+        >
+          <h2>Item has been added to cart</h2>
+        </PopUpModal>
+      )}
     </div>
   )
 }

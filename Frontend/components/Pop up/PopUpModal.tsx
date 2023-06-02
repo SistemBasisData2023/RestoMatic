@@ -4,21 +4,27 @@ import React, { ReactNode } from 'react'
 type Popup = {
   children: ReactNode
   className?: string
-  togglePopUp: (event: React.MouseEvent<HTMLElement>) => void
+  disableXbutton?: boolean
+  togglePopUp?: () => void
 }
 
-const PopUpModal = ({ children, className, togglePopUp }: Popup) => {
+const PopUpModal = ({
+  children,
+  className,
+  togglePopUp,
+  disableXbutton = false,
+}: Popup) => {
   return (
-    <div className="fixed top-0 left-0 z-[999] w-screen h-screen bg-black bg-opacity-75">
-      <div
-        className={`absolute left-1/2 top-1/2 translate-y-[-50%] translate-x-[-50%] ${className}`}
-      >
-        <button
-          className=" border-none cursor-pointer ml-auto bg-inherit hover:scale-125 duration-300"
-          onClick={togglePopUp}
-        >
-          <FontAwesomeIcon className=" " icon={faXmark} size="xl" />
-        </button>
+    <div className="fixed top-0 py-16 flex justify-center  overflow-auto  left-0 z-[999] w-screen h-screen bg-black bg-opacity-75 ">
+      <div className={` overflow-auto relative h-fit my-auto ${className}`}>
+        {!disableXbutton && (
+          <button
+            className="absolute top-0 right-0 mr-3 mt-3 border-none cursor-pointer bg-inherit hover:scale-125 duration-300"
+            onClick={togglePopUp}
+          >
+            <FontAwesomeIcon className=" " icon={faXmark} size="xl" />
+          </button>
+        )}
 
         {children}
       </div>

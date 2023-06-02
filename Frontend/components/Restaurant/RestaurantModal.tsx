@@ -1,6 +1,4 @@
 import StarRating from '@components/Star Rating/StarRating'
-import { faStar } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Restaurant_Props } from '@interfaces/index'
 import Image from 'next/image'
 import { useRouter } from 'next/router'

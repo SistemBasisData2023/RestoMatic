@@ -3,6 +3,8 @@ import {
   Customer_Props,
   Menu_Props,
   MenuType,
+  Order_Item,
+  Full_Order_Props,
 } from '@interfaces/index'
 
 export const samplePelanggan: Customer_Props[] = [
@@ -54,51 +56,80 @@ export const SampleMenu: Menu_Props[] = [
       'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
     name: 'Ayam Krispy',
     description: 'Ayam yang enak',
-    cost: 30,
-    rating: 3,
+    cost: 30000,
+    rating: 4.2,
   },
   {
-    id: 1,
+    id: 2,
     restaurant_id: 1,
     menu_type: MenuType.Makanan,
     picture:
-      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
-    name: 'Ayam Krispy',
-    description: 'Ayam yang enak',
-    cost: 30,
-    rating: 3,
+      'https://files.kfcku.com/uploads/media/dummy/food/kfc-web_wingers_l.png',
+    name: 'Winger',
+    description: 'Ayam Winger',
+    cost: 25000,
+    rating: 3.3,
   },
   {
-    id: 1,
+    id: 3,
+    restaurant_id: 1,
+    menu_type: MenuType.Minuman,
+    picture:
+      'https://files.kfcku.com/uploads/media/food-menu/drinks/large/kfc-web_mocha-float_l_1.png',
+    name: 'Mocha Float',
+    description: 'Minuman coklat yang segar',
+    cost: 23000,
+    rating: 3.8,
+  },
+  {
+    id: 4,
+    restaurant_id: 2,
+    menu_type: MenuType.Makanan,
+    picture:
+      'https://www.mcdelivery.co.id/id/static/1685574185379/assets/62/products/110000.png?',
+    name: 'Chicken Burger',
+    description: 'Burger',
+    cost: 19500,
+    rating: 3.2,
+  },
+  {
+    id: 5,
     restaurant_id: 1,
     menu_type: MenuType.Makanan,
     picture:
-      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
-    name: 'Ayam Krispy',
-    description: 'Ayam yang enak',
-    cost: 30,
-    rating: 3,
+      'https://files.kfcku.com/uploads/media/food-menu/praktis/large/kfc-web_twisty_l_1.png',
+    name: 'TWISTY',
+    description: 'TWISTY',
+    cost: 27000,
+    rating: 3.8,
   },
   {
-    id: 1,
+    id: 6,
     restaurant_id: 1,
     menu_type: MenuType.Makanan,
     picture:
-      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
-    name: 'Ayam Krispy',
-    description: 'Ayam yang enak',
-    cost: 30,
-    rating: 3,
+      'https://files.kfcku.com/uploads/media/food-menu/spesial/kfc-web_9pcbucket-_l.png',
+    name: '9 PCS BUCKET',
+    description: '9 PCS BUCKET',
+    cost: 70000,
+    rating: 3.8,
   },
+]
+
+export const SampleFullOrder: Full_Order_Props[] = [
   {
     id: 1,
+    customer_id: 1,
     restaurant_id: 1,
-    menu_type: MenuType.Makanan,
-    picture:
-      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1602859167/pl8hnpklomexkb2gppkl.jpg',
-    name: 'Ayam Krispy',
-    description: 'Ayam yang enak',
-    cost: 30,
-    rating: 3,
+    total_cost: 78000,
+  },
+]
+
+export const SampleOrderItem: Order_Item[] = [
+  {
+    id: 1,
+    menu_id: 1,
+    order_id: 1,
+    quantity: 3,
   },
 ]

@@ -7,7 +7,7 @@ import { ProfileModal, RestaurantModal } from '@components/index'
 import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
 import { Button } from '@components/index'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Restaurant_Props } from '@interfaces/index'
 
 const HomePage: NextPage = () => {
@@ -16,10 +16,10 @@ const HomePage: NextPage = () => {
   const [restaurantData, setRestaurantData] =
     useState<Restaurant_Props[]>(SampleRestaurant)
 
-  const HandleOpenProfile = (event: React.MouseEvent<HTMLElement>) => {
+  const HandleOpenProfile = () => {
     setIsShowProfile(true)
   }
-  const HandleCloseProfile = (event: React.MouseEvent<HTMLElement>) => {
+  const HandleCloseProfile = () => {
     setIsShowProfile(false)
   }
 
