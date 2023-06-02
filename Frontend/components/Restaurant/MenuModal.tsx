@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { Button } from '@components/index'
 
 const MenuModal = ({ ...props }: Menu_Props) => {
   const [quantity, setQuanity] = useState<number>(0)
@@ -61,10 +62,10 @@ const MenuModal = ({ ...props }: Menu_Props) => {
         </button>
       </div>
 
-      <button className="rounded-[18px] font-bold border-green-800 text-green-800 w-[80%] mx-auto  p-2 cursor-pointer hover:bg-green-800 hover:text-white  border-solid transition-all duration-300">
+      <Button className="mx-auto w-[75%]">
         Add To Cart
         <FontAwesomeIcon className="ml-2" icon={faShoppingCart} size="lg" />
-      </button>
+      </Button>
     </div>
   )
 }

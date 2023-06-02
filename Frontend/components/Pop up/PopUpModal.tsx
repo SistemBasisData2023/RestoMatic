@@ -1,7 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ReactNode } from 'react'
-
 type Popup = {
   children: ReactNode
   className?: string

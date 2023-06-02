@@ -6,12 +6,16 @@ import { faClockRotateLeft, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { ProfileModal, RestaurantModal } from '@components/index'
 import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
-import PopUpModal from '@components/Pop up/PopUpModal'
-import { useState } from 'react'
+import { Button } from '@components/index'
+import { useEffect, useState } from 'react'
+import { Restaurant_Props } from '@interfaces/index'
 
 const HomePage: NextPage = () => {
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
+  const [restaurantData, setRestaurantData] =
+    useState<Restaurant_Props[]>(SampleRestaurant)
+
   const HandleOpenProfile = (event: React.MouseEvent<HTMLElement>) => {
     setIsShowProfile(true)
   }
@@ -19,10 +23,20 @@ const HomePage: NextPage = () => {
     setIsShowProfile(false)
   }
 
-  // const [isShowPopup, setIsShowPopup] = useState<boolean>(true)
-  // const HandleClick = (event: React.MouseEvent<HTMLElement>) => {
-  //   setIsShowPopup(false)
-  // }
+  const HandleSortRatingAsc = () => {
+    const sorted = [...restaurantData].sort((a, b) => {
+      return a.rating - b.rating
+    })
+    setRestaurantData(sorted)
+  }
+
+  const HandleSortRatingDesc = () => {
+    const sorted = [...restaurantData].sort((a, b) => {
+      return b.rating - a.rating
+    })
+    setRestaurantData(sorted)
+  }
+
   const pelanggan = samplePelanggan[0]
   return (
     <div className="w-full min-h-screen bg-light-80 px-8 pb-8 pt-5 flex flex-col gap-4">
@@ -45,29 +59,38 @@ const HomePage: NextPage = () => {
       </h1>
       <div className="flex justify-between items-center relative">
         <SearchBar placeholder="Search your restaurant" />
-        <FontAwesomeIcon
-          className="cursor-pointer hover:scale-125 duration-300 text-gray-700"
-          icon={faFilter}
-          size="lg"
-        />
+        <div className="flex items-center gap-3">
+          <Button onClick={HandleSortRatingDesc} className="px-3">
+            Rating Tertinggi
+          </Button>
+          <Button onClick={HandleSortRatingAsc} className="px-3">
+            Rating Terendah
+          </Button>
+          <FontAwesomeIcon
+            className="cursor-pointer hover:scale-125 duration-300 text-gray-700"
+            icon={faFilter}
+            size="lg"
+          />
+        </div>
       </div>
       <h2 className="text-gray-800">Restaurants</h2>
       <div className="grid grid-cols-5 gap-10 ">
-        {SampleRestaurant.map(
-          ({ description, id, name, picture, rating, review }) => {
-            return (
-              <RestaurantModal
-                key={id}
-                description={description}
-                id={id}
-                name={name}
-                picture={picture}
-                rating={rating}
-                review={review}
-              />
-            )
-          }
-        )}
+        {restaurantData !== null &&
+          restaurantData.map(
+            ({ description, id, name, picture, rating, review }) => {
+              return (
+                <RestaurantModal
+                  key={id}
+                  description={description}
+                  id={id}
+                  name={name}
+                  picture={picture}
+                  rating={rating}
+                  review={review}
+                />
+              )
+            }
+          )}
       </div>
       {isShowProfile && <ProfileModal togglePopUp={HandleCloseProfile} />}
     </div>
