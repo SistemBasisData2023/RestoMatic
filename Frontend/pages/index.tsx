@@ -2,22 +2,35 @@ import { samplePelanggan } from '@utils/dummy-data'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCartShopping,
-  faClockRotateLeft,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons'
-import { RestaurantModal } from '@components/index'
+import { faClockRotateLeft, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { ProfileModal, RestaurantModal } from '@components/index'
 import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
+import PopUpModal from '@components/Pop up/PopUpModal'
+import { useState } from 'react'
 
 const HomePage: NextPage = () => {
   const router = useRouter()
+  const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
+  const HandleOpenProfile = (event: React.MouseEvent<HTMLElement>) => {
+    setIsShowProfile(true)
+  }
+  const HandleCloseProfile = (event: React.MouseEvent<HTMLElement>) => {
+    setIsShowProfile(false)
+  }
+
+  // const [isShowPopup, setIsShowPopup] = useState<boolean>(true)
+  // const HandleClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setIsShowPopup(false)
+  // }
   const pelanggan = samplePelanggan[0]
   return (
     <div className="w-full min-h-screen bg-light-80 px-8 pb-8 pt-5 flex flex-col gap-4">
       <div className="flex gap-5 justify-end items-center sticky top-0 z-50 pt-2">
-        <div className="flex gap-2 bg-slate-400 rounded-md p-2 cursor-pointer hover:scale-105 duration-300">
+        <div
+          onClick={HandleOpenProfile}
+          className="flex gap-2 bg-slate-400 rounded-md p-2 cursor-pointer hover:scale-105 duration-300"
+        >
           <p className="m-0">{pelanggan.username}</p>
           <p className="m-0">Rp {pelanggan.balance}</p>
         </div>
@@ -56,6 +69,7 @@ const HomePage: NextPage = () => {
           }
         )}
       </div>
+      {isShowProfile && <ProfileModal togglePopUp={HandleCloseProfile} />}
     </div>
   )
 }
