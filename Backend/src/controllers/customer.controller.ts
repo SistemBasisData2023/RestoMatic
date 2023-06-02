@@ -13,10 +13,10 @@ class CustomerController extends BaseController {
 
   // @POST /customers/register: Create new customer
   register = asyncHandler(async (req: Request, res: Response) => {
+    console.log(req.body);
     const customer = await this.model.register(req.body);
-    console.log("customer", customer);
-    if (!customer) {
-      res.status(400).json({ message: "ERR: Failed to create customer" });
+    if (!customer.data) {
+      res.status(400).json(customer);
       return;
     }
     res.status(201).json(customer);
@@ -25,8 +25,8 @@ class CustomerController extends BaseController {
   // @POST /customers/login: Login customer
   login = asyncHandler(async (req: Request, res: Response) => {
     const customer = await this.model.login(req.body);
-    if (!customer) {
-      res.status(400).json({ message: "ERR: Failed to login customer" });
+    if (!customer.data) {
+      res.status(400).json(customer);
       return;
     }
     req.session.userId = customer.id;
@@ -52,6 +52,17 @@ class CustomerController extends BaseController {
         data: {},
       });
     });
+  });
+
+  // @GET /customers/:id/topup Topup customer balance
+  topup = asyncHandler(async (req: Request, res: Response) => {
+    const { amount } = req.body;
+    const customer = await this.model.topup(amount);
+    if (!customer.data) {
+      res.status(400).json(customer);
+      return;
+    }
+    res.status(200).json(customer);
   });
 }
 

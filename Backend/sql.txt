@@ -14,20 +14,28 @@ CREATE TABLE customers (
 
 CREATE TABLE menu_items (
   id serial PRIMARY KEY,
-  image varchar(255),
+  restaurant_id bigint NOT NULL
+  image text,
   type item_type NOT NULL,
   price decimal(10,2) NOT NULL DEFAULT 0,
   name varchar(255) NOT NULL,
   description text,
-  restaurant_id bigint NOT NULL
 );
 
 CREATE TABLE restaurants (
   id serial PRIMARY KEY,
-  image varchar(255),
+  image varchar text,
   name varchar(255) NOT NULL,
   description text,
-  rating decimal(2,1) DEFAULT 0
+);
+
+CREATE TABLE reviews (
+  id serial PRIMARY KEY,
+  customer_id bigint NOT NULL,
+  restaurant_id bigint NOT NULL,
+  comment text,
+  rating decimal(2,1) NOT NULL DEFAULT 0,
+  created_at timestamp DEFAULT (now())
 );
 
 CREATE TABLE orders (
@@ -36,15 +44,6 @@ CREATE TABLE orders (
   address text NOT NULL,
   restaurant_id bigint NOT NULL,
   created_at timestamp NOT NULL DEFAULT (now())
-);
-
-CREATE TABLE reviews (
-  id serial PRIMARY KEY,
-  customer_id bigint NOT NULL,
-  item_id bigint NOT NULL,
-  comment text,
-  rating decimal(2,1) NOT NULL DEFAULT 0,
-  created_at timestamp DEFAULT (now())
 );
 
 CREATE TABLE order_menu_items (
@@ -60,7 +59,7 @@ ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
 ALTER TABLE orders ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);
 ALTER TABLE orders ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
 ALTER TABLE reviews ADD FOREIGN KEY (customer_id) REFERENCES customers (id);
-ALTER TABLE reviews ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
+ALTER TABLE reviews ADD FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
 ALTER TABLE order_menu_items ADD FOREIGN KEY (order_id) REFERENCES orders (id);
 ALTER TABLE order_menu_items ADD FOREIGN KEY (item_id) REFERENCES menu_items (id);
 
@@ -113,7 +112,7 @@ Table orders {
 Table reviews {
   id serial [pk]
   customer_id bigint [ref:> customers.id, not null]
-  item_id bigint [ref:> menu_items.id, not null]
+  restaurant_id bigint [ref:> menu_items.id, not null]
   comment text
   rating decimal (2,1) [not null, default:0.0]
   created_at timestamp [default: `now()`]
@@ -126,3 +125,29 @@ Table order_menu_items {
   item_id bigint [ref:> menu_items.id, pk]
 }
 
+WITH new_order AS (
+	INSERT INTO orders (customer_id, restaurant_id, created_at)
+	VALUES
+		(1, 1, '2023-05-30 10:30:00')
+	RETURNING *
+)
+INSERT INTO order_menu_items (order_id, item_id)
+SELECT id, item_id
+FROM new_order
+CROSS JOIN unnest(ARRAY[6, 8, 9]) as item_id
+RETURNING *;
+
+WITH new_order AS (
+  INSERT INTO orders (customer_id, restaurant_id, address, created_at)
+  VALUES
+    ('123456', '123456', '123 Main St, Toronto, ON', '2023-05-30 10:30:00')
+  RETURNING *
+)
+INSERT INTO order_menu_items (order_id, item_id, quantity)
+SELECT id, (items->>'menu_item_id')::int, (items->>'quantity')::int
+FROM new_order, jsonb_array_elements('[
+  {"menu_item_id": "789", "quantity": 2},
+  {"menu_item_id": "456", "quantity": 1},
+  {"menu_item_id": "123", "quantity": 3}
+]'::jsonb) AS items
+RETURNING *;

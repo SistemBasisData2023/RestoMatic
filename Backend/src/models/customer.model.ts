@@ -1,4 +1,3 @@
-import { db } from "../config/db.config";
 import { buildResponse } from "../utils/utils";
 import BaseModel from "./base.model";
 import bcrypt from "bcrypt";
@@ -23,7 +22,7 @@ class Customer extends BaseModel {
                   RETURNING *;`;
 
     try {
-      const res = await db.query(query);
+      const res = await this.db.query(query);
       console.log(
         `[db] Insertion to ${this.tableName} successful:`,
         res.rows[0]
@@ -47,7 +46,7 @@ class Customer extends BaseModel {
     const query = `SELECT * FROM ${this.tableName} WHERE email = '${email}';`;
 
     try {
-      const res = await db.query(query);
+      const res = await this.db.query(query);
       // If email is not found, return false
       if (res.rowCount < 1) {
         console.error(`[db] ${this.tableName} with email ${email} not found!`);
