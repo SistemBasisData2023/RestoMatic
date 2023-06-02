@@ -1,14 +1,21 @@
-import { Customer_Props, Full_Order_Props, Order_Item } from '@interfaces/index'
-import { SampleOrderItem } from '@utils/dummy-data'
+import {
+  Customer_Props,
+  Full_Order_Props,
+  Order_Item,
+  Restaurant_Props,
+} from '@interfaces/index'
+import { SampleOrderItem, SampleRestaurant } from '@utils/dummy-data'
 import { createContext, useContext, ReactNode, useState } from 'react'
 
 type userContextType = {
   user: Customer_Props
+  currentRestaurant: Restaurant_Props
   userFullOrder: Full_Order_Props[]
   userOrderItem: Order_Item[]
   currentOrderItem: Order_Item[]
   login: () => void
   logout: () => void
+  ChangeCurrentRestaurant: (restaurant: Restaurant_Props) => void
   IncrementQuantity: (id: number) => void
   DecrementQuantity: (id: number) => void
   AddCurrentItemOrder: (data: Order_Item) => void
@@ -16,11 +23,13 @@ type userContextType = {
 
 const userContextDefaultValues: userContextType = {
   user: null,
+  currentRestaurant: null,
   userFullOrder: null,
   userOrderItem: null,
   currentOrderItem: null,
   login: () => {},
   logout: () => {},
+  ChangeCurrentRestaurant: () => {},
   IncrementQuantity: () => {},
   DecrementQuantity: () => {},
   AddCurrentItemOrder: () => {},
@@ -38,13 +47,19 @@ type Props = {
 
 export function UserProvider({ children }: Props) {
   const [user, setUser] = useState<Customer_Props>(null)
+  const [currentRestaurant, setCurrentRestaurant] =
+    useState<Restaurant_Props>(null)
+  const [currentOrderItem, setCurrentOrderItem] = useState<Order_Item[]>([])
   const [userFullOrder, setUserFullOrder] = useState<Full_Order_Props[]>(null)
   const [userOrderItem, setUserOrderItem] =
     useState<Order_Item[]>(SampleOrderItem)
-  const [currentOrderItem, setCurrentOrderItem] = useState<Order_Item[]>([])
 
   const login = () => {}
   const logout = () => {}
+
+  const ChangeCurrentRestaurant = (restaurant: Restaurant_Props) => {
+    setCurrentRestaurant(restaurant)
+  }
 
   const IncrementQuantity = (id: number) => {
     setCurrentOrderItem((value) => {
@@ -107,9 +122,11 @@ export function UserProvider({ children }: Props) {
     user,
     userOrderItem,
     currentOrderItem,
+    currentRestaurant,
     userFullOrder,
     login,
     logout,
+    ChangeCurrentRestaurant,
     IncrementQuantity,
     DecrementQuantity,
     AddCurrentItemOrder,

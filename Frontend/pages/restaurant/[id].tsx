@@ -1,35 +1,29 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faArrowLeft,
-  faL,
-  faShoppingCart,
-} from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import SearchBar from '@components/SearchBar/SearchBar'
 import Image from 'next/image'
 import StarRating from '@components/Star Rating/StarRating'
 import { SampleMenu } from '@utils/dummy-data'
-import MenuModal from '@components/Restaurant/MenuModal'
+import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
 
 const Restaurant = () => {
   const router = useRouter()
-  const { currentOrderItem } = useUser()
+  const { currentRestaurant } = useUser()
+
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [showCart, setShowCart] = useState<boolean>(false)
-  const {
-    query: { id, name, description, picture, rating },
-  } = router
 
-  const filteredDataRestaurant = SampleMenu.filter(({ restaurant_id }) => {
-    return restaurant_id == parseInt(id)
+  const filteredDataMenu = SampleMenu.filter(({ restaurant_id }) => {
+    return restaurant_id == currentRestaurant.id
   })
   const MenuData =
-    filteredDataRestaurant.length !== 0 ? (
+    filteredDataMenu.length !== 0 ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 ">
-        {filteredDataRestaurant.map(({ ...props }) => {
+        {filteredDataMenu.map(({ ...props }) => {
           return <MenuModal {...props} />
         })}
       </div>
@@ -87,19 +81,19 @@ const Restaurant = () => {
             <Image
               width={150}
               height={150}
-              src={picture}
+              src={currentRestaurant.picture}
               alt="Restaurant Picture"
             />
           </div>
 
           <div className="flex flex-col">
-            <h1>{name}</h1>
-            <h3 className="font-normal">{description}</h3>
+            <h1>{currentRestaurant.name}</h1>
+            <h3 className="font-normal">{currentRestaurant.description}</h3>
           </div>
         </div>
         <div className="flex items-start gap-4 ">
-          <StarRating ratingAverage={rating} />
-          <p className="m-0">{rating}</p>
+          <StarRating ratingAverage={currentRestaurant.rating} />
+          <p className="m-0">{currentRestaurant.rating}</p>
         </div>
       </div>
 
@@ -126,7 +120,7 @@ const Restaurant = () => {
       {currentViewMenu ? MenuData : ReviewData}
       {showCart && (
         <CartModal
-          MenuRestaurantData={filteredDataRestaurant}
+          MenuRestaurantData={filteredDataMenu}
           togglePopUp={HandleCloseCart}
         />
       )}

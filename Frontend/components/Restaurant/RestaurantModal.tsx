@@ -1,27 +1,17 @@
 import StarRating from '@components/Star Rating/StarRating'
+import { useUser } from '@context/UserContext'
 import { Restaurant_Props } from '@interfaces/index'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const RestaurantModal = ({
-  id,
-  name,
-  description,
-  picture,
-  rating,
-}: Restaurant_Props) => {
+const RestaurantModal = ({ ...props }: Restaurant_Props) => {
   const router = useRouter()
+  const { ChangeCurrentRestaurant } = useUser()
   const HandleClick = () => {
+    ChangeCurrentRestaurant(props)
     router.push({
-      pathname: `/restaurant/${id}`,
-      query: {
-        id,
-        name,
-        description,
-        picture,
-        rating,
-      },
+      pathname: `/restaurant/${props.id}`,
     })
   }
   return (
@@ -33,15 +23,15 @@ const RestaurantModal = ({
         <Image
           width={130}
           height={130}
-          src={picture}
+          src={props.picture}
           alt="Restaurant Picture"
         />
         <div className="flex flex-col">
-          <h2>{name}</h2>
+          <h2>{props.name}</h2>
         </div>
         <div className="flex items-start gap-4 ">
-          <StarRating ratingAverage={rating} />
-          <p className="m-0">{rating}</p>
+          <StarRating ratingAverage={props.rating} />
+          <p className="m-0">{props.rating}</p>
         </div>
       </div>
     </div>

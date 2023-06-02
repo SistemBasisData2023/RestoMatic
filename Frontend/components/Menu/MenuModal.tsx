@@ -55,12 +55,12 @@ const MenuModal = ({ ...props }: Menu_Props) => {
         <h4 className="m-0">Rp {DotEvery3Decimals(props.cost)}</h4>
       </div>
       <div className="flex justify-center items-center gap-4 ">
-        <StarRating ratingAverage={2} />
-        <p className="m-0">{2}</p>
+        <StarRating ratingAverage={props.rating} />
+        <p className="m-0">{props.rating}</p>
       </div>
       <div className="flex  justify-center items-center gap-5 mt-4">
-        <button
-          className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
+        <Button
+          className=" bg-inherit rounded-[50%]hover:hover:scale-110 duration-300"
           onClick={DecrementHandler}
         >
           <FontAwesomeIcon
@@ -68,10 +68,10 @@ const MenuModal = ({ ...props }: Menu_Props) => {
             className="cursor-pointer"
             icon={faMinus}
           />
-        </button>
+        </Button>
         <p className="m-0 text-xl">{quantity}</p>
-        <button
-          className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
+        <Button
+          className=" bg-inherit rounded-[50%]  hover:hover:scale-110 duration-300"
           onClick={IncrementHandler}
         >
           <FontAwesomeIcon
@@ -79,7 +79,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
             className="cursor-pointer "
             icon={faPlus}
           />
-        </button>
+        </Button>
       </div>
 
       <Button onClick={addToCartHandler} className="mx-auto w-[75%] ">

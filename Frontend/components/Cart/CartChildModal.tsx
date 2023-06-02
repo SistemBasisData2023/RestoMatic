@@ -5,6 +5,7 @@ import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '..'
+import { DotEvery3Decimals } from '@utils/functions'
 interface Props extends Menu_Props {
   quantity: number
   order_id: number
@@ -22,7 +23,7 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
     <div className="w-full flex p-4 justify-between">
       <div>
         <h3>{props.name}</h3>
-        <p>Rp {props.cost}</p>
+        <p>Rp {DotEvery3Decimals(props.cost)}</p>
       </div>
       <div className="flex flex-col">
         <div className="rounded-xl overflow-hidden mx-auto">
@@ -34,27 +35,27 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
           />
         </div>
         <div className="flex  justify-center items-center gap-5 mt-4">
-          <button
+          <Button
             onClick={DecrementHandler}
-            className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
+            className=" bg-inherit rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
           >
             <FontAwesomeIcon
               size="lg"
               className="cursor-pointer"
               icon={faMinus}
             />
-          </button>
+          </Button>
           <p className="m-0 text-xl">{quantity}</p>
-          <button
+          <Button
             onClick={IncrementHandler}
-            className=" bg-inherit rounded-[50%] border-solid border-green-800 text-green-800 hover:bg-green-800 hover:text-white  p-1 px-2 cursor-pointer hover:hover:scale-110 duration-300"
+            className=" bg-inherit rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
           >
             <FontAwesomeIcon
               size="lg"
               className="cursor-pointer "
               icon={faPlus}
             />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
