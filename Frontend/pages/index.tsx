@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { InferGetStaticPropsType, NextPage, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -11,15 +11,17 @@ import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
 import { Button } from '@components/index'
 import { useEffect, useState } from 'react'
-import { Restaurant_Props } from '@interfaces/index'
+import { BuildResponse, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
 
-const HomePage: NextPage = () => {
+const HomePage: NextPage = ({
+  restaurants,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { user } = useUser()
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
   const [restaurantData, setRestaurantData] =
-    useState<Restaurant_Props[]>(SampleRestaurant)
+    useState<Restaurant_Props[]>(restaurants)
 
   useEffect(() => {
     if (user === null) router.push('/login')
@@ -110,5 +112,25 @@ const HomePage: NextPage = () => {
       {isShowProfile && <ProfileModal togglePopUp={HandleCloseProfile} />}
     </div>
   )
+}
+type RestaurantProps = {
+  id: number
+  image: string
+  name: string
+  description: string
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await fetch('http://localhost:4000/api/restaurants')
+  const responseData: BuildResponse = await res.json()
+  const restaurants: RestaurantProps[] = await responseData.data
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      restaurants,
+    },
+  }
 }
 export default HomePage
