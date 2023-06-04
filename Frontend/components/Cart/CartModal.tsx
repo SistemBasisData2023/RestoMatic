@@ -1,4 +1,4 @@
-import PopUpModal from '@components/Pop up/PopUpModal'
+import { PopUpModal } from '@components/index'
 import React from 'react'
 import CartChildModal from './CartChildModal'
 import { useUser } from '@context/UserContext'
@@ -29,7 +29,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
       className=" w-[30%] flex flex-col gap-5 p-5 rounded-md bg-white items-center"
     >
       <h2 className="m-0">Cart</h2>
-      <div className="w-full flex items-center gap-10">
+      <div className="flex items-center w-full gap-10">
         <div>
           <Image
             width={130}

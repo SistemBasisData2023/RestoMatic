@@ -1,8 +1,11 @@
-import { LoginFormValue_Props } from '@interfaces/index'
+import { BuildResponse, LoginFormValue_Props } from '@interfaces/index'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '..'
+import { useRouter } from 'next/router'
+import { PopUpModal } from '@components/index'
+import { useUser } from '@context/UserContext'
 
 const LoginForm = () => {
   const {
@@ -10,19 +13,40 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValue_Props>()
+  const { login } = useUser()
+  const router = useRouter()
+  const [isLoading, setLoading] = useState(false)
+  const [responseMessage, setResponseMessage] = useState<string>(null)
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+  const onSubmit = async (data: LoginFormValue_Props) => {
+    setLoading(true)
 
-  const onSubmit = async (data) => {
-    const res = await fetch('', {
+    const res = await fetch('http://localhost:4000/api/customers/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
-    if (res.status === 200) {
-      console.log('Login Successful')
-    } else if (res.status === 500) {
-      console.log('Login Failed')
+
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error('Error at Logging in an account')
+    }
+
+    setLoading(false)
+    const bodyResponse: BuildResponse = await res.json()
+    console.log(bodyResponse)
+
+    if (bodyResponse.data.login) {
+      setResponseMessage(bodyResponse.message)
+      setShowSuccessModal(true)
+      login(bodyResponse.data.accountDetails)
+      return
+    } else {
+      setResponseMessage(bodyResponse.message)
+      setShowErrorModal(true)
     }
   }
   return (
@@ -60,11 +84,11 @@ const LoginForm = () => {
       </div>
 
       <Button
-        className="w-[80%]  text-lg"
+        className="w-[80%] text-lg"
         disabled={errors.password || errors.email ? true : false}
         type="submit"
       >
-        Login
+        {isLoading ? 'LOADING...' : 'LOGIN'}
       </Button>
       <div className="flex">
         <p className="m-0 font-bold">
@@ -77,6 +101,27 @@ const LoginForm = () => {
           </Link>
         </p>
       </div>
+      {showErrorModal && (
+        <PopUpModal
+          closePopUp={() => setShowErrorModal(false)}
+          className="p-20 py-7"
+        >
+          <h1 className="mt-0 text-center text-error-120">Error</h1>
+          {responseMessage}
+        </PopUpModal>
+      )}
+      {showSuccessModal && (
+        <PopUpModal
+          closePopUp={() => {
+            setShowSuccessModal(false)
+            router.push('/')
+          }}
+          className="p-20 py-7 "
+        >
+          <h1 className="mt-0 text-center text-success-100">Success</h1>
+          {responseMessage}
+        </PopUpModal>
+      )}
     </form>
   )
 }

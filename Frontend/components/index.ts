@@ -1,6 +1,5 @@
 export * from './Login/LoginForm'
 export * from './Register/RegisterForm'
-export * from './Filter/FilterModal'
 export * from './Restaurant/RestaurantModal'
 export * from './Profile/ProfileModal'
 export * from './SearchBar/SearchBar'

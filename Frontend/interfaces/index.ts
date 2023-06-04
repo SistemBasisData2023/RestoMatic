@@ -1,7 +1,6 @@
 export type Customer_Props = {
   id: number // Primary Key (PK)
   username: string
-  password: string
   email: string
   balance: number
 }

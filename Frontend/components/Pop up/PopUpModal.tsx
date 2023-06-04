@@ -5,6 +5,7 @@ type Popup = {
   children: ReactNode
   className?: string
   disableXbutton?: boolean
+  disableClickOutside?: boolean
   closePopUp?: () => void
 }
 
@@ -13,6 +14,7 @@ const PopUpModal = ({
   className,
   closePopUp,
   disableXbutton = false,
+  disableClickOutside = false,
 }: Popup) => {
   const ref = useRef(null)
   useEffect(() => {
@@ -23,7 +25,7 @@ const PopUpModal = ({
   }, [ref])
   const handleClickOutside = (e: MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target)) {
-      closePopUp()
+      !disableClickOutside && closePopUp()
       //console.log('Clicked Outside')
     } else {
       //console.log('Clicked Inside')
@@ -32,7 +34,7 @@ const PopUpModal = ({
   return (
     <div className="fixed top-0 py-16 flex justify-center  overflow-auto  left-0 z-[999] w-screen h-screen bg-black bg-opacity-75 ">
       <div
-        className={` overflow-auto relative h-fit my-auto bg-primary-60 p-4 rounded-md ${className}`}
+        className={` overflow-auto relative h-fit my-auto bg-primary-60  rounded-md ${className}`}
         ref={ref}
       >
         {!disableXbutton && (
@@ -50,4 +52,4 @@ const PopUpModal = ({
   )
 }
 
-export default PopUpModal
+export { PopUpModal }

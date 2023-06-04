@@ -11,7 +11,7 @@ import React, { useState } from 'react'
 import { Button } from '@components/index'
 import { DotEvery3Decimals } from '@utils/functions'
 import { useUser } from '@context/UserContext'
-import PopUpModal from '@components/Pop up/PopUpModal'
+import { PopUpModal } from '@components/index'
 
 const MenuModal = ({ ...props }: Menu_Props) => {
   const [showAddedCartModal, setAddedCartModal] = useState<boolean>(false)
@@ -44,21 +44,21 @@ const MenuModal = ({ ...props }: Menu_Props) => {
     AddCurrentItemOrder(data)
   }
   return (
-    <div className="flex  flex-col gap-4 border border-solid p-5 rounded-md shadow-xl border-green-800">
-      <div className="rounded-xl overflow-hidden mx-auto">
+    <div className="flex flex-col gap-4 p-5 border border-green-800 border-solid rounded-md shadow-xl">
+      <div className="mx-auto overflow-hidden rounded-xl">
         <Image width={150} height={150} src={props.picture} alt="Gambar ayam" />
       </div>
 
-      <div className="flex flex-col justify-center items-center gap-5 mt-3 mb-5">
+      <div className="flex flex-col items-center justify-center gap-5 mt-3 mb-5">
         <h2 className="m-0">{props.name}</h2>
         <p className="m-0">{props.description}</p>
         <h4 className="m-0">Rp {DotEvery3Decimals(props.cost)}</h4>
       </div>
-      <div className="flex justify-center items-center gap-4 ">
+      <div className="flex items-center justify-center gap-4 ">
         <StarRating ratingAverage={props.rating} />
         <p className="m-0">{props.rating}</p>
       </div>
-      <div className="flex  justify-center items-center gap-5 mt-4">
+      <div className="flex items-center justify-center gap-5 mt-4">
         <Button
           className=" bg-inherit rounded-[50%] hover:scale-110 duration-300"
           onClick={DecrementHandler}
@@ -88,7 +88,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       </Button>
       {showAddedCartModal && (
         <PopUpModal
-          className="bg-light-80 rounded-md p-10  flex flex-col"
+          className="flex flex-col p-10 rounded-md bg-light-80"
           closePopUp={PopUpCartHandler}
         >
           <h2>Item has been added to cart</h2>

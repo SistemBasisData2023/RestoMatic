@@ -4,7 +4,7 @@ import {
   Order_Item,
   Restaurant_Props,
 } from '@interfaces/index'
-import { SampleOrderItem, SampleRestaurant } from '@utils/dummy-data'
+import { SampleOrderItem } from '@utils/dummy-data'
 import { createContext, useContext, ReactNode, useState } from 'react'
 
 type userContextType = {
@@ -13,7 +13,7 @@ type userContextType = {
   userFullOrder: Full_Order_Props[]
   userOrderItem: Order_Item[]
   currentOrderItem: Order_Item[]
-  login: () => void
+  login: (userData: Customer_Props) => void
   logout: () => void
   ChangeCurrentRestaurant: (restaurant: Restaurant_Props) => void
   IncrementQuantity: (id: number) => void
@@ -53,9 +53,12 @@ export function UserProvider({ children }: Props) {
   const [userFullOrder, setUserFullOrder] = useState<Full_Order_Props[]>(null)
   const [userOrderItem, setUserOrderItem] =
     useState<Order_Item[]>(SampleOrderItem)
-
-  const login = () => {}
-  const logout = () => {}
+  const login = (userData: Customer_Props) => {
+    setUser(userData)
+  }
+  const logout = () => {
+    setUser(null)
+  }
 
   const ChangeCurrentRestaurant = (restaurant: Restaurant_Props) => {
     setCurrentRestaurant(restaurant)

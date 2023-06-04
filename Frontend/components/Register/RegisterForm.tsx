@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '..'
 import Link from 'next/link'
-import PopUpModal from '@components/Pop up/PopUpModal'
+import { PopUpModal } from '@components/index'
 
 const RegisterForm = () => {
   const {
@@ -29,7 +29,7 @@ const RegisterForm = () => {
     console.log(res)
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error('Error at Signing up an account')
+      throw new Error('Error at registering up an account')
     }
     setLoading(false)
     const bodyResponse: BuildResponse = await res.json()

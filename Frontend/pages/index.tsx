@@ -1,4 +1,3 @@
-import { samplePelanggan } from '@utils/dummy-data'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,14 +10,20 @@ import { ProfileModal, RestaurantModal } from '@components/index'
 import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
 import { Button } from '@components/index'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Restaurant_Props } from '@interfaces/index'
+import { useUser } from '@context/UserContext'
 
 const HomePage: NextPage = () => {
+  const { user } = useUser()
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
   const [restaurantData, setRestaurantData] =
     useState<Restaurant_Props[]>(SampleRestaurant)
+
+  useEffect(() => {
+    if (user === null) router.push('/login')
+  }, [])
 
   const HandleOpenProfile = () => {
     setIsShowProfile(true)
@@ -41,32 +46,31 @@ const HomePage: NextPage = () => {
     setRestaurantData(sorted)
   }
 
-  const pelanggan = samplePelanggan[0]
   return (
-    <div className="min-h-screen h-full bg-primary-60 p-10 py-7 flex flex-col gap-7 ">
+    <div className="flex flex-col h-full min-h-screen p-10 bg-primary-60 py-7 gap-7 ">
       <div className="flex justify-between">
         <div>
-          <h2 className="m-0 text-5xl w-fit  text-primary-100 ">RESTO</h2>
-          <h2 className="m-0 text-5xl w-fit  text-primary-120 ">MATIC</h2>
+          <h2 className="m-0 text-5xl w-fit text-primary-100 ">RESTO</h2>
+          <h2 className="m-0 text-5xl w-fit text-primary-120 ">MATIC</h2>
         </div>
-        <div className="flex gap-5 justify-end items-center sticky top-0 z-50 pt-2">
+        <div className="sticky top-0 z-50 flex items-center justify-end gap-5 pt-2">
           <div
             onClick={HandleOpenProfile}
-            className="flex gap-3 bg-primary-120 text-primary-60 rounded-md p-2 px-4 cursor-pointer hover:scale-105 duration-300"
+            className="flex gap-3 p-2 px-4 duration-300 rounded-md cursor-pointer bg-primary-100 hover:bg-primary-120 text-primary-60 hover:scale-105"
           >
             <FontAwesomeIcon className="" icon={faUser} size="lg" />
-            <p className="m-0">{pelanggan.username}</p>
+            {user && <p className="m-0">{user.username}</p>}
           </div>
           <FontAwesomeIcon
-            className="cursor-pointer hover:scale-125 duration-300 text-gray-700"
+            className="text-gray-700 duration-300 cursor-pointer hover:scale-125"
             icon={faClockRotateLeft}
             size="lg"
           />
         </div>
       </div>
 
-      <div className="flex flex-col gap-7 px-10 mt-5">
-        <div className="flex flex-col gap-5  md:flex-row md:justify-between md:items-center ">
+      <div className="flex flex-col px-10 mt-5 gap-7">
+        <div className="flex flex-col gap-5 md:flex-row md:justify-between md:items-center ">
           <SearchBar placeholder="Search your restaurant" />
           <div className="flex items-center gap-3">
             <Button onClick={HandleSortRatingDesc} className="px-3">
@@ -76,14 +80,14 @@ const HomePage: NextPage = () => {
               Rating Terendah
             </Button>
             <FontAwesomeIcon
-              className=" text-gray-700"
+              className="text-gray-700 "
               icon={faFilter}
               size="lg"
             />
           </div>
         </div>
-        <h2 className="text-gray-800 m-0">List of Restaurants</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 ">
+        <h2 className="m-0 text-gray-800">List of Restaurants</h2>
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5 ">
           {restaurantData !== null &&
             restaurantData.map(
               ({ description, id, name, picture, rating, review }) => {

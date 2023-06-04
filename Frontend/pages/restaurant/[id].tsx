@@ -13,7 +13,6 @@ import { useUser } from '@context/UserContext'
 const Restaurant = () => {
   const router = useRouter()
   const { currentRestaurant } = useUser()
-
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [showCart, setShowCart] = useState<boolean>(false)
 
@@ -22,13 +21,13 @@ const Restaurant = () => {
   })
   const MenuData =
     filteredDataMenu.length !== 0 ? (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 ">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
         {filteredDataMenu.map(({ ...props }) => {
           return <MenuModal {...props} />
         })}
       </div>
     ) : (
-      <h2 className=" text-center">Menu Masih Kosong</h2>
+      <h2 className="text-center ">Menu Masih Kosong</h2>
     )
 
   const ReviewData = <div className="flex">Review</div>
@@ -52,11 +51,11 @@ const Restaurant = () => {
     router.push('/')
   }
   return (
-    <div className="flex flex-col min-h-screen h-full  border relative rounded-lg px-8 pb-8 pt-5 bg-light-80">
-      <div className="flex items-center justify-between sticky top-0 z-50 pt-2">
+    <div className="relative flex flex-col h-full min-h-screen px-8 pt-5 pb-8 border rounded-lg bg-light-80">
+      <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
         <div className="flex items-center gap-5">
           <FontAwesomeIcon
-            className="  cursor-pointer hover:scale-125 duration-300 text-gray-700"
+            className="text-gray-700 duration-300 cursor-pointer  hover:scale-125"
             icon={faArrowLeft}
             onClick={HandleBackOnClick}
             size="lg"
@@ -65,19 +64,19 @@ const Restaurant = () => {
         </div>
         <button
           onClick={HandleOpenCart}
-          className="border-none cursor-pointer p-0"
+          className="p-0 border-none cursor-pointer"
         >
           <FontAwesomeIcon
-            className=" bg-transparent cursor-pointer hover:scale-125 duration-300 text-gray-700"
+            className="text-gray-700 duration-300 bg-transparent cursor-pointer  hover:scale-125"
             icon={faShoppingCart}
             size="xl"
           />
         </button>
       </div>
 
-      <div className="flex mt-5 justify-between">
-        <div className="flex gap-10 items-center ">
-          <div className="rounded-xl overflow-hidden">
+      <div className="flex justify-between mt-5">
+        <div className="flex items-center gap-10 ">
+          <div className="overflow-hidden rounded-xl">
             <Image
               width={150}
               height={150}
@@ -98,7 +97,7 @@ const Restaurant = () => {
       </div>
 
       <div className="flex gap-5 mb-5">
-        <button className="mt-6 p-0 border-none" onClick={HandleMenuClick}>
+        <button className="p-0 mt-6 border-none" onClick={HandleMenuClick}>
           <h2
             className={`m-0 cursor-pointer hover:underline ${
               currentViewMenu && 'underline'
@@ -107,7 +106,7 @@ const Restaurant = () => {
             Menu
           </h2>
         </button>
-        <button className="mt-6 p-0 border-none" onClick={HandleReviewClick}>
+        <button className="p-0 mt-6 border-none" onClick={HandleReviewClick}>
           <h2
             className={`m-0 cursor-pointer hover:underline ${
               !currentViewMenu && 'underline'
