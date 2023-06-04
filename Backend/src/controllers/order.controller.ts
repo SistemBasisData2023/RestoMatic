@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import asyncHandler from "express-async-handler";
 import Order from "../models/order.model";
 import BaseController from "./base.controller";
@@ -26,15 +26,22 @@ class OrderController extends BaseController {
   });
 
   // @GET /orders/
-  getByCustomerId = asyncHandler(async (req: Request, res: Response) => {
-    const { customerId } = req.query;
-    const order = await this.model.getByCustomerId(customerId);
-    if (!order.data) {
-      res.status(400).json(order);
-      return;
+  getByCustomerId = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const { customerId } = req.query;
+      if (!customerId) {
+        next();
+        return;
+      }
+
+      const order = await this.model.getByCustomerId(customerId);
+      if (!order.data) {
+        res.status(400).json(order);
+        return;
+      }
+      res.status(200).json(order);
     }
-    res.status(200).json(order);
-  });
+  );
 }
 
 export default OrderController;
