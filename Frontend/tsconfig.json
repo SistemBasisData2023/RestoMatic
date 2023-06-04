@@ -22,7 +22,8 @@
       "@api/*": ["pages/api/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],

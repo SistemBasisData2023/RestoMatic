@@ -1,14 +1,15 @@
-import { LoginFormValue } from '@interfaces/index'
+import { LoginFormValue_Props } from '@interfaces/index'
 import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { Button } from '..'
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValue>()
+  } = useForm<LoginFormValue_Props>()
 
   const onSubmit = async (data) => {
     const res = await fetch('', {
@@ -27,49 +28,55 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col bg-white rounded-md py-11 px-7 w-[85%] md:w-[50%] lg:w-[37%]"
+      className="w-[85%] md:w-[75%] lg:w-[70%] flex flex-col gap-10 justify-center items-center bg-primary-60 rounded-[30px] p-11 "
     >
-      <div className="flex flex-col gap-3">
-        <label className="text-lg pl-4">Email Address</label>
+      <h1 className=" m-0 font-bold text-center">Login with your account</h1>
+      <div className="w-full flex flex-col gap-3  ">
+        <label className="text-lg">Email Address</label>
         <input
           type="email"
-          className="border-none rounded-[14px] bg-light-80 p-4 w-full"
+          className="border-none rounded-[14px] bg-primary-80 p-4 w-full"
           placeholder="Enter your Email"
           {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
         />
+        {errors.email && (
+          <p className="text-error-120 my-2 mb-0">
+            Email is required and must be valid
+          </p>
+        )}
       </div>
-      {errors.email && (
-        <p className="text-error-120 pl-4 mt-2 mb-0">
-          Email is required and must be valid
-        </p>
-      )}
-      <div className="flex flex-col gap-2 mt-10">
-        <label className="text-lg pl-4">Password</label>
+
+      <div className=" w-full flex flex-col gap-2 ">
+        <label className="text-lg">Password</label>
         <input
           type="password"
           placeholder="Enter your Password"
-          className="border-none rounded-[14px] bg-light-80 p-4 w-full"
+          className="border-none rounded-[14px] bg-primary-80 p-4 w-full"
           {...register('password', { required: true })}
         />
+        {errors.password && (
+          <p className="text-error-120  my-2 mb-0">Password is required</p>
+        )}
       </div>
-      {errors.password && (
-        <p className="text-error-120 pl-4 mt-2 mb-0">Password is required</p>
-      )}
 
-      <Link className="pl-4 w-1/5 mt-10" href="/signup">
-        Sign Up
-      </Link>
-      <button
-        className={`border-none rounded-[18px]  w-1/2 mx-auto mt-5 p-2 font-bold text-base text-white ${
-          errors.password || errors.email
-            ? 'bg-peach-80 cursor-not-allowed	'
-            : 'bg-peach-100 cursor-pointer '
-        }`}
+      <Button
+        className="w-[80%]  text-lg"
         disabled={errors.password || errors.email ? true : false}
         type="submit"
       >
         Login
-      </button>
+      </Button>
+      <div className="flex">
+        <p className="m-0 font-bold">
+          Don't have an account?{' '}
+          <Link
+            className="text-primary-100 font-bold hover:text-primary-120"
+            href="/signup"
+          >
+            Register Now
+          </Link>
+        </p>
+      </div>
     </form>
   )
 }

@@ -60,7 +60,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       </div>
       <div className="flex  justify-center items-center gap-5 mt-4">
         <Button
-          className=" bg-inherit rounded-[50%]hover:hover:scale-110 duration-300"
+          className=" bg-inherit rounded-[50%] hover:scale-110 duration-300"
           onClick={DecrementHandler}
         >
           <FontAwesomeIcon

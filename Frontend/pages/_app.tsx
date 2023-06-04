@@ -6,11 +6,14 @@ config.autoAddCss = false
 
 import '@styles/global.css'
 import { UserProvider } from '@context/UserContext'
-
+import { Poppins } from 'next/font/google'
+const poppins = Poppins({ subsets: ['latin'], weight: '400' })
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <Component {...pageProps} />
+      <main className={poppins.className}>
+        <Component {...pageProps} />
+      </main>
     </UserProvider>
   )
 }
