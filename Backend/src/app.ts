@@ -31,6 +31,14 @@ app.use(bodyParser.json());
 // app.use(express.raw({ type: "*/*" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const cors = require("cors");
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 const pgSession = require("connect-pg-simple")(expressSession);
 const pgStore = new pgSession({
   pool: db,

@@ -30,8 +30,8 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-[85%] md:w-[75%] lg:w-[70%] flex flex-col gap-10 justify-center items-center bg-primary-60 rounded-[30px] p-11 "
     >
-      <h1 className=" m-0 font-bold text-center">Login with your account</h1>
-      <div className="w-full flex flex-col gap-3  ">
+      <h1 className="m-0 font-bold text-center ">Login with your account</h1>
+      <div className="flex flex-col w-full gap-3 ">
         <label className="text-lg">Email Address</label>
         <input
           type="email"
@@ -40,13 +40,13 @@ const LoginForm = () => {
           {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
         />
         {errors.email && (
-          <p className="text-error-120 my-2 mb-0">
+          <p className="my-2 mb-0 text-error-120">
             Email is required and must be valid
           </p>
         )}
       </div>
 
-      <div className=" w-full flex flex-col gap-2 ">
+      <div className="flex flex-col w-full gap-2 ">
         <label className="text-lg">Password</label>
         <input
           type="password"
@@ -55,7 +55,7 @@ const LoginForm = () => {
           {...register('password', { required: true })}
         />
         {errors.password && (
-          <p className="text-error-120  my-2 mb-0">Password is required</p>
+          <p className="my-2 mb-0 text-error-120">Password is required</p>
         )}
       </div>
 
@@ -70,8 +70,8 @@ const LoginForm = () => {
         <p className="m-0 font-bold">
           Don't have an account?{' '}
           <Link
-            className="text-primary-100 font-bold hover:text-primary-120"
-            href="/signup"
+            className="font-bold text-primary-100 hover:text-primary-120"
+            href="/register"
           >
             Register Now
           </Link>

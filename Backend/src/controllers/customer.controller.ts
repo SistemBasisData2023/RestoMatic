@@ -15,6 +15,7 @@ class CustomerController extends BaseController {
   register = asyncHandler(async (req: Request, res: Response) => {
     console.log(req.body);
     const customer = await this.model.register(req.body);
+
     if (!customer.data) {
       res.status(400).json(customer);
       return;

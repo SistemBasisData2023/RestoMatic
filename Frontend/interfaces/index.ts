@@ -55,3 +55,9 @@ export type SignUpFormValue_Props = {
   email: string
   password: string
 }
+
+export type BuildResponse = {
+  error: boolean | null | undefined
+  message: string
+  data: any
+}
