@@ -1,21 +1,78 @@
-##
+# API Examples
 
 ## Register
 
 ```
+@POST
+http://localhost:4000/api/customers/register
+body:
+username = senoseno
+email = senoseno@gmail.com
+password = Pass123
 
+```
+
+### Response
+
+```
+{
+    "error": false,
+    "message": "[db] Insertion to customers successful:",
+    "data": {
+        "id": 18,
+        "username": "senoseno",
+        "password": "$2b$10$LH4XEW88wZSzN4LzKPTi0ef6mAj9S437CltnVl68BnjgGC7.3Kzw2",
+        "email": "senoseno@gmail.com",
+        "balance": "0.00"
+    }
+}
 ```
 
 ## Login
 
 ```
+@GET
+http://localhost:4000/api/customers/login
+body:
+email = althafnafi@gmail.com
+password = Pass123
+```
 
+### Response
+
+```
+{
+    "error": false,
+    "message": "Succesfully logged in",
+    "data": {
+        "login": true,
+        "accountDetails": {
+            "id": 10,
+            "email": "althafnafi@gmail.com"
+        }
+    }
+}
 ```
 
 ## Get data of customer
 
 ```
+@POST
+http://localhost:4000/api/customers/{customer_id}
+```
 
+```
+{
+    "error": false,
+    "message": "",
+    "data": {
+        "id": 10,
+        "username": "althafnafi",
+        "password": "$2b$10$I2I.9yqFRsn8ubKNHG5D2.TZN.xSfGrHDt8BaP4M0cnA2jPWuNAOi",
+        "email": "althafnafi@gmail.com",
+        "balance": "0.00"
+    }
+}
 ```
 
 ## Get all available restaurants
