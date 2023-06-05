@@ -48,6 +48,7 @@ class Customer extends BaseModel {
     try {
       const res = await this.db.query(query);
       // If email is not found, return false
+
       if (res.rowCount < 1) {
         console.error(`[db] ${this.tableName} with email ${email} not found!`);
         return buildResponse(
@@ -58,6 +59,7 @@ class Customer extends BaseModel {
       // If email is found, compare password
       const hashedPassword = res.rows[0].password;
       const isPasswordMatch = await bcrypt.compare(password, hashedPassword);
+
       // If password does not match, return false
       if (!isPasswordMatch) {
         console.error(`[db] Password does not match!`);
@@ -68,7 +70,12 @@ class Customer extends BaseModel {
       return buildResponse(
         {
           login: true,
-          accountDetails: { id: res.rows[0].id, email: res.rows[0].email },
+          accountDetails: {
+            id: res.rows[0].id,
+            username: res.rows[0].username,
+            email: res.rows[0].email,
+            balance: res.rows[0].balance,
+          },
         },
         `Succesfully logged in`
       );

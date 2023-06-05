@@ -1,6 +1,15 @@
-# TypeScript Next.js example
+# Cara Install Project
+Pake yarn cuy jangan npm, kalo belom ada install yarn dulu
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+```bash
+yarn install
+```
+
+# Cara Run
+
+```bash
+yarn dev
+```
 
 ## Deploy your own
 
