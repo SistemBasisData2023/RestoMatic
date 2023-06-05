@@ -87,6 +87,30 @@ http://localhost:4000/api/customers/{customer_id}
 }
 ```
 
+## Topup balance by customer Id
+
+```
+@PATCH
+http://localhost:4000/api/customers/{id}/topup/
+params:
+- amount
+```
+
+```
+{
+    "error": false,
+    "message": "[db] customers topup successful",
+    "data": {
+        "id": 10,
+        "username": "althafnafi",
+        "password": "$2b$10$I2I.9yqFRsn8ubKNHG5D2.TZN.xSfGrHDt8BaP4M0cnA2jPWuNAOi",
+        "email": "althafnafi@gmail.com",
+        "balance": "42347.00",
+        "topup": true
+    }
+}
+```
+
 ## Get all available restaurants
 
 ```
@@ -100,70 +124,81 @@ http://localhost:4000/api/restaurants
     "message": "",
     "data": [
         {
-            "id": 1,
-            "image": "image_rest1.jpg",
-            "name": "The Burger Joint",
-            "description": "Best burgers in town"
-        },
-        {
-            "id": 2,
-            "image": "image_rest2.jpg",
-            "name": "Pizza Paradise",
-            "description": "Authentic Italian pizza"
-        },
-        {
-            "id": 3,
-            "image": "image_rest3.jpg",
-            "name": "Cafe Delight",
-            "description": "Cozy cafe with great coffee"
-        },
-        {
             "id": 4,
             "image": "/images/default-restaurant.png",
             "name": "McDonalds",
-            "description": "We serve amazing fries!"
-        },
-        {
-            "id": 7,
-            "image": "/images/default-restaurant.png",
-            "name": "McDonalds",
-            "description": "We serve amazing fries!"
-        },
-        {
-            "id": 8,
-            "image": "/images/default-restaurant.png",
-            "name": "McDonalds",
-            "description": "We serve amazing fries!"
-        },
-        {
-            "id": 9,
-            "image": "/images/default-restaurant.png",
-            "name": "McDonalds",
-            "description": "We serve amazing fries!"
+            "description": "We serve amazing fries!",
+            "average_rating": null
         },
         {
             "id": 10,
             "image": "/images/default-restaurant.png",
             "name": "McDonalds",
-            "description": "We serve amazing fries!"
-        },
-        {
-            "id": 11,
-            "image": "/images/default-restaurant.png",
-            "name": "McDonalds",
-            "description": "We serve amazing fries!"
-        },
-        {
-            "id": 12,
-            "image": "/images/default-restaurant.png",
-            "name": "McDonalds",
-            "description": "We serve amazing fries!"
+            "description": "We serve amazing fries!",
+            "average_rating": null
         },
         {
             "id": 13,
             "image": "/images/default-restaurant.png",
             "name": "Burger King",
-            "description": "Best burger in town!"
+            "description": "Best burger in town!",
+            "average_rating": null
+        },
+        {
+            "id": 2,
+            "image": "image_rest2.jpg",
+            "name": "Pizza Paradise",
+            "description": "Authentic Italian pizza",
+            "average_rating": null
+        },
+        {
+            "id": 11,
+            "image": "/images/default-restaurant.png",
+            "name": "McDonalds",
+            "description": "We serve amazing fries!",
+            "average_rating": null
+        },
+        {
+            "id": 7,
+            "image": "/images/default-restaurant.png",
+            "name": "McDonalds",
+            "description": "We serve amazing fries!",
+            "average_rating": null
+        },
+        {
+            "id": 9,
+            "image": "/images/default-restaurant.png",
+            "name": "McDonalds",
+            "description": "We serve amazing fries!",
+            "average_rating": null
+        },
+        {
+            "id": 12,
+            "image": "/images/default-restaurant.png",
+            "name": "McDonalds",
+            "description": "We serve amazing fries!",
+            "average_rating": null
+        },
+        {
+            "id": 3,
+            "image": "image_rest3.jpg",
+            "name": "Cafe Delight",
+            "description": "Cozy cafe with great coffee",
+            "average_rating": null
+        },
+        {
+            "id": 1,
+            "image": "image_rest1.jpg",
+            "name": "The Burger Joint",
+            "description": "Best burgers in town",
+            "average_rating": "4.25"
+        },
+        {
+            "id": 8,
+            "image": "/images/default-restaurant.png",
+            "name": "McDonalds",
+            "description": "We serve amazing fries!",
+            "average_rating": null
         }
     ]
 }
@@ -174,11 +209,34 @@ http://localhost:4000/api/restaurants
 ```
 @GET
 http://localhost:4000/api/menu-items
-params: customerId
+params: restaurantId
 ```
 
 ```
-
+{
+    "error": false,
+    "message": "menu_items with restaurant id: 1 found!",
+    "data": [
+        {
+            "id": 6,
+            "image": "image1.jpg",
+            "type": "Food",
+            "price": "12.99",
+            "name": "Cheeseburger",
+            "description": "Delicious cheeseburger",
+            "restaurant_id": "1"
+        },
+        {
+            "id": 8,
+            "image": "image3.jpg",
+            "type": "Food",
+            "price": "15.99",
+            "name": "Chicken Alfredo",
+            "description": "Creamy pasta dish",
+            "restaurant_id": "1"
+        }
+    ]
+}
 ```
 
 ## Create a new order

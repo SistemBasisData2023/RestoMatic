@@ -22,7 +22,7 @@ CustomerRouter.post("/customers/login", Customers.login);
 CustomerRouter.post("/customers/logout", Customers.logout);
 
 /* PATCH ROUTES */
-// CustomerRouter.patch("/customers/:id/topup", Customers.topup);
+CustomerRouter.patch("/customers/:id/topup", Customers.topup);
 /* PUT ROUTES */
 
 /* DELETE ROUTES */

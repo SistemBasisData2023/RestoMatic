@@ -84,6 +84,41 @@ class Customer extends BaseModel {
       return buildResponse({ login: false }, err.message);
     }
   }
+
+  public async topup(id, amount) {
+    if (amount < 0) {
+      console.error(
+        `[db] ${this.tableName} topup failed, amount cannot be negative`
+      );
+      return buildResponse(
+        { topup: false },
+        `${this.tableName} topup failed, amount cannot be negative`
+      );
+    }
+
+    const query = `UPDATE ${this.tableName} 
+                  SET balance = balance + ${amount} 
+                  WHERE id = ${id} RETURNING *;`;
+    try {
+      const res = await this.db.query(query);
+      if (res.rowCount < 1) {
+        console.error(`[db] ${this.tableName} topup failed`);
+        return buildResponse(
+          { topup: false },
+          `[db] ${this.tableName} topup failed`
+        );
+      }
+      res.rows[0].topup = true;
+      console.log(`[db] ${this.tableName} topup successful:`, res.rows[0]);
+      return buildResponse(
+        res.rows[0],
+        `[db] ${this.tableName} topup successful`
+      );
+    } catch (err) {
+      console.error(`[db] Error topping up ${this.tableName}`, err.message);
+      return buildResponse({ topup: false }, err.message);
+    }
+  }
 }
 
 export default Customer;
