@@ -11,8 +11,8 @@ class BaseModel {
     this.db = db;
   }
 
-  async getAll(): Promise<any> | undefined {
-    const query = `SELECT * FROM ${this.tableName};`;
+  async getAll(q: string = null): Promise<any> | undefined {
+    const query = q || `SELECT * FROM ${this.tableName};`;
     const res = await this.db.query(query);
     if (res.rowCount < 1) {
       console.error(`[db] ${this.tableName} table is empty!`);
@@ -23,8 +23,8 @@ class BaseModel {
     return buildResponse(res.rows);
   }
 
-  async getById(id: number): Promise<any> | undefined {
-    const query = `SELECT * FROM ${this.tableName} WHERE id = ${id};`;
+  async getById(id: number, q: string = null): Promise<any> | undefined {
+    const query = q || `SELECT * FROM ${this.tableName} WHERE id = ${id};`;
     const res = await this.db.query(query);
 
     if (res.rowCount < 1) {
@@ -39,9 +39,15 @@ class BaseModel {
     return buildResponse(res.rows[0]);
   }
 
-  async paginate(page: number, size: number): Promise<any> | undefined {
+  async paginate(
+    page: number,
+    size: number,
+    q: string = null
+  ): Promise<any> | undefined {
     const offset = size * (page - 1);
-    const query = `SELECT * FROM ${this.tableName} 
+    const query =
+      q ||
+      `SELECT * FROM ${this.tableName} 
                     LIMIT ${size} OFFSET ${offset};`;
     try {
       const res = await this.db.query(query);

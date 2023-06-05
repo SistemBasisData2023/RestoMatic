@@ -56,8 +56,12 @@ class CustomerController extends BaseController {
 
   // @GET /customers/:id/topup Topup customer balance
   topup = asyncHandler(async (req: Request, res: Response) => {
-    const { amount } = req.body;
-    const customer = await this.model.topup(amount);
+    const customer_id = req.params.id;
+    const { amount } = req.query;
+    const customer = await this.model.topup(
+      Number(customer_id),
+      Number(amount)
+    );
     if (!customer.data) {
       res.status(400).json(customer);
       return;
