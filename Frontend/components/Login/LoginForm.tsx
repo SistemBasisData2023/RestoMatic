@@ -3,9 +3,8 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '..'
-import { useRouter } from 'next/router'
-import { PopUpModal } from '@components/index'
 import { useUser } from '@context/UserContext'
+import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 
 const LoginForm = () => {
   const {
@@ -14,14 +13,15 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormValue_Props>()
   const { login } = useUser()
-  const router = useRouter()
   const [isLoading, setLoading] = useState(false)
   const [responseMessage, setResponseMessage] = useState<string>(null)
-  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+  const [showSuccessErrorModal, setShowSuccessErrorModal] =
+    useState<boolean>(false)
+  const [successOrError, setSuccessOrError] = useState<
+    'success' | 'error' | null
+  >()
   const onSubmit = async (data: LoginFormValue_Props) => {
     setLoading(true)
-
     const res = await fetch('http://localhost:4000/api/customers/login', {
       method: 'POST',
       headers: {
@@ -30,7 +30,6 @@ const LoginForm = () => {
       body: JSON.stringify(data),
     })
     setLoading(false)
-    console.log(res.status)
 
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
@@ -38,17 +37,15 @@ const LoginForm = () => {
     }
 
     const bodyResponse: BuildResponse = await res.json()
-    console.log(bodyResponse)
 
+    setResponseMessage(bodyResponse.message)
     if (bodyResponse.data.login) {
-      setResponseMessage(bodyResponse.message)
-      setShowSuccessModal(true)
       login(bodyResponse.data.accountDetails)
-      return
+      setSuccessOrError('success')
     } else {
-      setResponseMessage(bodyResponse.message)
-      setShowErrorModal(true)
+      setSuccessOrError('error')
     }
+    setShowSuccessErrorModal(true)
   }
   return (
     <form
@@ -102,26 +99,15 @@ const LoginForm = () => {
           </Link>
         </p>
       </div>
-      {showErrorModal && (
-        <PopUpModal
-          closePopUp={() => setShowErrorModal(false)}
+
+      {showSuccessErrorModal && (
+        <SuccessErrorModal
+          type={successOrError}
+          showModal={setShowSuccessErrorModal}
+          message={responseMessage}
+          routerPush="/"
           className="p-20 py-7"
-        >
-          <h1 className="mt-0 text-center text-error-120">Error</h1>
-          {responseMessage}
-        </PopUpModal>
-      )}
-      {showSuccessModal && (
-        <PopUpModal
-          closePopUp={() => {
-            setShowSuccessModal(false)
-            router.push('/')
-          }}
-          className="p-20 py-7 "
-        >
-          <h1 className="mt-0 text-center text-success-100">Success</h1>
-          {responseMessage}
-        </PopUpModal>
+        />
       )}
     </form>
   )
