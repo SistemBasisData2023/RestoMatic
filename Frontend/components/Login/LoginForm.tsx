@@ -29,13 +29,14 @@ const LoginForm = () => {
       },
       body: JSON.stringify(data),
     })
+    setLoading(false)
+    console.log(res.status)
 
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error('Error at Logging in an account')
     }
 
-    setLoading(false)
     const bodyResponse: BuildResponse = await res.json()
     console.log(bodyResponse)
 

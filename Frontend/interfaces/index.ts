@@ -7,11 +7,10 @@ export type Customer_Props = {
 
 export type Restaurant_Props = {
   id: number // Primary Key (PK)
-  picture: string
+  image: string
   name: string
   description: string
   rating?: number
-  review?: string
 }
 
 export type Menu_Props = {

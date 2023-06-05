@@ -14,7 +14,6 @@ const ProfileModal = ({ togglePopUp }: Props) => {
   const [topUpBalance, setTopUpBalance] = useState<number>()
   const refBalance = useRef(null)
   const TopUpHandler = () => {
-    console.log(refBalance.current.value)
     setTopUpBalance(refBalance.current.value)
   }
   const LogOutHandler = () => {

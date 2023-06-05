@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const RestaurantModal = ({ ...props }: Restaurant_Props) => {
+const RestaurantModal = ({ rating = 3, ...props }: Restaurant_Props) => {
   const router = useRouter()
   const { ChangeCurrentRestaurant } = useUser()
   const HandleClick = () => {
@@ -23,15 +23,17 @@ const RestaurantModal = ({ ...props }: Restaurant_Props) => {
         <Image
           width={130}
           height={130}
-          src={props.picture}
+          src={
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/1200px-McDonald%27s_logo.svg.png'
+          }
           alt="Restaurant Picture"
         />
         <div className="flex flex-col">
           <h2>{props.name}</h2>
         </div>
         <div className="flex items-start gap-4 ">
-          <StarRating ratingAverage={props.rating} />
-          <p className="m-0">{props.rating}</p>
+          <StarRating ratingAverage={rating} />
+          <p className="m-0">{rating}</p>
         </div>
       </div>
     </div>
