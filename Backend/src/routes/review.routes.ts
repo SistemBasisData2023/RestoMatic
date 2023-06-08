@@ -6,7 +6,12 @@ const Reviews = new ReviewController();
 const ReviewRouter = express.Router();
 
 /* GET ROUTES */
-ReviewRouter.get("/reviews", Reviews.paginate, Reviews.getAll);
+ReviewRouter.get(
+  "/reviews",
+  Reviews.paginate,
+  Reviews.getByRestaurantId,
+  Reviews.getAll
+);
 
 /* POST ROUTES */
 ReviewRouter.post("/reviews", Reviews.create);

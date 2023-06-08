@@ -1,6 +1,7 @@
 import express from "express";
 
 import OrderController from "../controllers/order.controller";
+import { validateBalance } from "../middlewares/order.middleware";
 
 const Orders = new OrderController();
 const OrderRouter = express.Router();
@@ -17,7 +18,12 @@ OrderRouter.get(
 OrderRouter.get("/orders/:id", Orders.getById);
 
 /* POST ROUTES */
-OrderRouter.post("/orders", express.raw({ type: "*/*" }), Orders.create);
+OrderRouter.post(
+  "/orders",
+  express.raw({ type: "*/*" }),
+  validateBalance,
+  Orders.create
+);
 
 /* PATCH ROUTES */
 // ReviewRouter.get("/reviews", Reviews.update);
