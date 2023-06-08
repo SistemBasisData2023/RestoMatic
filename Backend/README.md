@@ -485,3 +485,28 @@ body:
     ]
 }
 ```
+
+## Get reviews by restaurant ID
+
+```
+@GET
+http://localhost:4000/api/reviews/
+query: restaurantId
+```
+
+### Response
+
+```
+{
+    "error": false,
+    "message": "Query to reviews successful",
+    "data": {
+        "id": 3,
+        "customer_id": "94",
+        "restaurant_id": "20",
+        "comment": "I had the best pepperoni pizzas here, it was Amazing! A have to try menu item from Dominos for sure",
+        "rating": "4.7",
+        "created_at": "2023-06-07T22:56:44.939Z"
+    }
+}
+```
