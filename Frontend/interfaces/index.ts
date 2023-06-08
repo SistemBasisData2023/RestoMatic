@@ -59,3 +59,14 @@ export type BuildResponse = {
   message: string
   data: any
 }
+
+export type Order_JSON = {
+  customer_id: number
+  restaurant_id: number
+  items: MenuOrder_JSON[]
+  address: string
+}
+export type MenuOrder_JSON = {
+  menu_id: number
+  quantity: number
+}

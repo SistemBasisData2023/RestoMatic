@@ -6,6 +6,7 @@ import { DotEvery3Decimals } from '@utils/functions'
 import { useRouter } from 'next/router'
 import { BuildResponse } from '@interfaces/index'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
+import { GET_CUSTOMER, PATCH_TOPUP } from '@utils/APIs'
 
 type Props = {
   togglePopUp: () => void
@@ -25,40 +26,12 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
   const TopUpHandler = async () => {
     const balance = refBalance.current.value
     setLoading(true)
-    const res = await fetch(
-      `http://localhost:4000/api/customers/${user.id}/topup?` +
-        new URLSearchParams({
-          amount: balance,
-        }),
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
 
-    if (!res.ok) {
-      throw new Error('Error at top up a balance')
-    }
-
-    const bodyResponse: BuildResponse = await res.json()
+    const bodyResponse: BuildResponse = await PATCH_TOPUP(user.id, balance)
     setResponseMessage(bodyResponse.message)
 
     if (bodyResponse.data.topup) {
-      const res = await fetch(
-        `http://localhost:4000/api/customers/${user.id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      if (!res.ok) {
-        throw new Error('Error at getting account data')
-      }
-      const bodyResponse: BuildResponse = await res.json()
+      const bodyResponse: BuildResponse = await GET_CUSTOMER(user.id)
       const { id, email, username, balance } = bodyResponse.data
       login({ id, email, username, balance })
       setLoading(false)

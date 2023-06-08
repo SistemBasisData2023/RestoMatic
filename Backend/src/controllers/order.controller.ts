@@ -15,10 +15,10 @@ class OrderController extends BaseController {
 
   // @POST /orders: Create new order
   create = asyncHandler(async (req: Request, res: Response) => {
-    const parsedBody = JSON.parse(req.body);
-    console.log(parsedBody);
+    //const parsedBody = JSON.parse(req.body);
 
-    const result = await this.model.__validateBalance(parsedBody);
+    const result = await this.model.__validateBalance(req.body);
+    
     if (
       result == -1 ||
       Number(result.total_price) > Number(result.user_balance)
@@ -28,13 +28,13 @@ class OrderController extends BaseController {
       return;
     }
 
-    const order = await this.model.create(parsedBody);
+    const order = await this.model.create(req.body);
     if (!order.data) {
       res.status(400).json(order);
       return;
     }
     const { error, data } = await CUSTOMER_MODEL.charge(
-      parsedBody.customer_id,
+      req.body.customer_id,
       Number(result.total_price)
     );
     const charged_data = data;

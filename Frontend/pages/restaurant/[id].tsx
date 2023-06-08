@@ -13,6 +13,7 @@ import { BuildResponse, Menu_Props, Restaurant_Props } from '@interfaces/index'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
 import { ReviewModal } from '@components/Review/ReviewModal'
+import { GET_MENURESTAURANT } from '@utils/APIs'
 type Props = {
   menus: Menu_Props[]
 }
@@ -73,7 +74,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
       <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
         <div
           onClick={HandleBackOnClick}
-          className="flex items-center gap-5 cursor-pointer"
+          className="flex items-center gap-5 cursor-pointer "
         >
           <FontAwesomeIcon
             className="text-primary-120 duration-300 cursor-pointer  hover:scale-125"
@@ -141,12 +142,9 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurant_id = context.params.id
-  const res = await fetch(
-    `http://localhost:4000/api/menu-items?restaurantId=${restaurant_id}`
-  )
-  if (!res.ok) throw new Error('Could not fetch menu data')
-  const responseData: BuildResponse = await res.json()
-  const menus: Restaurant_Props[] = await responseData.data
+
+  const menus: Restaurant_Props[] = (await GET_MENURESTAURANT(restaurant_id))
+    .data
   return {
     props: {
       menus,

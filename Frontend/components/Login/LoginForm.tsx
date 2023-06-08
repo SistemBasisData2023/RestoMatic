@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Button } from '..'
 import { useUser } from '@context/UserContext'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
+import { POST_LOGINCUSTOMER } from '@utils/APIs'
 
 const LoginForm = () => {
   const {
@@ -22,22 +23,10 @@ const LoginForm = () => {
   >()
   const onSubmit = async (data: LoginFormValue_Props) => {
     setLoading(true)
-    const res = await fetch('http://localhost:4000/api/customers/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
+
+    const bodyResponse: BuildResponse = await POST_LOGINCUSTOMER(data)
+
     setLoading(false)
-
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error('Error at Logging in an account')
-    }
-
-    const bodyResponse: BuildResponse = await res.json()
-
     setResponseMessage(bodyResponse.message)
     if (bodyResponse.data.login) {
       login(bodyResponse.data.accountDetails)

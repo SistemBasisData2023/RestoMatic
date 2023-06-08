@@ -39,7 +39,7 @@ class Order extends BaseModel {
     const query = `
         WITH new_order AS (
           INSERT INTO orders (customer_id, restaurant_id, address)
-          VALUES  
+          VALUES
             (${customer_id}, ${restaurant_id}, '${address}')
           RETURNING *
         )
@@ -222,8 +222,10 @@ class Order extends BaseModel {
         console.error(`[db] Query ${this.tableName} failed: No such order`);
         return -1;
       }
+
       const total_price = res.rows[0].total_price;
       const user_balance = res.rows[0].user_balance;
+
       console.log(
         `[db] Query ${this.tableName} successful, order found and total price is ${total_price}`
       );

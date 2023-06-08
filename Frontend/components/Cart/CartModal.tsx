@@ -1,33 +1,39 @@
 import { PopUpModal, ProfileModal } from '@components/index'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import CartChildModal from './CartChildModal'
 import { useUser } from '@context/UserContext'
-import { BuildResponse, Menu_Props, Restaurant_Props } from '@interfaces/index'
+import {
+  BuildResponse,
+  Menu_Props,
+  Order_JSON,
+  Restaurant_Props,
+} from '@interfaces/index'
 import Image from 'next/image'
 import { Button } from '..'
 import { useRouter } from 'next/router'
+import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
+import { GET_CUSTOMER, POST_ORDER } from '@utils/APIs'
 
 type Props = {
   togglePopUp: () => void
   MenuRestaurantData: Menu_Props[]
   restaurant?: Restaurant_Props
 }
-type Order_JSON = {
-  customer_id: number
-  restaurant_id: number
-  items: Menu_JSON[]
-}
-type Menu_JSON = {
-  menu_id: number
-  quantity: number
-}
 
 const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
-  const { currentOrderItem, currentRestaurant, user } = useUser()
-  const [responseMessage, setResponseMessage] = useState<string>(null)
+  const { currentOrderItem, currentRestaurant, user, login } = useUser()
+
+  const [canPay, setCanPay] = useState<boolean>(false)
+  const refAddress = useRef(null)
 
   const [isLoading, setLoading] = useState(false)
+  const [responseMessage, setResponseMessage] = useState<string>(null)
+  const [showSuccessErrorModal, setShowSuccessErrorModal] =
+    useState<boolean>(false)
+  const [successOrError, setSuccessOrError] = useState<
+    'success' | 'error' | null
+  >()
 
   const filterOrder = currentOrderItem.filter((order) => {
     return MenuRestaurantData.some((menu) => {
@@ -39,6 +45,11 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
     return prev + current.price * current.quantity
   }, 0)
 
+  useEffect(() => {
+    if (sumTotal < user.balance) setCanPay(true)
+    else setCanPay(false)
+  }, [sumTotal, user.balance])
+
   const handlePayment = async () => {
     const data: Order_JSON = {
       customer_id: user.id,
@@ -49,29 +60,29 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           quantity,
         }
       }),
+      address: refAddress.current.value,
     }
-    console.log(data)
+
     setLoading(true)
-    // const res = await fetch(`http://localhost:4000/api/orders`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
+    const bodyResponse: BuildResponse = await POST_ORDER(data)
+    setLoading(false)
+    setResponseMessage(bodyResponse.message)
 
-    // if (!res.ok) {
-    //   throw new Error('Error at making a payment')
-    // }
+    if (bodyResponse.message.includes('successfully')) {
+      const bodyResponse: BuildResponse = await GET_CUSTOMER(user.id)
+      const { id, email, username, balance } = bodyResponse.data
+      login({ id, email, username, balance })
+      setSuccessOrError('success')
+    } else setSuccessOrError('error')
 
-    // const bodyResponse: BuildResponse = await res.json()
-    // setResponseMessage(bodyResponse.message)
+    setShowSuccessErrorModal(true)
   }
 
   return (
     <PopUpModal
       closePopUp={togglePopUp}
-      className=" w-[50%] flex flex-col gap-5 p-5 rounded-md bg-white"
+      disableClickOutside={true}
+      className=" w-[50%] flex flex-col gap-5 p-5 px-7 rounded-md bg-white"
     >
       <h2 className="m-0 place-self-start font-bold text-[25px]">Order</h2>
       {filterOrder.length !== 0 ? (
@@ -103,7 +114,9 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           <div className="flex justify-between">
             <div>
               <p className="text-secondary text-[13px] ">USER BALANCE</p>
-              <p className="m-0">Rp {user.balance}</p>
+              <p className={`m-0 ${!canPay && 'text-error-100'}`}>
+                Rp {user.balance}
+              </p>
             </div>
             <button
               onClick={() => {
@@ -114,20 +127,30 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
               ADD BALANCE
             </button>
           </div>
-          <div className="flex items-center gap-4">
-            <label>Address</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-secondary text-[13px]">Address</label>
             <input
               type="text"
-              className="w-[60%] border border-solid rounded-md p-1"
+              ref={refAddress}
+              className="w-full border-none border p-2 bg-[#E9E9E9] rounded-md"
               placeholder="Enter your address"
+              required={true}
             />
           </div>
           <button
             onClick={handlePayment}
-            className="btn-primary w-full rounded-md"
+            disabled={!canPay}
+            className={`btn-primary w-full rounded-md ${
+              !canPay && 'opacity-50 cursor-not-allowed'
+            }`}
           >
             MAKE PAYMENT
           </button>
+          {!canPay && (
+            <p className="text-error-100 mx-auto m-0">
+              User balance is less than total price
+            </p>
+          )}
 
           {isShowProfile && (
             <ProfileModal
@@ -135,6 +158,15 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
               togglePopUp={() => {
                 setIsShowProfile(false)
               }}
+            />
+          )}
+
+          {showSuccessErrorModal && (
+            <SuccessErrorModal
+              type={successOrError}
+              showModal={setShowSuccessErrorModal}
+              message={responseMessage}
+              className="p-20 py-7"
             />
           )}
         </>

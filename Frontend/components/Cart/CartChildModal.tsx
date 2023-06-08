@@ -40,27 +40,27 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
       </div>
 
       <div className="flex  justify-center items-center gap-5 mt-4">
-        <Button
+        <button
           onClick={DecrementHandler}
-          className=" rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
+          className="btn-secondary rounded-[50%]  duration-300"
         >
           <FontAwesomeIcon
             size="lg"
             className="cursor-pointer"
             icon={faMinus}
           />
-        </Button>
+        </button>
         <p className="m-0 text-xl">{quantity}</p>
-        <Button
+        <button
           onClick={IncrementHandler}
-          className=" rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
+          className=" btn-secondary rounded-[50%] duration-300"
         >
           <FontAwesomeIcon
             size="lg"
             className="cursor-pointer "
             icon={faPlus}
           />
-        </Button>
+        </button>
       </div>
     </div>
   )

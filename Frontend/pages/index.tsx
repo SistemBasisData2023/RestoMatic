@@ -12,6 +12,7 @@ import { Button } from '@components/index'
 import { useEffect, useState } from 'react'
 import { BuildResponse, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
+import { GET_RESTAURANTS } from '@utils/APIs'
 
 type Props = {
   restaurants: Restaurant_Props[]
@@ -22,11 +23,13 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
 
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
+  const [highestRating, setHighestRating] = useState<boolean>(true)
   const [restaurantData, setRestaurantData] =
     useState<Restaurant_Props[]>(restaurants)
   console.log(restaurantData)
   useEffect(() => {
     if (user === null) router.push('/login', undefined, { shallow: true })
+    HandleSortRatingDesc()
   }, [])
 
   const HandleOpenProfile = () => {
@@ -41,6 +44,7 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
       return a.average_rating - b.average_rating
     })
     setRestaurantData(sorted)
+    setHighestRating(false)
   }
 
   const HandleSortRatingDesc = () => {
@@ -48,6 +52,7 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
       return b.average_rating - a.average_rating
     })
     setRestaurantData(sorted)
+    setHighestRating(true)
   }
 
   return (
@@ -81,10 +86,20 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
             placeholder="Search your restaurant"
           />
           <div className="flex items-center gap-3">
-            <Button onClick={HandleSortRatingDesc} className="px-3">
+            <Button
+              onClick={HandleSortRatingDesc}
+              className={`${
+                !highestRating && 'bg-[#CBCBCB] text-[#646464]'
+              }  px-3 rounded-md`}
+            >
               Rating Tertinggi
             </Button>
-            <Button onClick={HandleSortRatingAsc} className="px-3">
+            <Button
+              onClick={HandleSortRatingAsc}
+              className={`${
+                highestRating && 'bg-[#CBCBCB] text-[#646464]'
+              }  px-3 rounded-md`}
+            >
               Rating Terendah
             </Button>
             <FontAwesomeIcon
@@ -109,10 +124,7 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('http://localhost:4000/api/restaurants')
-  if (!res.ok) throw new Error('Could not fetch restaurant data')
-  const responseData: BuildResponse = await res.json()
-  const restaurants: Restaurant_Props[] = await responseData.data
+  const restaurants: Restaurant_Props[] = (await GET_RESTAURANTS()).data
 
   return {
     props: {
