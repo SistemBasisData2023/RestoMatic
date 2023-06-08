@@ -52,6 +52,24 @@ class Review extends BaseModel {
       return buildResponse(null, err.message);
     }
   }
+
+  public async getByRestaurantId(restaurant_id: number) {
+    const query = `SELECT *
+                    FROM ${this.tableName}
+                    WHERE restaurant_id = ${restaurant_id}
+                  `;
+    try {
+      const res = await this.db.query(query);
+      console.log(`[db] Query to ${this.tableName} successful`, res.rows[0]);
+      return buildResponse(
+        res.rows[0],
+        `Query to ${this.tableName} successful`
+      );
+    } catch (err) {
+      console.error(`[db] Error querying ${this.tableName}:`, err.message);
+      return buildResponse(null, err.message);
+    }
+  }
 }
 
 export default Review;

@@ -119,6 +119,40 @@ class Customer extends BaseModel {
       return buildResponse({ topup: false }, err.message);
     }
   }
+
+  public async charge(id, amount) {
+    if (amount < 0) {
+      console.error(
+        `[db] ${this.tableName} charge failed, amount cannot be negative`
+      );
+      return buildResponse(
+        { charge: false },
+        `${this.tableName} charge failed, amount cannot be negative`
+      );
+    }
+    const query = `UPDATE ${this.tableName}
+                  SET balance = balance - ${amount}
+                  WHERE id = ${id} RETURNING *;`;
+    try {
+      const res = await this.db.query(query);
+      if (res.rowCount < 1) {
+        console.error(`[db] ${this.tableName} charge failed`);
+        return buildResponse(
+          { charge: false },
+          `[db] ${this.tableName} charge failed`
+        );
+      }
+      console.log(`[db] ${this.tableName} charge successful:`, res.rows[0]);
+
+      return buildResponse(
+        { charge: true, balance: res.rows[0].balance },
+        `[db] ${this.tableName} charge successful`
+      );
+    } catch (err) {
+      console.error(`[db] Error charging ${this.tableName}`, err.message);
+      return buildResponse({ charge: false }, err.message);
+    }
+  }
 }
 
 export default Customer;

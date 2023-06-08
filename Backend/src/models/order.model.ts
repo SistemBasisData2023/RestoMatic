@@ -187,6 +187,52 @@ class Order extends BaseModel {
       return buildResponse(null, err.message);
     }
   }
+
+  public async __validateBalance(order: any) {
+    const { customer_id, restaurant_id, items, address } = order;
+    if (!customer_id || !restaurant_id || !address || items.length < 1) {
+      return buildResponse(
+        null,
+        `[db] Insertion to ${this.tableName} failed: Missing customer_id or restaurant_id or items or address`
+      );
+    }
+
+    const query = `WITH order_data AS (
+                  SELECT
+                    jsonb_array_elements('${JSON.stringify(
+                      items
+                    )}'::jsonb) AS item,
+                    ${customer_id}::bigint AS customer_id,
+                    ${restaurant_id}::bigint AS restaurant_id
+                  )
+                  SELECT
+                    sum(items.price * (order_data.item->>'quantity')::int) AS total_price,
+                    balance AS user_balance
+                  FROM
+                    order_data
+                    JOIN menu_items AS items ON (order_data.item->>'menu_id')::int = items.id
+                    JOIN customers ON customers.id = order_data.customer_id
+                  WHERE
+                    items.restaurant_id = order_data.restaurant_id
+                  GROUP BY
+                    customers.balance;`;
+    try {
+      const res = await this.db.query(query);
+      if (res.rows.length < 1) {
+        console.error(`[db] Query ${this.tableName} failed: No such order`);
+        return -1;
+      }
+      const total_price = res.rows[0].total_price;
+      const user_balance = res.rows[0].user_balance;
+      console.log(
+        `[db] Query ${this.tableName} successful, order found and total price is ${total_price}`
+      );
+      return { total_price, user_balance };
+    } catch (err) {
+      console.error(`[db] Error querying ${this.tableName}:`, err.message);
+      return -1;
+    }
+  }
 }
 
 export default Order;
