@@ -44,7 +44,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
     AddCurrentItemOrder(data)
   }
   return (
-    <div className="flex flex-col gap-4 p-5 border border-black border-solid rounded-md shadow-xl">
+    <div className="flex flex-col gap-4 p-5 border border-black justify-between border-solid rounded-md shadow-xl">
       <div className="mx-auto overflow-hidden rounded-xl">
         <Image width={150} height={150} src={props.image} alt="Gambar ayam" />
       </div>

@@ -20,6 +20,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
   const router = useRouter()
   const { currentRestaurant } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
+  const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
   const rating = currentRestaurant.average_rating
     ? currentRestaurant.average_rating
@@ -27,17 +28,25 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
   useEffect(() => {
     if (currentRestaurant === null) router.push('/login')
   }, [])
-  const MenuData =
-    menus.length !== 0 ? (
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
-        {menus.map(({ ...props }) => {
-          return <MenuModal {...props} />
-        })}
+  const MenuModals =
+    menuData.length !== 0 ? (
+      <div>
+        <SearchBar
+          constantData={menus}
+          setState={setMenuData}
+          className="mb-5"
+          placeholder="Search your menu"
+        />
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
+          {menuData.map(({ ...props }) => {
+            return <MenuModal {...props} />
+          })}
+        </div>
       </div>
     ) : (
       <h2 className="text-center ">Menu Masih Kosong</h2>
     )
-  const ReviewData = <ReviewModal />
+  const ReviewModals = <ReviewModal />
 
   const HandleMenuClick = () => {
     setCurrentViewMenu(true)
@@ -62,12 +71,11 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
       <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
         <div className="flex items-center gap-5">
           <FontAwesomeIcon
-            className="text-gray-700 duration-300 cursor-pointer  hover:scale-125"
+            className="text-primary-120 duration-300 cursor-pointer  hover:scale-125"
             icon={faArrowLeft}
             onClick={HandleBackOnClick}
             size="lg"
           />
-          <SearchBar placeholder="Search your menu" />
         </div>
         <Button
           onClick={HandleOpenCart}
@@ -82,7 +90,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
         </Button>
       </div>
 
-      <div className="flex  gap-10 mt-5 ">
+      <div className="flex  gap-10 mt-2 ">
         <div className="overflow-hidden rounded-xl">
           <Image
             width={150}
@@ -102,7 +110,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
         </div>
       </div>
 
-      <div className="flex gap-5 mb-5 mt-2">
+      <div className="flex gap-5 mb-5 mt-3">
         <button
           className={`btn-primary rounded-md px-3 ${
             !currentViewMenu && 'bg-[#CBCBCB] text-black'
@@ -120,7 +128,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
           Review
         </button>
       </div>
-      {currentViewMenu ? MenuData : ReviewData}
+      {currentViewMenu ? MenuModals : ReviewModals}
       {showCart && (
         <CartModal MenuRestaurantData={menus} togglePopUp={HandleCloseCart} />
       )}

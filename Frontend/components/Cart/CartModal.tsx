@@ -28,7 +28,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
       closePopUp={togglePopUp}
       className=" w-[50%] flex flex-col gap-5 p-5 rounded-md bg-white"
     >
-      <h2 className="m-0 place-self-start">Order</h2>
+      <h2 className="m-0 place-self-start font-bold text-[25px]">Order</h2>
 
       {filterOrder.length !== 0 ? (
         filterOrder.map((order) => {

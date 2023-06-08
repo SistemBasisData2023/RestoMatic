@@ -21,7 +21,7 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
 
   return (
     <div className="w-full flex justify-between items-center">
-      <div className="flex ">
+      <div className="flex gap-5">
         <div className="rounded-xl overflow-hidden ">
           <Image
             width={100}
@@ -30,10 +30,12 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
             alt="Gambar Makanan / Minuman"
           />
         </div>
-        <div className="flex flex-col justify-center gap-2">
-          <h3 className="m-0 font-bold">{props.name}</h3>
-          <p className="m-0 font-bold">Total: {quantity}</p>
-          <p className="m-0 font-bold">Rp {DotEvery3Decimals(props.price)}</p>
+        <div className="flex flex-col justify-center gap-[2px]">
+          <p className="m-0 font-bold text-xl">{props.name}</p>
+          <p className="m-0 font-bold text-[14px]">Total: {quantity}</p>
+          <p className="m-0 font-bold text-[14px]">
+            Rp {DotEvery3Decimals(props.price)}
+          </p>
         </div>
       </div>
 

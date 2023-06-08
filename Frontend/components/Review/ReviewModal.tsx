@@ -2,7 +2,7 @@ import StarRating from '@components/Star Rating/StarRating'
 import { Customer_Props } from '@interfaces/index'
 import React, { ReactNode } from 'react'
 type Props = {
-  userReview: Customer_Props
+  userReview?: Customer_Props
 }
 const ReviewModal = ({ userReview }: Props) => {
   return (
