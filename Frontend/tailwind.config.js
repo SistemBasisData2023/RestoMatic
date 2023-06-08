@@ -9,10 +9,14 @@ module.exports = {
       colors: {
         primary: {
           60: '#FAFAFA',
+          70: '#E9E9E9',
           80: '#D9D9D9',
           90: '#8D8D8D',
           100: '#526D82',
           120: '#27374D',
+        },
+        secondary: {
+          60: '#8D1B1B',
         },
         dark: {
           60: '#B3BFCB',

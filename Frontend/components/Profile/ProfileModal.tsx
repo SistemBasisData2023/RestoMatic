@@ -9,8 +9,9 @@ import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 
 type Props = {
   togglePopUp: () => void
+  noLogOutButton?: boolean
 }
-const ProfileModal = ({ togglePopUp }: Props) => {
+const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
   const router = useRouter()
   const { user, logout, login } = useUser()
   const [isLoading, setLoading] = useState(false)
@@ -76,34 +77,52 @@ const ProfileModal = ({ togglePopUp }: Props) => {
     <PopUpModal
       closePopUp={togglePopUp}
       disableClickOutside={true}
-      className="flex flex-col items-center justify-center p-5 px-8 bg-white rounded-md"
+      className="flex flex-col p-5  w-[35%] bg-primary-60 rounded-md gap-8 font-bold"
     >
-      <h2>Profile Details</h2>
-      <div className="flex gap-5">
-        <p>Username: </p>
-        {user && <p>{user.username}</p>}
+      <h2 className="m-0">User Profile</h2>
+      <div className="flex flex-col gap-0">
+        <p className=" text-[12px] m-0 text-primary-100 font-bold">USERNAME</p>
+        {user && <p className="m-0">{user.username}</p>}
       </div>
-      <div className="flex gap-5">
-        <p>Email: </p>
-        {user && <p>{user.email}</p>}
+      <div className="flex flex-col">
+        <p className="text-[12px] m-0 text-primary-100 font-bold">EMAIL</p>
+        {user && <p className="m-0">{user.email}</p>}
       </div>
-      <div className="flex gap-5">
-        <p>Balance: </p>
-        {user && <p>Rp {DotEvery3Decimals(user.balance)}</p>}
+      <div className="flex flex-col">
+        <p className="text-[12px] m-0 text-primary-100 font-bold">BALANCE</p>
+        {user && <p className="m-0">Rp {DotEvery3Decimals(user.balance)}</p>}
       </div>
-      <input
-        className="border-none rounded-[14px] bg-primary-80 p-2 w-full"
-        ref={refBalance}
-        defaultValue={0}
-        placeholder="Enter your balance"
-        type="number"
-      />
-      <Button onClick={TopUpHandler} className="mt-8 w-[80%]">
-        {isLoading ? 'Loading...' : 'Top Up'}
-      </Button>
-      <Button onClick={LogOutHandler} className="mt-5 w-[80%]">
-        Log Out
-      </Button>
+      <div>
+        <p className="text-[12px] m-0 mb-1 text-primary-100 font-bold">
+          TOP UP
+        </p>
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <input
+            className="border-none rounded-[10px] bg-primary-70 p-2 w-full md:w-[80%]"
+            ref={refBalance}
+            defaultValue={0}
+            min={0}
+            placeholder="Insert Balance Amount"
+            type="number"
+          />
+          <Button
+            onClick={TopUpHandler}
+            className=" w-full md:w-[20%] font-bold  rounded-[10px]"
+          >
+            {isLoading ? 'Loading...' : 'ENTER'}
+          </Button>
+        </div>
+      </div>
+
+      {!noLogOutButton && (
+        <Button
+          onClick={LogOutHandler}
+          className="w-full mx-auto bg-transparent text-secondary-60 border-secondary-60 rounded-md font-bold border-solid border-[3px] hover:bg-secondary-60"
+        >
+          LOG OUT
+        </Button>
+      )}
+
       {showSuccessErrorModal && (
         <SuccessErrorModal
           type={successOrError}

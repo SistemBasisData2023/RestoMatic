@@ -5,14 +5,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const RestaurantModal = ({ rating = 3, ...props }: Restaurant_Props) => {
+const RestaurantModal = ({ ...props }: Restaurant_Props) => {
   const router = useRouter()
   const { ChangeCurrentRestaurant } = useUser()
   const HandleClick = () => {
     ChangeCurrentRestaurant(props)
-    router.push({
-      pathname: `/restaurant/${props.id}`,
-    })
+    router.push(`/restaurant/${props.id}`)
   }
   return (
     <div
@@ -23,17 +21,19 @@ const RestaurantModal = ({ rating = 3, ...props }: Restaurant_Props) => {
         <Image
           width={130}
           height={130}
-          src={
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/1200px-McDonald%27s_logo.svg.png'
-          }
+          src={props.image}
           alt="Restaurant Picture"
         />
         <div className="flex flex-col">
           <h2>{props.name}</h2>
         </div>
         <div className="flex items-start gap-4 ">
-          <StarRating ratingAverage={rating} />
-          <p className="m-0">{rating}</p>
+          <StarRating
+            ratingAverage={props.average_rating ? props.average_rating : 0}
+          />
+          <p className="m-0">
+            {props.average_rating ? props.average_rating : 0}
+          </p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { InferGetStaticPropsType, NextPage, GetStaticProps } from 'next'
+import { NextPage, GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -13,18 +13,20 @@ import { useEffect, useState } from 'react'
 import { BuildResponse, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
 
-const HomePage: NextPage = ({
-  restaurants,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+type Props = {
+  restaurants: Restaurant_Props[]
+}
+
+const HomePage: NextPage<Props> = ({ restaurants }) => {
   const { user } = useUser()
+
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
-  const ConstantRestaurantData: Restaurant_Props[] = restaurants
   const [restaurantData, setRestaurantData] =
     useState<Restaurant_Props[]>(restaurants)
-
+  console.log(restaurantData)
   useEffect(() => {
-    if (user === null) router.push('/login')
+    if (user === null) router.push('/login', undefined, { shallow: true })
   }, [])
 
   const HandleOpenProfile = () => {
@@ -36,14 +38,14 @@ const HomePage: NextPage = ({
 
   const HandleSortRatingAsc = () => {
     const sorted = [...restaurantData].sort((a, b) => {
-      return a.rating - b.rating
+      return a.average_rating - b.average_rating
     })
     setRestaurantData(sorted)
   }
 
   const HandleSortRatingDesc = () => {
     const sorted = [...restaurantData].sort((a, b) => {
-      return b.rating - a.rating
+      return b.average_rating - a.average_rating
     })
     setRestaurantData(sorted)
   }
@@ -74,7 +76,7 @@ const HomePage: NextPage = ({
       <div className="flex flex-col px-10 mt-5 gap-7">
         <div className="flex flex-col gap-5 md:flex-row md:justify-between md:items-center ">
           <SearchBar
-            constantData={ConstantRestaurantData}
+            constantData={restaurants}
             setState={setRestaurantData}
             placeholder="Search your restaurant"
           />
@@ -106,13 +108,12 @@ const HomePage: NextPage = ({
   )
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch('http://localhost:4000/api/restaurants')
+  if (!res.ok) throw new Error('Could not fetch restaurant data')
   const responseData: BuildResponse = await res.json()
   const restaurants: Restaurant_Props[] = await responseData.data
 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
   return {
     props: {
       restaurants,

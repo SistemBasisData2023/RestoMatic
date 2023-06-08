@@ -16,7 +16,7 @@ const SuccessErrorModal = ({
   showModal,
   message,
   type,
-  routerPush,
+  routerPush = null,
   disableXbutton = false,
   disableClickOutside = false,
 }: SuccessProps) => {

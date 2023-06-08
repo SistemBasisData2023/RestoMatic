@@ -10,23 +10,22 @@ export type Restaurant_Props = {
   image: string
   name: string
   description: string
-  rating?: number
+  average_rating?: number
 }
 
 export type Menu_Props = {
   id: number // Primary Key (PK)
   restaurant_id: number // Foreign Key (FK)
-  picture: string
+  image: string
   name: string
-  menu_type: MenuType
+  type: MenuType
   description: string
-  rating?: number
-  cost: number
+  price: number
 }
 
 export enum MenuType {
-  Makanan,
-  Minuman,
+  Food,
+  Beverage,
 }
 
 export type Full_Order_Props = {

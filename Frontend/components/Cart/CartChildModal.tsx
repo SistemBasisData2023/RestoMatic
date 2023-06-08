@@ -1,5 +1,5 @@
 import { useUser } from '@context/UserContext'
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMinus, faPencil, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
@@ -20,44 +20,27 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
   }
 
   return (
-    <div className="w-full flex p-4 justify-between">
-      <div>
-        <h3>{props.name}</h3>
-        <p>Rp {DotEvery3Decimals(props.cost)}</p>
-      </div>
-      <div className="flex flex-col">
-        <div className="rounded-xl overflow-hidden mx-auto">
+    <div className="w-full flex justify-between items-center">
+      <div className="flex ">
+        <div className="rounded-xl overflow-hidden ">
           <Image
-            width={150}
-            height={150}
-            src={props.picture}
+            width={100}
+            height={100}
+            src={props.image}
             alt="Gambar Makanan / Minuman"
           />
         </div>
-        <div className="flex  justify-center items-center gap-5 mt-4">
-          <Button
-            onClick={DecrementHandler}
-            className=" bg-inherit rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
-          >
-            <FontAwesomeIcon
-              size="lg"
-              className="cursor-pointer"
-              icon={faMinus}
-            />
-          </Button>
-          <p className="m-0 text-xl">{quantity}</p>
-          <Button
-            onClick={IncrementHandler}
-            className=" bg-inherit rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
-          >
-            <FontAwesomeIcon
-              size="lg"
-              className="cursor-pointer "
-              icon={faPlus}
-            />
-          </Button>
+        <div className="flex flex-col justify-center gap-2">
+          <h3 className="m-0 font-bold">{props.name}</h3>
+          <p className="m-0 font-bold">Total: {quantity}</p>
+          <p className="m-0 font-bold">Rp {DotEvery3Decimals(props.price)}</p>
         </div>
       </div>
+
+      <button className="btn-secondary ">
+        <FontAwesomeIcon className="fill-inherit mr-1" icon={faPencil} />
+        EDIT
+      </button>
     </div>
   )
 }

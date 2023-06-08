@@ -1,10 +1,11 @@
-import { PopUpModal } from '@components/index'
-import React from 'react'
+import { PopUpModal, ProfileModal } from '@components/index'
+import React, { useState } from 'react'
 import CartChildModal from './CartChildModal'
 import { useUser } from '@context/UserContext'
 import { Menu_Props, Restaurant_Props } from '@interfaces/index'
 import Image from 'next/image'
 import { Button } from '..'
+import { useRouter } from 'next/router'
 
 type Props = {
   togglePopUp: () => void
@@ -13,6 +14,7 @@ type Props = {
 }
 
 const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
+  const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
   const { currentOrderItem, currentRestaurant } = useUser()
 
   const filterOrder = currentOrderItem.filter((order) => {
@@ -21,25 +23,12 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
     })
   })
 
-  console.log(filterOrder)
-
   return (
     <PopUpModal
       closePopUp={togglePopUp}
-      className=" w-[30%] flex flex-col gap-5 p-5 rounded-md bg-white items-center"
+      className=" w-[50%] flex flex-col gap-5 p-5 rounded-md bg-white"
     >
-      <h2 className="m-0">Cart</h2>
-      <div className="flex items-center w-full gap-10">
-        <div>
-          <Image
-            width={130}
-            height={130}
-            src={currentRestaurant.picture}
-            alt="Restaurant Picture"
-          />
-        </div>
-        <h2>{currentRestaurant.name}</h2>
-      </div>
+      <h2 className="m-0 place-self-start">Order</h2>
 
       {filterOrder.length !== 0 ? (
         filterOrder.map((order) => {
@@ -59,7 +48,35 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
       ) : (
         <div>Empty</div>
       )}
-      <Button className="w-[70%]">Order</Button>
+      <div>
+        <p className="text-secondary text-[13px]">TOTAL PRICE</p>
+        <p className="m-0">Rp {1000}</p>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          <p className="text-secondary text-[13px] ">USER BALANCE</p>
+          <p className="m-0">Rp {10000}</p>
+        </div>
+        <button
+          onClick={() => {
+            setIsShowProfile(true)
+          }}
+          className="btn-secondary "
+        >
+          ADD BALANCE
+        </button>
+      </div>
+
+      <button className="btn-primary w-full rounded-md">MAKE PAYMENT</button>
+
+      {isShowProfile && (
+        <ProfileModal
+          noLogOutButton={true}
+          togglePopUp={() => {
+            setIsShowProfile(false)
+          }}
+        />
+      )}
     </PopUpModal>
   )
 }
