@@ -1,4 +1,5 @@
 # Cara Install Project
+
 Pake npm buat install
 
 ```bash
@@ -10,6 +11,7 @@ npm install
 ```bash
 npm start
 ```
+
 # API Examples
 
 ## Register
@@ -416,5 +418,70 @@ http://localhost:4000/api/orders/{order_id}
             }
         ]
     }
+}
+```
+
+## Get all reviews
+
+```
+@GET
+http://localhost:4000/api/reviews
+```
+
+### Response
+
+```
+{
+    "error": false,
+    "message": "",
+    "data": [
+        {
+            "id": 3,
+            "customer_id": "94",
+            "restaurant_id": "20",
+            "comment": "I had the best pepperoni pizzas here, it was Amazing! A have to try menu item from Dominos for sure",
+            "rating": "4.7",
+            "created_at": "2023-06-07T22:56:44.939Z"
+        },
+        {
+            "id": 4,
+            "customer_id": "94",
+            "restaurant_id": "19",
+            "comment": "The coffee was ok, donuts were nice though",
+            "rating": "3.5",
+            "created_at": "2023-06-07T22:58:59.466Z"
+        }
+    ]
+}
+```
+
+## Create a new review:
+
+```
+@POST
+http://localhost:4000/api/reviews
+body:
+- comment (text)
+- rating (0.0 - 5.0)
+- customer_id
+- restaurant_id
+```
+
+### Response
+
+```
+{
+    "error": false,
+    "message": "",
+    "data": [
+        {
+            "id": 3,
+            "customer_id": "94",
+            "restaurant_id": "20",
+            "comment": "I had the best pepperoni pizzas here, it was Amazing! A have to try menu item from Dominos for sure",
+            "rating": "4.7",
+            "created_at": "2023-06-07T22:56:44.939Z"
+        }
+    ]
 }
 ```
