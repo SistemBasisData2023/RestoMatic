@@ -28,24 +28,26 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
   useEffect(() => {
     if (currentRestaurant === null) router.push('/login')
   }, [])
-  const MenuModals =
-    menuData.length !== 0 ? (
-      <div>
-        <SearchBar
-          constantData={menus}
-          setState={setMenuData}
-          className="mb-5"
-          placeholder="Search your menu"
-        />
+  const MenuModals = (
+    <div>
+      <SearchBar
+        constantData={menus}
+        setState={setMenuData}
+        className="mb-5"
+        placeholder="Search your menu"
+      />
+      {menuData.length !== 0 ? (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
           {menuData.map(({ ...props }) => {
             return <MenuModal {...props} />
           })}
         </div>
-      </div>
-    ) : (
-      <h2 className="text-center ">Menu Masih Kosong</h2>
-    )
+      ) : (
+        <h2 className="text-center ">Menu Kosong</h2>
+      )}
+    </div>
+  )
+
   const ReviewModals = <ReviewModal />
 
   const HandleMenuClick = () => {
@@ -69,11 +71,13 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
   return (
     <div className="relative flex flex-col h-full min-h-screen px-8 pt-5 pb-8 border rounded-lg bg-light-80">
       <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
-        <div className="flex items-center gap-5">
+        <div
+          onClick={HandleBackOnClick}
+          className="flex items-center gap-5 cursor-pointer"
+        >
           <FontAwesomeIcon
             className="text-primary-120 duration-300 cursor-pointer  hover:scale-125"
             icon={faArrowLeft}
-            onClick={HandleBackOnClick}
             size="lg"
           />
         </div>

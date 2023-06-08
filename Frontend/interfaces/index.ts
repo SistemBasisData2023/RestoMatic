@@ -39,6 +39,7 @@ export type Order_Item = {
   id: number // Primary Key (PK)
   order_id: number // Foreign Key (FK)
   menu_id: number // Foreign Key (FK)
+  price: number
   quantity: number
 }
 

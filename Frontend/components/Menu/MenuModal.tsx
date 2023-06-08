@@ -37,6 +37,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
     const data: Order_Item = {
       id: currentOrderItem.length + 1,
       menu_id: props.id,
+      price: props.price,
       order_id: null,
       quantity: quantity,
     }

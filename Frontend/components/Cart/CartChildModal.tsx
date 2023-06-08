@@ -34,15 +34,34 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
           <p className="m-0 font-bold text-xl">{props.name}</p>
           <p className="m-0 font-bold text-[14px]">Total: {quantity}</p>
           <p className="m-0 font-bold text-[14px]">
-            Rp {DotEvery3Decimals(props.price)}
+            Rp {props.price * quantity}
           </p>
         </div>
       </div>
 
-      <button className="btn-secondary ">
-        <FontAwesomeIcon className="fill-inherit mr-1" icon={faPencil} />
-        EDIT
-      </button>
+      <div className="flex  justify-center items-center gap-5 mt-4">
+        <Button
+          onClick={DecrementHandler}
+          className=" rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
+        >
+          <FontAwesomeIcon
+            size="lg"
+            className="cursor-pointer"
+            icon={faMinus}
+          />
+        </Button>
+        <p className="m-0 text-xl">{quantity}</p>
+        <Button
+          onClick={IncrementHandler}
+          className=" rounded-[50%] cursor-pointer hover:hover:scale-110 duration-300"
+        >
+          <FontAwesomeIcon
+            size="lg"
+            className="cursor-pointer "
+            icon={faPlus}
+          />
+        </Button>
+      </div>
     </div>
   )
 }
