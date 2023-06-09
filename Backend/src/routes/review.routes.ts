@@ -13,6 +13,8 @@ ReviewRouter.get(
   Reviews.getAll
 );
 
+ReviewRouter.get("/reviews/:id", Reviews.getById);
+
 /* POST ROUTES */
 ReviewRouter.post("/reviews", Reviews.create);
 

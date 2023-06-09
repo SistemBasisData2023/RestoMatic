@@ -126,6 +126,7 @@ class Order extends BaseModel {
         SELECT
           o.customer_id,
           r.id AS restaurant_id,
+          o.id AS order_id,
           r.name AS restaurant_name,
           o.created_at,
           o.address,
@@ -147,6 +148,7 @@ class Order extends BaseModel {
         GROUP BY
           o.customer_id,
           r.id,
+          o.id,
           r.name,
           o.created_at,
           o.address,
@@ -175,6 +177,7 @@ class Order extends BaseModel {
         );
       }
 
+      // console.log(res.rows);
       const foundOrders = buildCustomerOrderData(customer_id, res.rows);
       console.log("[db] Query orders successful, orders found", foundOrders);
       return buildResponse(
