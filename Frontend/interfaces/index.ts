@@ -7,27 +7,25 @@ export type Customer_Props = {
 
 export type Restaurant_Props = {
   id: number // Primary Key (PK)
-  picture: string
+  image: string
   name: string
   description: string
-  rating?: number
-  review?: string
+  average_rating?: number
 }
 
 export type Menu_Props = {
   id: number // Primary Key (PK)
   restaurant_id: number // Foreign Key (FK)
-  picture: string
+  image: string
   name: string
-  menu_type: MenuType
+  type: MenuType
   description: string
-  rating?: number
-  cost: number
+  price: number
 }
 
 export enum MenuType {
-  Makanan,
-  Minuman,
+  Food,
+  Beverage,
 }
 
 export type Full_Order_Props = {
@@ -41,6 +39,7 @@ export type Order_Item = {
   id: number // Primary Key (PK)
   order_id: number // Foreign Key (FK)
   menu_id: number // Foreign Key (FK)
+  price: number
   quantity: number
 }
 
@@ -59,4 +58,15 @@ export type BuildResponse = {
   error: boolean | null | undefined
   message: string
   data: any
+}
+
+export type Order_JSON = {
+  customer_id: number
+  restaurant_id: number
+  items: MenuOrder_JSON[]
+  address: string
+}
+export type MenuOrder_JSON = {
+  menu_id: number
+  quantity: number
 }

@@ -10,9 +10,7 @@ const RestaurantModal = ({ ...props }: Restaurant_Props) => {
   const { ChangeCurrentRestaurant } = useUser()
   const HandleClick = () => {
     ChangeCurrentRestaurant(props)
-    router.push({
-      pathname: `/restaurant/${props.id}`,
-    })
+    router.push(`/restaurant/${props.id}`)
   }
   return (
     <div
@@ -23,15 +21,19 @@ const RestaurantModal = ({ ...props }: Restaurant_Props) => {
         <Image
           width={130}
           height={130}
-          src={props.picture}
+          src={props.image}
           alt="Restaurant Picture"
         />
         <div className="flex flex-col">
           <h2>{props.name}</h2>
         </div>
         <div className="flex items-start gap-4 ">
-          <StarRating ratingAverage={props.rating} />
-          <p className="m-0">{props.rating}</p>
+          <StarRating
+            ratingAverage={props.average_rating ? props.average_rating : 0}
+          />
+          <p className="m-0">
+            {props.average_rating ? props.average_rating : 0}
+          </p>
         </div>
       </div>
     </div>

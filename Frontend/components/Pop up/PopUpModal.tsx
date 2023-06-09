@@ -24,12 +24,8 @@ const PopUpModal = ({
     }
   }, [ref])
   const handleClickOutside = (e: MouseEvent) => {
-    if (ref.current && !ref.current.contains(e.target)) {
-      !disableClickOutside && closePopUp()
-      //console.log('Clicked Outside')
-    } else {
-      //console.log('Clicked Inside')
-    }
+    if (ref.current && !ref.current.contains(e.target) && !disableClickOutside)
+      closePopUp()
   }
   return (
     <div className="fixed top-0 py-16 flex justify-center  overflow-auto  left-0 z-[999] w-screen h-screen bg-black bg-opacity-75 ">

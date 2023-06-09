@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import { NextPage, GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -7,22 +7,29 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons'
 import { ProfileModal, RestaurantModal } from '@components/index'
-import { SampleRestaurant } from '@utils/dummy-data'
 import SearchBar from '@components/SearchBar/SearchBar'
 import { Button } from '@components/index'
 import { useEffect, useState } from 'react'
-import { Restaurant_Props } from '@interfaces/index'
+import { BuildResponse, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
+import { GET_RESTAURANTS } from '@utils/APIs'
 
-const HomePage: NextPage = () => {
+type Props = {
+  restaurants: Restaurant_Props[]
+}
+
+const HomePage: NextPage<Props> = ({ restaurants }) => {
   const { user } = useUser()
+
   const router = useRouter()
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
+  const [highestRating, setHighestRating] = useState<boolean>(true)
   const [restaurantData, setRestaurantData] =
-    useState<Restaurant_Props[]>(SampleRestaurant)
-
+    useState<Restaurant_Props[]>(restaurants)
+  console.log(restaurantData)
   useEffect(() => {
-    if (user === null) router.push('/login')
+    if (user === null) router.push('/login', undefined, { shallow: true })
+    HandleSortRatingDesc()
   }, [])
 
   const HandleOpenProfile = () => {
@@ -34,16 +41,18 @@ const HomePage: NextPage = () => {
 
   const HandleSortRatingAsc = () => {
     const sorted = [...restaurantData].sort((a, b) => {
-      return a.rating - b.rating
+      return a.average_rating - b.average_rating
     })
     setRestaurantData(sorted)
+    setHighestRating(false)
   }
 
   const HandleSortRatingDesc = () => {
     const sorted = [...restaurantData].sort((a, b) => {
-      return b.rating - a.rating
+      return b.average_rating - a.average_rating
     })
     setRestaurantData(sorted)
+    setHighestRating(true)
   }
 
   return (
@@ -51,7 +60,7 @@ const HomePage: NextPage = () => {
       <div className="flex justify-between">
         <div>
           <h2 className="m-0 text-5xl w-fit text-primary-100 ">RESTO</h2>
-          <h2 className="m-0 text-5xl w-fit text-primary-120 ">MATIC</h2>
+          <h2 className="m-0 text-5xl w-fit text-primary-120">MATIC</h2>
         </div>
         <div className="sticky top-0 z-50 flex items-center justify-end gap-5 pt-2">
           <div
@@ -71,12 +80,26 @@ const HomePage: NextPage = () => {
 
       <div className="flex flex-col px-10 mt-5 gap-7">
         <div className="flex flex-col gap-5 md:flex-row md:justify-between md:items-center ">
-          <SearchBar placeholder="Search your restaurant" />
+          <SearchBar
+            constantData={restaurants}
+            setState={setRestaurantData}
+            placeholder="Search your restaurant"
+          />
           <div className="flex items-center gap-3">
-            <Button onClick={HandleSortRatingDesc} className="px-3">
+            <Button
+              onClick={HandleSortRatingDesc}
+              className={`${
+                !highestRating && 'bg-[#CBCBCB] text-[#646464]'
+              }  px-3 rounded-md`}
+            >
               Rating Tertinggi
             </Button>
-            <Button onClick={HandleSortRatingAsc} className="px-3">
+            <Button
+              onClick={HandleSortRatingAsc}
+              className={`${
+                highestRating && 'bg-[#CBCBCB] text-[#646464]'
+              }  px-3 rounded-md`}
+            >
               Rating Terendah
             </Button>
             <FontAwesomeIcon
@@ -88,27 +111,25 @@ const HomePage: NextPage = () => {
         </div>
         <h2 className="m-0 text-gray-800">List of Restaurants</h2>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5 ">
-          {restaurantData !== null &&
-            restaurantData.map(
-              ({ description, id, name, picture, rating, review }) => {
-                return (
-                  <RestaurantModal
-                    key={id}
-                    description={description}
-                    id={id}
-                    name={name}
-                    picture={picture}
-                    rating={rating}
-                    review={review}
-                  />
-                )
-              }
-            )}
+          {(restaurantData !== null || restaurantData.length !== 0) &&
+            restaurantData.map(({ ...props }) => {
+              return <RestaurantModal key={props.id} {...props} />
+            })}
         </div>
       </div>
 
       {isShowProfile && <ProfileModal togglePopUp={HandleCloseProfile} />}
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const restaurants: Restaurant_Props[] = (await GET_RESTAURANTS()).data
+
+  return {
+    props: {
+      restaurants,
+    },
+  }
 }
 export default HomePage

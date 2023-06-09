@@ -5,6 +5,20 @@
 @tailwind utilities;
 
 /* Global Styles */
+
+@layer components {
+  .btn-primary {
+    @apply rounded-[18px] border-none font-bold bg-primary-100 p-2 cursor-pointer text-white hover:bg-primary-120 hover:text-white  transition-all duration-300;
+  }
+  .btn-secondary {
+    @apply bg-inherit font-bold text-primary-100 p-2 cursor-pointer hover:text-white border-[2px] border-solid border-primary-100 hover:bg-primary-100 rounded-md transition-all;
+  }
+
+  .text-secondary {
+    @apply text-[12px] m-0 text-primary-100 font-bold;
+  }
+}
+
 html,
 body {
   padding: 0;

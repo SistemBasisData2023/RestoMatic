@@ -26,7 +26,7 @@ const RegisterForm = () => {
       },
       body: JSON.stringify(data),
     })
-    console.log(res)
+
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       throw new Error('Error at registering up an account')

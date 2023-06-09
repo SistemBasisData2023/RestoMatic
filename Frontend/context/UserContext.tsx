@@ -58,6 +58,8 @@ export function UserProvider({ children }: Props) {
   }
   const logout = () => {
     setUser(null)
+    setCurrentOrderItem(null)
+    setCurrentRestaurant(null)
   }
 
   const ChangeCurrentRestaurant = (restaurant: Restaurant_Props) => {

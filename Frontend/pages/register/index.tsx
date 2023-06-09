@@ -10,7 +10,12 @@ const Register = () => {
         <RegisterForm />
       </div>
       <div className="relative hidden w-full h-full row-span-1 md:block md:col-span-2">
-        <Image fill={true} src={RegisterFoodImage} alt="Food Picture" />
+        <Image
+          fill={true}
+          placeholder="blur"
+          src={RegisterFoodImage}
+          alt="Food Picture"
+        />
       </div>
     </div>
   )
