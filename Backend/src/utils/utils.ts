@@ -38,36 +38,45 @@ export const buildOrderData = (data: any): any => {
 
 export const buildCustomerOrderData = (customerId: Number, data: any): any => {
   // Transform the result into the desired structure
-  const orders = data.map((row: any) => ({
-    restaurant_id: Number(row.restaurant_id),
-    restaurant_name: row.restaurant_name,
-    created_at: row.created_at,
-    address: row.address,
-    total_price: Number(row.total_price),
-    items: data
-      .filter((itemRow) => itemRow.created_at === row.created_at)
-      .map((itemRow) => ({
-        menu_id: Number(itemRow.menu_id),
-        name: itemRow.name,
-        quantity: Number(itemRow.quantity),
-        price: Number(itemRow.price),
-        type: itemRow.type,
-        image: itemRow.image,
-        description: itemRow.description,
-      })),
-  }));
+  // console.log(data);
 
-  const total_orders: Number = Number(orders.length);
-  const total_spent: Number = Number(
-    orders.reduce((sum, order) => sum + order.total_price, 0)
-  );
-
-  const response = {
-    customer_id: Number(customerId),
-    total_orders,
-    total_spent,
-    orders,
+  const restructuredData = {
+    customer_id: data[0].customer_id,
+    total_orders: data.length,
+    total_spent: data.reduce(
+      (total, order) => total + parseFloat(order.total_price),
+      0
+    ),
+    orders: [],
   };
 
-  return response;
+  const orderMap = new Map();
+
+  for (const order of data) {
+    if (!orderMap.has(order.order_id)) {
+      orderMap.set(order.order_id, {
+        order_id: order.order_id,
+        restaurant_id: order.restaurant_id,
+        restaurant_name: order.restaurant_name,
+        created_at: new Date(order.created_at),
+        address: order.address,
+        total_price: parseFloat(order.total_price),
+        items: [],
+      });
+    }
+
+    const currentOrder = orderMap.get(order.order_id);
+    currentOrder.items.push({
+      menu_id: order.menu_id,
+      name: order.name,
+      quantity: order.quantity,
+      price: parseFloat(order.price),
+      type: order.type,
+      image: order.image,
+      description: order.description,
+    });
+  }
+
+  restructuredData.orders = Array.from(orderMap.values());
+  return restructuredData;
 };
