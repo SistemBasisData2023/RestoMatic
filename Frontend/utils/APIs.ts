@@ -18,6 +18,28 @@ export async function GET_CUSTOMER(user_id: number): Promise<BuildResponse> {
   return await res.json()
 }
 
+export async function GET_CUSTOMERORDER(
+  user_id: string
+): Promise<BuildResponse> {
+  const res = await fetch(
+    `http://localhost:4000/api/orders?` +
+      new URLSearchParams({
+        customerId: user_id,
+      }),
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  if (!res.ok) {
+    throw new Error('Error at getting order data')
+  }
+
+  return await res.json()
+}
+
 export async function PATCH_TOPUP(
   user_id: number,
   balance: any

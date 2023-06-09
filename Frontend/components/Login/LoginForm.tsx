@@ -16,6 +16,7 @@ const LoginForm = () => {
   const { login } = useUser()
   const [isLoading, setLoading] = useState(false)
   const [responseMessage, setResponseMessage] = useState<string>(null)
+  const [queryMessage, setQueryMessage] = useState(null)
   const [showSuccessErrorModal, setShowSuccessErrorModal] =
     useState<boolean>(false)
   const [successOrError, setSuccessOrError] = useState<
@@ -30,6 +31,9 @@ const LoginForm = () => {
     setResponseMessage(bodyResponse.message)
     if (bodyResponse.data.login) {
       login(bodyResponse.data.accountDetails)
+      setQueryMessage({
+        id: bodyResponse.data.accountDetails.id,
+      })
       setSuccessOrError('success')
     } else {
       setSuccessOrError('error')
@@ -95,6 +99,7 @@ const LoginForm = () => {
           showModal={setShowSuccessErrorModal}
           message={responseMessage}
           routerPush="/"
+          query={queryMessage}
           className="p-20 py-7"
         />
       )}

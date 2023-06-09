@@ -6,7 +6,7 @@ type Popup = {
   className?: string
   disableXbutton?: boolean
   disableClickOutside?: boolean
-  closePopUp?: () => void
+  closePopUp: () => void
 }
 
 const PopUpModal = ({

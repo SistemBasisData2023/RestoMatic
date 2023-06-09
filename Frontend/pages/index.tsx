@@ -10,34 +10,30 @@ import { ProfileModal, RestaurantModal } from '@components/index'
 import SearchBar from '@components/SearchBar/SearchBar'
 import { Button } from '@components/index'
 import { useEffect, useState } from 'react'
-import { BuildResponse, Restaurant_Props } from '@interfaces/index'
+import { OrderHistory_JSON, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
-import { GET_RESTAURANTS } from '@utils/APIs'
+import { GET_CUSTOMERORDER, GET_RESTAURANTS } from '@utils/APIs'
+import OrderHistoryModal from '@components/OrderHistory/OrderHistoryModal'
 
 type Props = {
   restaurants: Restaurant_Props[]
+  customer_orders: OrderHistory_JSON
 }
 
-const HomePage: NextPage<Props> = ({ restaurants }) => {
+const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
   const { user } = useUser()
-
   const router = useRouter()
+
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
+  const [isShowOrderHistory, setIsShowOrderHistory] = useState<boolean>(false)
   const [highestRating, setHighestRating] = useState<boolean>(true)
   const [restaurantData, setRestaurantData] =
     useState<Restaurant_Props[]>(restaurants)
-  console.log(restaurantData)
+
   useEffect(() => {
     if (user === null) router.push('/login', undefined, { shallow: true })
     HandleSortRatingDesc()
   }, [])
-
-  const HandleOpenProfile = () => {
-    setIsShowProfile(true)
-  }
-  const HandleCloseProfile = () => {
-    setIsShowProfile(false)
-  }
 
   const HandleSortRatingAsc = () => {
     const sorted = [...restaurantData].sort((a, b) => {
@@ -64,13 +60,14 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
         </div>
         <div className="sticky top-0 z-50 flex items-center justify-end gap-5 pt-2">
           <div
-            onClick={HandleOpenProfile}
+            onClick={() => setIsShowProfile(true)}
             className="flex gap-3 p-2 px-4 duration-300 rounded-md cursor-pointer bg-primary-100 hover:bg-primary-120 text-primary-60 hover:scale-105"
           >
             <FontAwesomeIcon className="" icon={faUser} size="lg" />
             {user && <p className="m-0">{user.username}</p>}
           </div>
           <FontAwesomeIcon
+            onClick={() => setIsShowOrderHistory(true)}
             className="text-gray-700 duration-300 cursor-pointer hover:scale-125"
             icon={faClockRotateLeft}
             size="lg"
@@ -118,17 +115,26 @@ const HomePage: NextPage<Props> = ({ restaurants }) => {
         </div>
       </div>
 
-      {isShowProfile && <ProfileModal togglePopUp={HandleCloseProfile} />}
+      {isShowProfile && (
+        <ProfileModal togglePopUp={() => setIsShowProfile(false)} />
+      )}
+      {isShowOrderHistory && (
+        <OrderHistoryModal customer_orders={customer_orders} togglePopUp={() => setIsShowOrderHistory(false)} />
+      )}
     </div>
   )
 }
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurants: Restaurant_Props[] = (await GET_RESTAURANTS()).data
-
+  const customer_id = context.query.id
+  let customer_orders: OrderHistory_JSON
+  if (customer_id !== undefined && customer_id !== null) {
+    customer_orders = (await GET_CUSTOMERORDER(customer_id)).data
+  }
   return {
     props: {
       restaurants,
+      customer_orders,
     },
   }
 }

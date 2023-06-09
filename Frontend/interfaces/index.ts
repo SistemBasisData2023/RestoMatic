@@ -70,3 +70,29 @@ export type MenuOrder_JSON = {
   menu_id: number
   quantity: number
 }
+
+export type OrderHistory_JSON = {
+  customer_id: number
+  total_orders: number
+  total_spent: number
+  orders: Orders_Props[]
+}
+
+export type Orders_Props = {
+  restaurant_id: number
+  restaurant_name: string
+  created_at: string
+  address: string
+  total_price: number
+  items: Items_Props[]
+}
+
+export type Items_Props = {
+  menu_id: number
+  name: string
+  quantity: number
+  price: number
+  type: string
+  image: string
+  description: string
+}

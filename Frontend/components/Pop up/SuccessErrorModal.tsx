@@ -6,6 +6,7 @@ type SuccessProps = {
   className?: string
   message?: string
   routerPush?: string | null
+  query?: any
   type: 'success' | 'error' | null
   disableXbutton?: boolean
   disableClickOutside?: boolean
@@ -16,6 +17,7 @@ const SuccessErrorModal = ({
   showModal,
   message,
   type,
+  query,
   routerPush = null,
   disableXbutton = false,
   disableClickOutside = false,
@@ -25,7 +27,11 @@ const SuccessErrorModal = ({
     <PopUpModal
       closePopUp={() => {
         showModal(false)
-        if (routerPush !== null && type === 'success') router.push(routerPush)
+        if (routerPush !== null && type === 'success')
+          router.push({
+            pathname: routerPush,
+            query: query,
+          })
       }}
       className={`${className}`}
       disableXbutton={disableXbutton}
