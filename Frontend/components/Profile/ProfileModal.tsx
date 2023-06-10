@@ -24,9 +24,8 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
   const [successOrError, setSuccessOrError] = useState<
     'success' | 'error' | null
   >()
-  const refBalance = useRef(null)
+  const [balance, setBalance] = useState<number>(0)
   const TopUpHandler = async () => {
-    const balance = refBalance.current.value
     setLoading(true)
 
     const bodyResponse: BuildResponse = await PATCH_TOPUP(user.id, balance)
@@ -72,18 +71,27 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
         <p className="text-[12px] m-0 mb-1 text-primary-100 font-bold">
           TOP UP
         </p>
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div className="flex flex-col relative md:flex-row items-start md:items-center gap-4">
           <input
-            className="border-none rounded-[10px] bg-primary-70 p-2 w-full md:w-[80%]"
-            ref={refBalance}
-            defaultValue={0}
+            className="border-none  rounded-[10px] bg-primary-70 p-2 w-full md:w-[80%]"
+            onChange={(e) => setBalance(parseInt(e.target.value))}
             min={0}
             placeholder="Insert Balance Amount"
             type="number"
           />
+
+          {(balance == 0 || Number.isNaN(balance)) && (
+            <p className="m-0 absolute bottom-0 left-[1px] translate-y-[120%] text-[10px] text-error-120">
+              Insert a valid balance
+            </p>
+          )}
           <Button
             onClick={TopUpHandler}
-            className=" w-full md:w-[20%] font-bold  rounded-[10px]"
+            disabled={balance == 0 || Number.isNaN(balance)}
+            className={` ${
+              (balance == 0 || Number.isNaN(balance)) &&
+              'opacity-20 cursor-not-allowed'
+            } w-full md:w-[20%] font-bold  rounded-[10px]`}
           >
             {isLoading ? (
               <FontAwesomeIcon icon={faCircleNotch} spin={true} />

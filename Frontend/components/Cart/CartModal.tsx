@@ -108,7 +108,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           )
         })
       ) : (
-        <h1 className="mx-auto font-bold ">Order is empty</h1>
+        <h1 className="mx-auto font-bold ">Orders are empty</h1>
       )}
       {filterOrder.length !== 0 && (
         <>

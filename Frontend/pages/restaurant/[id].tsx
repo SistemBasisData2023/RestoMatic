@@ -115,7 +115,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
       <div className="flex gap-5 mt-3 mb-5">
         <button
           className={`btn-primary rounded-md px-3 ${
-            !currentViewMenu && 'bg-[#CBCBCB] text-black'
+            !currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(true)}
         >
@@ -123,7 +123,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
         </button>
         <button
           className={`btn-primary rounded-md px-3 ${
-            currentViewMenu && 'bg-[#CBCBCB] text-black'
+            currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(false)}
         >

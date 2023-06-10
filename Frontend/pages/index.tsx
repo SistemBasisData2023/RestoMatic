@@ -89,7 +89,7 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
                 !highestRating && 'bg-[#CBCBCB] text-[#646464]'
               }  px-3 rounded-md`}
             >
-              Rating Tertinggi
+              Highest Rating
             </Button>
             <Button
               onClick={HandleSortRatingAsc}
@@ -97,7 +97,7 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
                 highestRating && 'bg-[#CBCBCB] text-[#646464]'
               }  px-3 rounded-md`}
             >
-              Rating Terendah
+              Lowest Rating
             </Button>
             <FontAwesomeIcon
               className="text-gray-700 "
