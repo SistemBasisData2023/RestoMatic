@@ -9,15 +9,21 @@ import { SampleMenu } from '@utils/dummy-data'
 import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
-import { BuildResponse, Menu_Props, Restaurant_Props } from '@interfaces/index'
+import {
+  BuildResponse,
+  Menu_Props,
+  Restaurant_Props,
+  Reviews_Props,
+} from '@interfaces/index'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
 import { ReviewModal } from '@components/Review/ReviewModal'
-import { GET_MENURESTAURANT } from '@utils/APIs'
+import { GET_MENURESTAURANT, GET_RESTAURANTREVIEW } from '@utils/APIs'
 type Props = {
   menus: Menu_Props[]
+  reviews: Reviews_Props[]
 }
-const Restaurant: NextPage<Props> = ({ menus }) => {
+const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
   const router = useRouter()
   const { currentRestaurant } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
@@ -49,31 +55,20 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
     </div>
   )
 
-  const ReviewModals = <ReviewModal />
+  const ReviewModals = (
+    <div>
+      <button className="btn-primary rounded-md mb-5">Add Review</button>
+      {reviews.map((review) => {
+        return <ReviewModal userReview={review} />
+      })}
+    </div>
+  )
 
-  const HandleMenuClick = () => {
-    setCurrentViewMenu(true)
-  }
-  const HandleReviewClick = () => {
-    setCurrentViewMenu(false)
-  }
-
-  const HandleOpenCart = () => {
-    setShowCart(true)
-  }
-
-  const HandleCloseCart = () => {
-    setShowCart(false)
-  }
-
-  const HandleBackOnClick = () => {
-    router.push('/')
-  }
   return (
     <div className="relative flex flex-col h-full min-h-screen px-8 pt-5 pb-8 border rounded-lg bg-light-80">
       <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
         <div
-          onClick={HandleBackOnClick}
+          onClick={() => router.push('/')}
           className="flex items-center gap-5 cursor-pointer "
         >
           <FontAwesomeIcon
@@ -83,7 +78,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
           />
         </div>
         <Button
-          onClick={HandleOpenCart}
+          onClick={() => setShowCart(true)}
           className="flex items-center justify-center p-0 px-2  gap-2 border-none rounded-md cursor-pointer"
         >
           <FontAwesomeIcon
@@ -120,7 +115,7 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
           className={`btn-primary rounded-md px-3 ${
             !currentViewMenu && 'bg-[#CBCBCB] text-black'
           }`}
-          onClick={HandleMenuClick}
+          onClick={() => setCurrentViewMenu(true)}
         >
           Menu
         </button>
@@ -128,26 +123,30 @@ const Restaurant: NextPage<Props> = ({ menus }) => {
           className={`btn-primary rounded-md px-3 ${
             currentViewMenu && 'bg-[#CBCBCB] text-black'
           }`}
-          onClick={HandleReviewClick}
+          onClick={() => setCurrentViewMenu(false)}
         >
           Review
         </button>
       </div>
       {currentViewMenu ? MenuModals : ReviewModals}
       {showCart && (
-        <CartModal MenuRestaurantData={menus} togglePopUp={HandleCloseCart} />
+        <CartModal
+          MenuRestaurantData={menus}
+          togglePopUp={() => setShowCart(false)}
+        />
       )}
     </div>
   )
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurant_id = context.params.id
-
-  const menus: Restaurant_Props[] = (await GET_MENURESTAURANT(restaurant_id))
+  const menus: Menu_Props[] = (await GET_MENURESTAURANT(restaurant_id)).data
+  const reviews: Reviews_Props[] = (await GET_RESTAURANTREVIEW(restaurant_id))
     .data
   return {
     props: {
       menus,
+      reviews,
     },
   }
 }

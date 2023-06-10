@@ -19,13 +19,10 @@ export async function GET_CUSTOMER(user_id: number): Promise<BuildResponse> {
 }
 
 export async function GET_CUSTOMERORDER(
-  user_id: string
+  user_id: string | string[]
 ): Promise<BuildResponse> {
   const res = await fetch(
-    `http://localhost:4000/api/orders?` +
-      new URLSearchParams({
-        customerId: user_id,
-      }),
+    `http://localhost:4000/api/orders?customerId=${user_id}`,
     {
       method: 'GET',
       headers: {
@@ -76,6 +73,16 @@ export async function GET_MENURESTAURANT(
     `http://localhost:4000/api/menu-items?restaurantId=${restaurant_id}`
   )
   if (!res.ok) throw new Error('Could not fetch menu data')
+  return await res.json()
+}
+
+export async function GET_RESTAURANTREVIEW(
+  restaurant_id: string | string[]
+): Promise<BuildResponse> {
+  const res = await fetch(
+    `http://localhost:4000/api/reviews/?query=${restaurant_id}`
+  )
+  if (!res.ok) throw new Error('Could not fetch review data')
   return await res.json()
 }
 

@@ -119,7 +119,10 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
         <ProfileModal togglePopUp={() => setIsShowProfile(false)} />
       )}
       {isShowOrderHistory && (
-        <OrderHistoryModal customer_orders={customer_orders} togglePopUp={() => setIsShowOrderHistory(false)} />
+        <OrderHistoryModal
+          customer_orders={customer_orders}
+          togglePopUp={() => setIsShowOrderHistory(false)}
+        />
       )}
     </div>
   )
@@ -127,7 +130,7 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurants: Restaurant_Props[] = (await GET_RESTAURANTS()).data
   const customer_id = context.query.id
-  let customer_orders: OrderHistory_JSON
+  let customer_orders: OrderHistory_JSON = null
   if (customer_id !== undefined && customer_id !== null) {
     customer_orders = (await GET_CUSTOMERORDER(customer_id)).data
   }

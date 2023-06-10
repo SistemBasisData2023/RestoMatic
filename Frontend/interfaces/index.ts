@@ -96,3 +96,12 @@ export type Items_Props = {
   image: string
   description: string
 }
+
+export type Reviews_Props = {
+  id: number
+  customer_id: number
+  restaurant_id: number
+  comment: string
+  rating: number
+  created_at: Date
+}
