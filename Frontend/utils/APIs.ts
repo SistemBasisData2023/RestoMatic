@@ -31,10 +31,6 @@ export async function GET_CUSTOMERORDER(
       },
     }
   )
-  if (!res.ok) {
-    throw new Error('Error at getting order data')
-  }
-
   return await res.json()
 }
 

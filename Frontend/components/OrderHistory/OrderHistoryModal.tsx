@@ -16,14 +16,14 @@ const OrderHistoryModal: NextPage<Props> = ({
   return (
     <PopUpModal className="p-4 w-[50%]" closePopUp={togglePopUp}>
       <h1 className="mb-2 text-center">Order History</h1>
-      {customer_orders.orders.length != 0 ? (
+      {customer_orders != null && customer_orders.orders.length != 0 ? (
         <div className="flex flex-col gap-0 ">
           {customer_orders.orders.map((order) => {
             return <OrderHistoryChild key={order.order_id} order={order} />
           })}
         </div>
       ) : (
-        <h2>Order history is empty</h2>
+        <h2 className="mt-10 text-center">Order history is empty</h2>
       )}
     </PopUpModal>
   )

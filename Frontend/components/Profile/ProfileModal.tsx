@@ -28,16 +28,17 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
     setLoading(true)
 
     const bodyResponse: BuildResponse = await PATCH_TOPUP(user.id, balance)
-    setResponseMessage(bodyResponse.message)
 
     if (bodyResponse.data.topup) {
       const bodyResponse: BuildResponse = await GET_CUSTOMER(user.id)
       const { id, email, username, balance } = bodyResponse.data
       login({ id, email, username, balance })
       setLoading(false)
+      setResponseMessage('Top Up Successful')
       setSuccessOrError('success')
     } else {
       setSuccessOrError('error')
+      setResponseMessage('Top Up Failed')
       setLoading(false)
     }
     setShowSuccessErrorModal(true)
