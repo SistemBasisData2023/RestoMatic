@@ -17,7 +17,7 @@ const SuccessErrorModal = ({
   showModal,
   message,
   type,
-  query,
+  query = null,
   routerPush = null,
   disableXbutton = false,
   disableClickOutside = false,

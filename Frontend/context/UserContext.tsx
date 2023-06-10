@@ -4,14 +4,11 @@ import {
   Order_Item,
   Restaurant_Props,
 } from '@interfaces/index'
-import { SampleOrderItem } from '@utils/dummy-data'
 import { createContext, useContext, ReactNode, useState } from 'react'
 
 type userContextType = {
   user: Customer_Props
   currentRestaurant: Restaurant_Props
-  userFullOrder: Full_Order_Props[]
-  userOrderItem: Order_Item[]
   currentOrderItem: Order_Item[]
   login: (userData: Customer_Props) => void
   logout: () => void
@@ -24,9 +21,7 @@ type userContextType = {
 const userContextDefaultValues: userContextType = {
   user: null,
   currentRestaurant: null,
-  userFullOrder: null,
-  userOrderItem: null,
-  currentOrderItem: null,
+  currentOrderItem: [],
   login: () => {},
   logout: () => {},
   ChangeCurrentRestaurant: () => {},
@@ -50,9 +45,7 @@ export function UserProvider({ children }: Props) {
   const [currentRestaurant, setCurrentRestaurant] =
     useState<Restaurant_Props>(null)
   const [currentOrderItem, setCurrentOrderItem] = useState<Order_Item[]>([])
-  const [userFullOrder, setUserFullOrder] = useState<Full_Order_Props[]>(null)
-  const [userOrderItem, setUserOrderItem] =
-    useState<Order_Item[]>(SampleOrderItem)
+
   const login = (userData: Customer_Props) => {
     setUser(userData)
   }
@@ -125,10 +118,8 @@ export function UserProvider({ children }: Props) {
 
   const value = {
     user,
-    userOrderItem,
     currentOrderItem,
     currentRestaurant,
-    userFullOrder,
     login,
     logout,
     ChangeCurrentRestaurant,

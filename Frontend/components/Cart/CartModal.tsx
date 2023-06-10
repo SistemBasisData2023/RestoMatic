@@ -85,7 +85,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
       className=" w-[50%] flex flex-col gap-5 p-5 px-7 rounded-md bg-white"
     >
       <h2 className="m-0 place-self-start font-bold text-[25px]">Order</h2>
-      {filterOrder.length !== 0 ? (
+      {filterOrder.length != 0 ? (
         filterOrder.map((order) => {
           const menuData = MenuRestaurantData.find((menu) => {
             return menu.id == order.menu_id
@@ -103,7 +103,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           )
         })
       ) : (
-        <h1 className=" mx-auto font-bold">Order is empty</h1>
+        <h1 className="mx-auto font-bold ">Order is empty</h1>
       )}
       {filterOrder.length !== 0 && (
         <>
@@ -147,7 +147,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
             MAKE PAYMENT
           </button>
           {!canPay && (
-            <p className="text-error-100 mx-auto m-0">
+            <p className="m-0 mx-auto text-error-100">
               User balance is less than total price
             </p>
           )}

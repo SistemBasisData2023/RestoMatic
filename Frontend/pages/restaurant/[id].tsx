@@ -5,7 +5,6 @@ import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import SearchBar from '@components/SearchBar/SearchBar'
 import Image from 'next/image'
 import StarRating from '@components/Star Rating/StarRating'
-import { SampleMenu } from '@utils/dummy-data'
 import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
@@ -19,22 +18,26 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
 import { ReviewModal } from '@components/Review/ReviewModal'
 import { GET_MENURESTAURANT, GET_RESTAURANTREVIEW } from '@utils/APIs'
+import RestaurantReview from '@components/Review/RestaurantReview'
 type Props = {
   menus: Menu_Props[]
   reviews: Reviews_Props[]
 }
 const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
   const router = useRouter()
-  const { currentRestaurant } = useUser()
+  const { currentRestaurant, user } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (currentRestaurant == null) router.push('/login')
+  }, [])
+
   const rating = currentRestaurant.average_rating
     ? currentRestaurant.average_rating
     : 0
-  useEffect(() => {
-    if (currentRestaurant === null) router.push('/login')
-  }, [])
+
   const MenuModals = (
     <div>
       <SearchBar
@@ -50,17 +53,8 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           })}
         </div>
       ) : (
-        <h2 className="text-center ">Menu Kosong</h2>
+        <h2 className="text-center ">Menus are empty</h2>
       )}
-    </div>
-  )
-
-  const ReviewModals = (
-    <div>
-      <button className="btn-primary rounded-md mb-5">Add Review</button>
-      {reviews.map((review) => {
-        return <ReviewModal userReview={review} />
-      })}
     </div>
   )
 
@@ -68,21 +62,28 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
     <div className="relative flex flex-col h-full min-h-screen px-8 pt-5 pb-8 border rounded-lg bg-light-80">
       <div className="sticky top-0 z-50 flex items-center justify-between pt-2">
         <div
-          onClick={() => router.push('/')}
+          onClick={() =>
+            router.push({
+              pathname: '/',
+              query: {
+                id: user.id,
+              },
+            })
+          }
           className="flex items-center gap-5 cursor-pointer "
         >
           <FontAwesomeIcon
-            className="text-primary-120 duration-300 cursor-pointer  hover:scale-125"
+            className="duration-300 cursor-pointer text-primary-120 hover:scale-125"
             icon={faArrowLeft}
             size="lg"
           />
         </div>
         <Button
           onClick={() => setShowCart(true)}
-          className="flex items-center justify-center p-0 px-2  gap-2 border-none rounded-md cursor-pointer"
+          className="flex items-center justify-center gap-2 p-0 px-2 border-none rounded-md cursor-pointer"
         >
           <FontAwesomeIcon
-            className="text-primary-60 duration-300 bg-transparent   "
+            className="duration-300 bg-transparent text-primary-60 "
             icon={faShoppingCart}
             size="xl"
           />
@@ -90,7 +91,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
         </Button>
       </div>
 
-      <div className="flex  gap-10 mt-2 ">
+      <div className="flex gap-10 mt-2 ">
         <div className="overflow-hidden rounded-xl">
           <Image
             width={150}
@@ -110,7 +111,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
         </div>
       </div>
 
-      <div className="flex gap-5 mb-5 mt-3">
+      <div className="flex gap-5 mt-3 mb-5">
         <button
           className={`btn-primary rounded-md px-3 ${
             !currentViewMenu && 'bg-[#CBCBCB] text-black'
@@ -128,7 +129,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           Review
         </button>
       </div>
-      {currentViewMenu ? MenuModals : ReviewModals}
+      {currentViewMenu ? MenuModals : <RestaurantReview reviews={reviews} />}
       {showCart && (
         <CartModal
           MenuRestaurantData={menus}
@@ -141,8 +142,14 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurant_id = context.params.id
   const menus: Menu_Props[] = (await GET_MENURESTAURANT(restaurant_id)).data
-  const reviews: Reviews_Props[] = (await GET_RESTAURANTREVIEW(restaurant_id))
-    .data
+  let reviews: Reviews_Props[] = []
+  const reviewRespondsData = await (
+    await GET_RESTAURANTREVIEW(restaurant_id)
+  ).data
+
+  if (reviewRespondsData != undefined || reviewRespondsData != null)
+    reviews = reviewRespondsData
+
   return {
     props: {
       menus,

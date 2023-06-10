@@ -2,6 +2,7 @@ import {
   BuildResponse,
   LoginFormValue_Props,
   Order_JSON,
+  Post_Review,
 } from '@interfaces/index'
 
 export async function GET_CUSTOMER(user_id: number): Promise<BuildResponse> {
@@ -66,6 +67,12 @@ export async function GET_RESTAURANTS(): Promise<BuildResponse> {
   return await res.json()
 }
 
+export async function GET_RESTAURANTSBYID(id: number): Promise<BuildResponse> {
+  const res = await fetch(`http://localhost:4000/api/restaurants/${id}`)
+  if (!res.ok) throw new Error('Could not fetch restaurant data')
+  return await res.json()
+}
+
 export async function GET_MENURESTAURANT(
   restaurant_id: string | string[]
 ): Promise<BuildResponse> {
@@ -80,9 +87,20 @@ export async function GET_RESTAURANTREVIEW(
   restaurant_id: string | string[]
 ): Promise<BuildResponse> {
   const res = await fetch(
-    `http://localhost:4000/api/reviews/?query=${restaurant_id}`
+    `http://localhost:4000/api/reviews/?restaurantId=${restaurant_id}`
   )
-  if (!res.ok) throw new Error('Could not fetch review data')
+  return await res.json()
+}
+
+export async function POST_REVIEW(data: Post_Review): Promise<BuildResponse> {
+  const res = await fetch(`http://localhost:4000/api/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error('Could not post review data')
   return await res.json()
 }
 

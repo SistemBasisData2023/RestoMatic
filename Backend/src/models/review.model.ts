@@ -129,15 +129,12 @@ class Review extends BaseModel {
                   FROM reviews as R
                     INNER JOIN customers as C ON R.customer_id = C.id
                     INNER JOIN restaurants as RES ON R.restaurant_id = RES.id
-                  WHERE restaurant_id = ${restaurant_id};              
-                  `;
+                  WHERE restaurant_id = ${restaurant_id}
+                  ORDER BY R.created_at DESC;`;
     try {
       const res = await this.db.query(query);
-      console.log(`[db] Query to ${this.tableName} successful`, res.rows[0]);
-      return buildResponse(
-        res.rows[0],
-        `Query to ${this.tableName} successful`
-      );
+      console.log(`[db] Query to ${this.tableName} successful`, res.rows);
+      return buildResponse(res.rows, `Query to ${this.tableName} successful`);
     } catch (err) {
       console.error(`[db] Error querying ${this.tableName}:`, err.message);
       return buildResponse(null, err.message);

@@ -79,9 +79,11 @@ export type OrderHistory_JSON = {
 }
 
 export type Orders_Props = {
+  order_id: number
   restaurant_id: number
   restaurant_name: string
-  created_at: string
+  restaurant_image: string
+  created_at: Date
   address: string
   total_price: number
   items: Items_Props[]
@@ -100,8 +102,18 @@ export type Items_Props = {
 export type Reviews_Props = {
   id: number
   customer_id: number
+  customer_username: string
   restaurant_id: number
+  restaurant_name: string
+  restuarant_image: string
   comment: string
   rating: number
   created_at: Date
+}
+
+export type Post_Review = {
+  customer_id: number
+  restaurant_id: number
+  rating: number
+  comment: string
 }

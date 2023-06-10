@@ -131,9 +131,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurants: Restaurant_Props[] = (await GET_RESTAURANTS()).data
   const customer_id = context.query.id
   let customer_orders: OrderHistory_JSON = null
-  if (customer_id !== undefined && customer_id !== null) {
+  if (customer_id != undefined && customer_id != null)
     customer_orders = (await GET_CUSTOMERORDER(customer_id)).data
-  }
+
   return {
     props: {
       restaurants,

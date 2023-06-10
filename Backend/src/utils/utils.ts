@@ -58,14 +58,16 @@ export const buildCustomerOrderData = (customerId: Number, data: any): any => {
         order_id: order.order_id,
         restaurant_id: order.restaurant_id,
         restaurant_name: order.restaurant_name,
+        restaurant_image: order.restaurant_image,
         created_at: new Date(order.created_at),
         address: order.address,
-        total_price: parseFloat(order.total_price),
+        total_price: 0,
         items: [],
       });
     }
 
     const currentOrder = orderMap.get(order.order_id);
+
     currentOrder.items.push({
       menu_id: order.menu_id,
       name: order.name,
@@ -75,6 +77,9 @@ export const buildCustomerOrderData = (customerId: Number, data: any): any => {
       image: order.image,
       description: order.description,
     });
+
+    currentOrder.total_price =
+      currentOrder.total_price + parseFloat(order.total_price);
   }
 
   restructuredData.orders = Array.from(orderMap.values());

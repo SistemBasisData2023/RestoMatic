@@ -76,6 +76,7 @@ class Order extends BaseModel {
           o.customer_id,
           o.restaurant_id,
           r.name AS restaurant_name,
+          r.image AS restaurant_image,
           o.created_at,
           o.address,
           mi.id AS menu_id,
@@ -128,6 +129,7 @@ class Order extends BaseModel {
           r.id AS restaurant_id,
           o.id AS order_id,
           r.name AS restaurant_name,
+          r.image AS restaurant_image,
           o.created_at,
           o.address,
           SUM(mi.price * om.quantity) AS total_price,
@@ -150,6 +152,7 @@ class Order extends BaseModel {
           r.id,
           o.id,
           r.name,
+          r.image,
           o.created_at,
           o.address,
           mi.id,
@@ -165,7 +168,7 @@ class Order extends BaseModel {
     try {
       const values = [customer_id];
       const res = await this.db.query(query, values);
-
+      console.log(res.rows);
       // If query is not successful, return false
       if (res.rows.length < 1) {
         console.error(

@@ -5,7 +5,14 @@ type Props = {
 }
 
 const OrderItemChild = ({ item }: Props) => {
-  return <div>{item.name}</div>
+  return (
+    <div className="flex justify-between">
+      <p className="m-0 font-semibold ">
+        {item.quantity}x {item.name}
+      </p>
+      <p className="m-0 font-semibold">Rp {item.price * item.quantity}</p>
+    </div>
+  )
 }
 
 export default OrderItemChild
