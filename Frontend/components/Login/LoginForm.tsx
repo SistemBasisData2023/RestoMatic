@@ -6,6 +6,8 @@ import { Button } from '..'
 import { useUser } from '@context/UserContext'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 import { POST_LOGINCUSTOMER } from '@utils/APIs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 const LoginForm = () => {
   const {
@@ -79,7 +81,11 @@ const LoginForm = () => {
         disabled={errors.password || errors.email ? true : false}
         type="submit"
       >
-        {isLoading ? 'LOADING...' : 'LOGIN'}
+        {isLoading ? (
+          <FontAwesomeIcon icon={faCircleNotch} spin={true} />
+        ) : (
+          'LOGIN'
+        )}
       </Button>
       <div className="flex">
         <p className="m-0 font-bold">

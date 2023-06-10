@@ -13,6 +13,8 @@ import { Button } from '..'
 import { useRouter } from 'next/router'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 import { GET_CUSTOMER, POST_ORDER } from '@utils/APIs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   togglePopUp: () => void
@@ -25,7 +27,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
   const { currentOrderItem, currentRestaurant, user, login } = useUser()
 
   const [canPay, setCanPay] = useState<boolean>(false)
-  const refAddress = useRef(null)
+  const [address, setAddress] = useState<string>('')
 
   const [isLoading, setLoading] = useState(false)
   const [responseMessage, setResponseMessage] = useState<string>(null)
@@ -46,9 +48,9 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
   }, 0)
 
   useEffect(() => {
-    if (sumTotal < user.balance) setCanPay(true)
+    if (sumTotal < user.balance && address.length > 0) setCanPay(true)
     else setCanPay(false)
-  }, [sumTotal, user.balance])
+  }, [sumTotal, user.balance, address])
 
   const handlePayment = async () => {
     const data: Order_JSON = {
@@ -60,20 +62,23 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           quantity,
         }
       }),
-      address: refAddress.current.value,
+      address: address,
     }
 
     setLoading(true)
     const bodyResponse: BuildResponse = await POST_ORDER(data)
     setLoading(false)
-    setResponseMessage(bodyResponse.message)
 
     if (bodyResponse.message.includes('successfully')) {
       const bodyResponse: BuildResponse = await GET_CUSTOMER(user.id)
       const { id, email, username, balance } = bodyResponse.data
       login({ id, email, username, balance })
+      setResponseMessage('Payment Successful')
       setSuccessOrError('success')
-    } else setSuccessOrError('error')
+    } else {
+      setResponseMessage(bodyResponse.message)
+      setSuccessOrError('error')
+    }
 
     setShowSuccessErrorModal(true)
   }
@@ -114,7 +119,9 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
           <div className="flex justify-between">
             <div>
               <p className="text-secondary text-[13px] ">USER BALANCE</p>
-              <p className={`m-0 ${!canPay && 'text-error-100'}`}>
+              <p
+                className={`m-0 ${sumTotal > user.balance && 'text-error-100'}`}
+              >
                 Rp {user.balance}
               </p>
             </div>
@@ -131,7 +138,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
             <label className="text-secondary text-[13px]">Address</label>
             <input
               type="text"
-              ref={refAddress}
+              onChange={(e) => setAddress(e.target.value)}
               className="w-full border-none border p-2 bg-[#E9E9E9] rounded-md"
               placeholder="Enter your address"
               required={true}
@@ -141,14 +148,18 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
             onClick={handlePayment}
             disabled={!canPay}
             className={`btn-primary w-full rounded-md ${
-              !canPay && 'opacity-50 cursor-not-allowed'
+              !canPay && 'opacity-20 cursor-not-allowed'
             }`}
           >
-            MAKE PAYMENT
+            {isLoading ? (
+              <FontAwesomeIcon icon={faCircleNotch} spin={true} />
+            ) : (
+              'MAKE PAYMENT'
+            )}
           </button>
           {!canPay && (
             <p className="m-0 mx-auto text-error-100">
-              User balance is less than total price
+              User balance is less than total price or Address is empty
             </p>
           )}
 

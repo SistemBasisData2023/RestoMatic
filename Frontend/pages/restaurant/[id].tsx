@@ -31,7 +31,8 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
   const [showCart, setShowCart] = useState<boolean>(false)
 
   useEffect(() => {
-    if (currentRestaurant == null) router.push('/login')
+    if (currentRestaurant === null)
+      router.push('/login', undefined, { shallow: true })
   }, [])
 
   const rating = currentRestaurant.average_rating

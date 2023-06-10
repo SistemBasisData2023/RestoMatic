@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 import { BuildResponse } from '@interfaces/index'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 import { GET_CUSTOMER, PATCH_TOPUP } from '@utils/APIs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   togglePopUp: () => void
@@ -83,7 +85,11 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
             onClick={TopUpHandler}
             className=" w-full md:w-[20%] font-bold  rounded-[10px]"
           >
-            {isLoading ? 'Loading...' : 'ENTER'}
+            {isLoading ? (
+              <FontAwesomeIcon icon={faCircleNotch} spin={true} />
+            ) : (
+              'ENTER'
+            )}
           </Button>
         </div>
       </div>
