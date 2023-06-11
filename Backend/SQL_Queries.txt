@@ -1,0 +1,64 @@
+[Create tables]
+CREATE TYPE item_type AS ENUM (
+  'Food',
+  'Beverage'
+);
+
+CREATE TABLE customers (
+  id serial PRIMARY KEY,
+  username varchar(255) UNIQUE NOT NULL,
+  password varchar(255) NOT NULL,
+  email varchar(255) UNIQUE NOT NULL,
+  balance decimal(10, 2) DEFAULT 0
+);
+
+CREATE TABLE menu_items (
+  id serial PRIMARY KEY,
+  restaurant_id bigint NOT NULL,
+  image text,
+  type item_type NOT NULL,
+  price decimal(10,2) NOT NULL DEFAULT 0,
+  name varchar(255) NOT NULL,
+  description text
+);
+
+CREATE TABLE restaurants (
+  id serial PRIMARY KEY,
+  image text,
+  name varchar(255) NOT NULL,
+  description text
+);
+
+CREATE TABLE reviews (
+  id serial PRIMARY KEY,
+  customer_id bigint NOT NULL,
+  restaurant_id bigint NOT NULL,
+  comment text,
+  rating decimal(2,1) NOT NULL DEFAULT 0,
+  created_at timestamp DEFAULT (now())
+);
+
+CREATE TABLE orders (
+  id serial PRIMARY KEY,
+  customer_id bigint NOT NULL,
+  address text NOT NULL,
+  restaurant_id bigint NOT NULL,
+  created_at timestamp NOT NULL DEFAULT (now())
+);
+
+CREATE TABLE order_menu_items (
+  id serial,
+  order_id bigint,
+  item_id bigint,
+  quantity integer DEFAULT 1,
+  PRIMARY KEY (order_id, item_id)
+);
+
+ALTER TABLE menu_items ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE;
+ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE SET NULL;
+ALTER TABLE orders ADD FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE SET NULL;
+ALTER TABLE orders ADD FOREIGN KEY (item_id) REFERENCES menu_items (id) ON DELETE SET NULL;
+ALTER TABLE reviews ADD FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE SET NULL;
+ALTER TABLE reviews ADD FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+ALTER TABLE order_menu_items ADD FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE;
+ALTER TABLE order_menu_items ADD FOREIGN KEY (item_id) REFERENCES menu_items (id) ON DELETE SET NULL;
