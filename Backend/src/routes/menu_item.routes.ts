@@ -15,11 +15,12 @@ MenuItemRouter.get(
 MenuItemRouter.get("/menu-items/:id", MenuItems.getById);
 
 /* POST ROUTES */
-
+MenuItemRouter.post("/menu-items", MenuItems.create);
 /* PATCH ROUTES */
 
 /* PUT ROUTES */
 
 /* DELETE ROUTES */
+MenuItemRouter.delete("/menu-items/:id", MenuItems.deleteById);
 
 export default MenuItemRouter;

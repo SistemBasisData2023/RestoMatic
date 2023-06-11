@@ -28,6 +28,15 @@ class MenuItemController extends BaseController {
     }
     res.status(200).json(resp);
   };
+
+  create = async (req: Request, res: Response) => {
+    const result = await this.model.create(req.body);
+    if (!result.data) {
+      res.status(400).json(result);
+      return;
+    }
+    res.status(201).json(result);
+  };
 }
 
 export default MenuItemController;

@@ -18,12 +18,7 @@ OrderRouter.get(
 OrderRouter.get("/orders/:id", Orders.getById);
 
 /* POST ROUTES */
-OrderRouter.post(
-  "/orders",
-  express.raw({ type: "*/*" }),
-  validateBalance,
-  Orders.create
-);
+OrderRouter.post("/orders", express.raw({ type: "*/*" }), Orders.create);
 
 /* PATCH ROUTES */
 // ReviewRouter.get("/reviews", Reviews.update);

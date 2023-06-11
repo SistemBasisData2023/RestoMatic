@@ -30,6 +30,8 @@ class Order extends BaseModel {
   }; */
   public async create(order: any) {
     const { customer_id, restaurant_id, items, address } = order;
+    console.log(customer_id, restaurant_id, items, address);
+    console.log(order);
     if (!customer_id || !restaurant_id || !address || items.length < 1) {
       return buildResponse(
         null,

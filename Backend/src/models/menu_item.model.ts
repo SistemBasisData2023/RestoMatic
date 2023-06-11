@@ -8,6 +8,54 @@ class MenuItem extends BaseModel {
     super(TABLE_NAME);
   }
 
+  public async create(data: any) {
+    const { restaurant_id, image, type, price, name, description } = data;
+    if (
+      !restaurant_id ||
+      !image ||
+      !type ||
+      !price ||
+      !name ||
+      !description ||
+      price < 0
+    ) {
+      console.error(`[db] Invalid data to insert to ${this.tableName}!`);
+      return buildResponse(
+        null,
+        `Invalid data to insert to ${this.tableName}!`
+      );
+    }
+    const insertQuery = `
+          INSERT INTO ${this.tableName} 
+          (restaurant_id, image, type, price, name, description)
+          VALUES 
+          ($1, $2, $3::item_type, $4, $5, $6)
+          RETURNING *;
+        `;
+
+    const values = [restaurant_id, image, type, price, name, description];
+    try {
+      const res = await this.db.query(insertQuery, values);
+      if (res.rowCount < 1) {
+        console.error(`[db] Error inserting to ${this.tableName}!`);
+        return buildResponse(null, `Error inserting to ${this.tableName}!`);
+      }
+
+      console.log(
+        `[db] Insertion to ${this.tableName} successful:`,
+        res.rows[0]
+      );
+
+      return buildResponse(
+        res.rows[0],
+        `Insertion to ${this.tableName} successful:`
+      );
+    } catch (err) {
+      console.error(`[db] Error inserting to ${this.tableName}:`, err.message);
+      return buildResponse([], err.message);
+    }
+  }
+
   public async getMenuItemsByRestaurantId(restaurant_id: any) {
     const query = `SELECT * FROM ${this.tableName} 
                     WHERE restaurant_id = ${restaurant_id};`;
