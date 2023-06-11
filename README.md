@@ -67,7 +67,7 @@ Customers can easily rate and review the items they have ordered, sharing their 
 
 The following are tables that is used in RestoMatic's database.
 
-### 1. `Pelanggan`
+### 1. `Customers`
 
 This table is used to store the data of the user on the website.
 
@@ -76,58 +76,64 @@ This table is used to store the data of the user on the website.
 2. username
 3. password
 4. email
-5. saldo
+5. balance
 ```
 
-### 2. `Menu`
+### 2. `Menu Items`
 
 This table stores information about the available items such as foods, beverages, and desserts.
 
 ```
 1. id
-2. gambar
-3. nama
-4. deskripsi
-5. rating
+2. restaurant_id
+3. image
+4. type
+5. price
+6. name
+7. description
 ```
 
-### 3. `Item`
+### 3. `Restaurants`
 
-This table is used to store information about a specific item.
+This table is used to store information about the restaurants.
 
 ```
 1. id
-2. gambar
-3. nama
-4. deskripsi
-5. rating
-6. review
+2. image
+3. name
+4. description
 ```
 
-### 4. `Order`
+### 4. `Orders`
 
 This table tracks orders that have been placed by customers.
 
 ```
 1. id
-2. pelanggan_id
-3. menu_id
-4. makanan_id[]
-5. minuman_id[]
-6. saldo_user
-7. total_harga
+2. customer_id
+3. address
+4. restaurant_id
 ```
 
-### 5. `Rating`
+### 5. `Reviews`
 
 This table is designed to store customer ratings for specific menus
 
 ```
 1. id
-2. user_id
-3. menu_id
-4. rating
+2. customer_id
+3. restaurant_id
+4. comment
+5. rating
+6. created_at
 ```
+
+### 6. Order Menu Items
+
+1. id
+2. order_id
+3. item_id
+4. quantity
 
 ## Frontend Installation
 
