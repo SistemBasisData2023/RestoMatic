@@ -1,17 +1,20 @@
-<!-- PROJECT LOGO -->
-<br />
 <div align="center">
   <h1 align="center">Welcome to RestoMatic</h1>
 </div>
-RestoMatic is a user-friendly web platform designed to streamline the process of ordering food and drinks from a restaurant.
+
+RestoMatic is a user-friendly web platform designed to simplify and streamline the process of ordering food and drinks from various restaurants. The platform offers users a convenient way to navigate through a wide range of restaurants, each with its own unique menu. Additionally, users can add funds to their balance to make payments and share their experiences by leaving ratings and reviews for specific restaurants.
+
+![RestoMatic Logo](https://raw.githubusercontent.com/SistemBasisData2023/RestoMatic/main/Assets/logo.png)
 
 ## Contributors
 
-This is a final Database Management System project made by Group Q17:
+Group Q17:
 
 - [Althaf Nafi Anwar](https://www.github.com/althafnafi) - 2106634881
 - [Seno Pamungkas Rahman](https://www.github.com/cattyman919) - 2106731586
 - [Zalfy Putra Rezky](https://www.github.com/zalfyputra) - 2106731453
+
+RestoMatic is the final project for the 4th semester of the Database Systems + Lab in Undergraduate of Computer Engineering study program, Department of Electrical Engineering, Faculty of Engineering, Universitas Indonesia.
 
 ## Features
 
@@ -19,17 +22,17 @@ This is a final Database Management System project made by Group Q17:
 
 Provides customers with the convenience of registering or logging in, allowing them to easily navigate menus, view ratings, and make informed choices. Additionally, RestoMatic offers a balance display and top-up feature, enabling customers to view their current balance and add funds as needed to make payment.
 
-#### `Menus`
+#### `Restaurant`
 
-Offers an intuitive and user-friendly menu exploration feature, allowing customers to effortlessly browse through a wide range of food and beverage options. The menu section provides detailed information for each item, including enticing descriptions, appealing images, and customer ratings.
+This is the home page. It offers an intuitive and user-friendly restaurant exploration feature, allowing customers to effortlessly browse through a wide range of restaurant options. Furthermore, it provides detailed information for each restaurant, including enticing descriptions, official logo, restaurant menus, customer ratings, and reviews.
 
 #### `Filter`
 
 Allow customers to find menus based on ratings, ensuring they can discover the most highly regarded dishes and drinks. The platform will display a curated selection of menus that meet the specified rating criteria, making it easier for customers to explore and choose from the best-rated options available.
 
-#### `Item`
+#### `Menu`
 
-Each food or beverage or dessert have its own individual page and is presented with its enticing name, captivating image, mouthwatering description, customer ratings, and helpful reviews. This comprehensive display allows customers to get a complete overview of the item, making it easier to make informed choices based on their preferences and the experiences of other customers.
+Each food or beverage have its own individual page and is presented with its enticing name, captivating image, and mouthwatering description. This comprehensive display allows customers to get a complete overview of the item, making it easier to make informed choices based on their preferences and the experiences of other customers.
 
 #### `Order`
 
@@ -51,17 +54,16 @@ Customers can easily rate and review the items they have ordered, sharing their 
 
 #### Frontend
 
-- Next.js
-- Tailwind.css
-- Typescript
+- [Next.js](https://nextjs.org/)
+- [Tailwind.css](https://tailwindcss.com/)
+- [Typescript](https://www.typescriptlang.org/)
 
 #### Backend
 
-- PostgreSQL
-- Node.js
-- Express.js
-- Typescript
-- Libraries: alert, bcrypt, body-parser, jquery, nodemon, pg
+- [PostgreSQL](https://www.postgresql.org/)
+- [Node.js](https://nodejs.org/en)
+- [Express.js](https://expressjs.com/)
+- [Typescript](https://www.typescriptlang.org/)
 
 ## Tables
 
@@ -117,7 +119,7 @@ This table tracks orders that have been placed by customers.
 
 ### 5. `Reviews`
 
-This table is designed to store customer ratings for specific menus
+This table is designed to store customer ratings for specific menus.
 
 ```
 1. id
@@ -128,14 +130,20 @@ This table is designed to store customer ratings for specific menus
 6. created_at
 ```
 
-### 6. Order Menu Items
+### 6. `Order Menu Items`
 
+This table is used to store each menu selected and its quantities.
+
+```
 1. id
 2. order_id
 3. item_id
 4. quantity
+```
 
-## Frontend Installation
+## Installation
+
+#### Frontend
 
 - Run yarn install to install all dependencies
   ```
@@ -146,7 +154,7 @@ This table is designed to store customer ratings for specific menus
   yarn dev
   ```
 
-## Backend Installation
+#### Backend
 
 - Run npm install to install all dependencies
   ```
@@ -157,10 +165,10 @@ This table is designed to store customer ratings for specific menus
   nodemon exec
   ```
 
-## Flowchart
+## Diagrams
 
-The flowchart provides a visual representation of the different stages involved in using RestoMatic, such as registration or login, menu exploration, item selection, order placement, balance management, and review submission. By following the flowchart, customers can seamlessly navigate through each stage and accomplish their desired tasks efficiently.
-
+#### Flowchart
+  
 <details>
   <summary>Click Here</summary>
   
@@ -168,16 +176,16 @@ The flowchart provides a visual representation of the different stages involved 
 
 </details>
 
-## UML Diagram
+#### UML Diagram
 
 <details>
   <summary>Click Here</summary>
-
+  
 ![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/DB_UML_Diagram.png)
 
 </details>
 
-## Entity Relationship Diagram
+#### Entity Relationship Diagram
 
 <details>
   <summary>Click Here</summary>
