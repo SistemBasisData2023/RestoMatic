@@ -57,7 +57,7 @@ const ProfileModal = ({
     <PopUpModal
       closePopUp={togglePopUp}
       disableClickOutside={true}
-      className={`flex flex-col p-5 w-[65%] sm:w-[50%]  lg:w-[35%] bg-primary-60 rounded-md gap-8 font-bold transition-all ${className}`}
+      className={`flex flex-col p-5 w-[85%] sm:w-[50%]  lg:w-[35%] bg-primary-60 rounded-md gap-8 font-bold transition-all ${className}`}
     >
       <h2 className="m-0">User Profile</h2>
       <div className="flex flex-col gap-0">
