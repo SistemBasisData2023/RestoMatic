@@ -12,9 +12,14 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   togglePopUp: () => void
+  className?: string
   noLogOutButton?: boolean
 }
-const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
+const ProfileModal = ({
+  togglePopUp,
+  className,
+  noLogOutButton = false,
+}: Props) => {
   const router = useRouter()
   const { user, logout, login } = useUser()
   const [isLoading, setLoading] = useState(false)
@@ -52,7 +57,7 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
     <PopUpModal
       closePopUp={togglePopUp}
       disableClickOutside={true}
-      className="flex flex-col p-5  w-[35%] bg-primary-60 rounded-md gap-8 font-bold"
+      className={`flex flex-col p-5 w-[65%] sm:w-[50%]  lg:w-[35%] bg-primary-60 rounded-md gap-8 font-bold transition-all ${className}`}
     >
       <h2 className="m-0">User Profile</h2>
       <div className="flex flex-col gap-0">
@@ -81,7 +86,7 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
           />
 
           {(balance == 0 || Number.isNaN(balance)) && (
-            <p className="m-0 absolute bottom-0 left-[1px] translate-y-[120%] text-[10px] text-error-120">
+            <p className="m-0 absolute bottom-0 left-[1px]  translate-y-[120%] text-[10px] text-error-120">
               Insert a valid balance
             </p>
           )}

@@ -1,7 +1,3 @@
-export function DotEvery3Decimals(value: number): string {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-}
-
 export function Round2Decimal(value: number): number {
   return Math.round(value * 100) / 100
 }

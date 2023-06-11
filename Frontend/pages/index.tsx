@@ -68,13 +68,13 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
   }
 
   return (
-    <div className="flex flex-col h-full min-h-screen p-10 bg-primary-60 py-7 gap-7 ">
-      <div className="flex justify-between">
-        <div>
+    <div className="flex flex-col h-full min-h-screen p-10 bg-primary-60 py-7 gap-7 transition-all">
+      <div className="flex flex-col sm:flex-row sm:justify-between ">
+        <div className="flex flex-col  items-center justify-center sm:items-start">
           <h2 className="m-0 text-5xl w-fit text-primary-100 ">RESTO</h2>
           <h2 className="m-0 text-5xl w-fit text-primary-120">MATIC</h2>
         </div>
-        <div className="sticky top-0 z-50 flex items-center justify-end gap-5 pt-2">
+        <div className="sticky top-0 z-50 flex items-center justify-center mt-5 sm:mt-0 sm:justify-end gap-5 pt-2">
           <div
             onClick={() => setIsShowProfile(true)}
             className="flex gap-3 p-2 px-4 duration-300 rounded-md cursor-pointer bg-primary-100 hover:bg-primary-120 text-primary-60 hover:scale-105"
@@ -91,8 +91,8 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
         </div>
       </div>
 
-      <div className="flex flex-col px-10 mt-5 gap-7">
-        <div className="flex flex-col gap-5 md:flex-row md:justify-between md:items-center ">
+      <div className="flex flex-col px-10 mt-5 gap-7 transition-all">
+        <div className="flex flex-col items-center sm:items-start gap-5 md:flex-row md:justify-between md:items-center transition-all">
           <SearchBar
             constantData={restaurants}
             setState={setRestaurantData}
@@ -123,11 +123,16 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
           </div>
         </div>
         <h2 className="m-0 text-gray-800">List of Restaurants</h2>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5 ">
-          {(restaurantData !== null || restaurantData.length !== 0) &&
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-5 ">
+          {restaurantData.length != 0 ? (
             restaurantData.map(({ ...props }) => {
               return <RestaurantModal key={props.id} {...props} />
-            })}
+            })
+          ) : (
+            <h1 className="w-full col-span-full text-center">
+              No Restaurants Found
+            </h1>
+          )}
         </div>
       </div>
 

@@ -4,8 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
 import React from 'react'
-import { Button } from '..'
-import { DotEvery3Decimals, Round2Decimal } from '@utils/functions'
+import { Round2Decimal } from '@utils/functions'
 interface Props extends Menu_Props {
   quantity: number
   order_id: number
@@ -20,7 +19,7 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
   }
 
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full flex flex-col sm:flex-row justify-between items-center">
       <div className="flex gap-5">
         <div className="rounded-xl overflow-hidden ">
           <Image

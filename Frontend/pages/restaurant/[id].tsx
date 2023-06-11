@@ -89,7 +89,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
   }
   const MenuModals = (
     <div>
-      <div className="flex items-center mb-5 justify-between">
+      <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:gap-0 items-center mb-5 ">
         <SearchBar
           constantData={menus}
           setState={setMenuData}
@@ -173,7 +173,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
         </Button>
       </div>
 
-      <div className="flex gap-10 mt-2 ">
+      <div className="flex flex-col items-center mb-5 sm:flex-row sm:items-start sm:mb-0 gap-10 mt-2 ">
         <div className="overflow-hidden rounded-xl">
           <Image
             width={150}
@@ -193,7 +193,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
         </div>
       </div>
 
-      <div className="flex gap-5 mt-3 mb-5">
+      <div className="flex justify-center sm:justify-start gap-5 mt-3 mb-5">
         <button
           className={`btn-primary rounded-md px-3 text-[16px] ${
             !currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
