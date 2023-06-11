@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowLeft,
+  faFilter,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons'
 import SearchBar from '@components/SearchBar/SearchBar'
 import Image from 'next/image'
 import StarRating from '@components/Star Rating/StarRating'
@@ -9,44 +13,121 @@ import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
 import {
-  BuildResponse,
+  MenuType,
   Menu_Props,
   Restaurant_Props,
   Reviews_Props,
 } from '@interfaces/index'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
-import { ReviewModal } from '@components/Review/ReviewModal'
-import { GET_MENURESTAURANT, GET_RESTAURANTREVIEW } from '@utils/APIs'
+import {
+  GET_MENURESTAURANT,
+  GET_RESTAURANTREVIEW,
+  GET_RESTAURANTSBYID,
+} from '@utils/APIs'
 import RestaurantReview from '@components/Review/RestaurantReview'
+import PageLoader from '@components/PageLoader/PageLoader'
 type Props = {
   menus: Menu_Props[]
   reviews: Reviews_Props[]
+  restaurant: Restaurant_Props
 }
-const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
+const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
   const router = useRouter()
-  const { currentRestaurant, user } = useUser()
+  const { currentRestaurant, ChangeCurrentRestaurant, user } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
+  const [loadingPage, setLoadingPage] = useState(false)
+  const [filter, setFilter] = useState<'All' | 'Food' | 'Beverage'>('All')
+  useEffect(() => {
+    const start = (url) => {
+      if (url != `/restaurant/${currentRestaurant.id}`) setLoadingPage(true)
+    }
+    const end = (url) => {
+      setLoadingPage(false)
+    }
+
+    router.events.on('routeChangeStart', start)
+    router.events.on('routeChangeComplete', end)
+    router.events.on('routeChangeError', end)
+    return () => {
+      router.events.off('routeChangeStart', start)
+      router.events.off('routeChangeComplete', end)
+      router.events.off('routeChangeError', end)
+    }
+  }, [])
 
   useEffect(() => {
-    if (currentRestaurant === null)
-      router.push('/login', undefined, { shallow: true })
-  }, [])
+    ChangeCurrentRestaurant(restaurant)
+    if (user == null) router.push('/login', undefined, { shallow: true })
+  }, [restaurant])
 
   const rating = currentRestaurant.average_rating
     ? currentRestaurant.average_rating
     : 0
 
+  const HandleFilterAll = () => {
+    setMenuData(menus)
+    setFilter('All')
+  }
+
+  const HandleFilterFood = () => {
+    const sorted = [...menus].filter(
+      (menu) => menu.type == MenuType[MenuType.Food]
+    )
+    setMenuData(sorted)
+    setFilter('Food')
+  }
+
+  const HandleFilterBeverage = () => {
+    const sorted = [...menus].filter(
+      (menu) => menu.type == MenuType[MenuType.Beverage]
+    )
+    setMenuData(sorted)
+    setFilter('Beverage')
+  }
   const MenuModals = (
     <div>
-      <SearchBar
-        constantData={menus}
-        setState={setMenuData}
-        className="mb-5"
-        placeholder="Search your menu"
-      />
+      <div className="flex items-center mb-5 justify-between">
+        <SearchBar
+          constantData={menus}
+          setState={setMenuData}
+          className=""
+          placeholder="Search your menu"
+        />
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={HandleFilterAll}
+            className={`${
+              filter != 'All' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            All
+          </Button>
+          <Button
+            onClick={HandleFilterFood}
+            className={`${
+              filter != 'Food' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            Food
+          </Button>
+          <Button
+            onClick={HandleFilterBeverage}
+            className={`${
+              filter != 'Beverage' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            Beverage
+          </Button>
+          <FontAwesomeIcon
+            className="text-gray-700 "
+            icon={faFilter}
+            size="lg"
+          />
+        </div>
+      </div>
       {menuData.length !== 0 ? (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
           {menuData.map(({ ...props }) => {
@@ -97,7 +178,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           <Image
             width={150}
             height={150}
-            src={currentRestaurant.image}
+            src={currentRestaurant.image != null && currentRestaurant.image}
             alt="Restaurant Picture"
           />
         </div>
@@ -114,7 +195,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
 
       <div className="flex gap-5 mt-3 mb-5">
         <button
-          className={`btn-primary rounded-md px-3 ${
+          className={`btn-primary rounded-md px-3 text-[16px] ${
             !currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(true)}
@@ -122,7 +203,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           Menu
         </button>
         <button
-          className={`btn-primary rounded-md px-3 ${
+          className={`btn-primary rounded-md px-3 text-[16px] ${
             currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(false)}
@@ -137,12 +218,16 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           togglePopUp={() => setShowCart(false)}
         />
       )}
+      {loadingPage && <PageLoader />}
     </div>
   )
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurant_id = context.params.id
   const menus: Menu_Props[] = (await GET_MENURESTAURANT(restaurant_id)).data
+  const restaurant: Restaurant_Props = (
+    await GET_RESTAURANTSBYID(restaurant_id)
+  ).data
   let reviews: Reviews_Props[] = []
   const reviewRespondsData = await (
     await GET_RESTAURANTREVIEW(restaurant_id)
@@ -155,6 +240,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       menus,
       reviews,
+      restaurant,
     },
   }
 }

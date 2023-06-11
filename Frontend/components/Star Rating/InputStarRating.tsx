@@ -1,17 +1,33 @@
-import React, { Dispatch, useState, SetStateAction } from 'react'
+import React, { Dispatch, useState, SetStateAction, useEffect } from 'react'
 import { faStar } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
+  rating: number
+  resetReview: boolean
   setRating: Dispatch<SetStateAction<number>>
+  setResetReview: Dispatch<SetStateAction<boolean>>
 }
-const InputStarRating = ({ setRating }: Props) => {
+const InputStarRating = ({
+  resetReview,
+  setRating,
+  setResetReview,
+  rating,
+}: Props) => {
   const [savedState, setSavedState] = useState({
     width: 0,
     rating: 0,
   })
   const [chosenWidthRating, setChosenWidthRating] = useState<number>(0)
+  useEffect(() => {
+    setChosenWidthRating(rating * 20)
+    if (resetReview) {
+      setChosenWidthRating(0)
+      setResetReview(false)
+    }
+  }, [resetReview, rating])
+
   const handleMouseMove = (event) => {
     setChosenWidthRating(event.clientX - 31)
     const ratingValue = chosenWidthRating / 20 > 5 ? 5 : chosenWidthRating / 20
@@ -34,7 +50,7 @@ const InputStarRating = ({ setRating }: Props) => {
         setChosenWidthRating(savedState.width)
         setRating(savedState.rating)
       }}
-      onMouseDown={handleOnClick}
+      onClick={handleOnClick}
       className="flex relative overflow-hidden gap-1 pr-1"
     >
       <FontAwesomeIcon icon={faStar} />

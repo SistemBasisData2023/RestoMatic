@@ -24,5 +24,5 @@ ReviewRouter.post("/reviews", Reviews.create);
 /* PUT ROUTES */
 
 /* DELETE ROUTES */
-
+ReviewRouter.delete("/reviews/:id", Reviews.deleteById);
 export default ReviewRouter;

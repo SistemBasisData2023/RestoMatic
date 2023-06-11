@@ -33,7 +33,7 @@ const SuccessErrorModal = ({
             query: query,
           })
       }}
-      className={`${className}`}
+      className={`${className} p-5`}
       disableXbutton={disableXbutton}
       disableClickOutside={disableClickOutside}
     >
@@ -44,7 +44,7 @@ const SuccessErrorModal = ({
       >
         {type === 'success' ? 'SUCCESS' : 'ERROR'}
       </h1>
-      {message}
+      <p className="m-0">{message}</p>
     </PopUpModal>
   )
 }

@@ -14,6 +14,7 @@ import { OrderHistory_JSON, Restaurant_Props } from '@interfaces/index'
 import { useUser } from '@context/UserContext'
 import { GET_CUSTOMERORDER, GET_RESTAURANTS } from '@utils/APIs'
 import OrderHistoryModal from '@components/OrderHistory/OrderHistoryModal'
+import PageLoader from '@components/PageLoader/PageLoader'
 
 type Props = {
   restaurants: Restaurant_Props[]
@@ -23,7 +24,7 @@ type Props = {
 const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
   const { user } = useUser()
   const router = useRouter()
-
+  const [loadingPage, setLoadingPage] = useState(false)
   const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
   const [isShowOrderHistory, setIsShowOrderHistory] = useState<boolean>(false)
   const [highestRating, setHighestRating] = useState<boolean>(true)
@@ -33,6 +34,21 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
   useEffect(() => {
     if (user === null) router.push('/login', undefined, { shallow: true })
     HandleSortRatingDesc()
+
+    const start = () => {
+      setLoadingPage(true)
+    }
+    const end = () => {
+      setLoadingPage(false)
+    }
+    router.events.on('routeChangeStart', start)
+    router.events.on('routeChangeComplete', end)
+    router.events.on('routeChangeError', end)
+    return () => {
+      router.events.off('routeChangeStart', start)
+      router.events.off('routeChangeComplete', end)
+      router.events.off('routeChangeError', end)
+    }
   }, [])
 
   const HandleSortRatingAsc = () => {
@@ -124,6 +140,7 @@ const HomePage: NextPage<Props> = ({ restaurants, customer_orders }) => {
           togglePopUp={() => setIsShowOrderHistory(false)}
         />
       )}
+      {loadingPage && <PageLoader />}
     </div>
   )
 }

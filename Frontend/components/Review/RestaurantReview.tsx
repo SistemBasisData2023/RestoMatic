@@ -3,29 +3,35 @@ import { Post_Review, Reviews_Props } from '@interfaces/index'
 import React, { useEffect, useState } from 'react'
 import { ReviewModal } from './ReviewModal'
 import InputStarRating from '@components/Star Rating/InputStarRating'
-import { POST_REVIEW } from '@utils/APIs'
+import { GET_RESTAURANTREVIEW, POST_REVIEW } from '@utils/APIs'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '..'
+import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 
 type Props = {
   reviews: Reviews_Props[]
 }
 
-const RestaurantReview = ({ reviews }: Props) => {
+const RestaurantReview = ({ reviews = [] }: Props) => {
   const { user, currentRestaurant } = useUser()
   const [comment, setComment] = useState<string>('')
   const router = useRouter()
   const [filter, setFilter] = useState<
     'highest' | 'lowest' | 'latest' | 'oldest'
-  >('oldest')
+  >('latest')
+  const [resetReview, setResetReview] = useState<boolean>(false)
   const [reviewsData, setReviewsData] = useState<Reviews_Props[]>(reviews)
   const [ratingValue, setRatingValue] = useState<number>(0)
-
+  const [responseMessage, setResponseMessage] = useState<string>(null)
+  const [showSuccessErrorModal, setShowSuccessErrorModal] =
+    useState<boolean>(false)
+  const [successOrError, setSuccessOrError] = useState<
+    'success' | 'error' | null
+  >()
   useEffect(() => {
-    HandleSortOldest()
-    setReviewsData(reviews)
+    HandleSortLatest()
   }, [reviews])
 
   const handleOnClick = async () => {
@@ -35,7 +41,17 @@ const RestaurantReview = ({ reviews }: Props) => {
       comment,
       rating: ratingValue,
     }
-    await POST_REVIEW(data)
+    const res = await POST_REVIEW(data)
+
+    if (res.error == false) {
+      setResponseMessage('Successfully post a review')
+      setSuccessOrError('success')
+    } else {
+      setResponseMessage('Failed post a review')
+      setSuccessOrError('error')
+    }
+    setShowSuccessErrorModal(true)
+    setResetReview(true)
     setRatingValue(0)
     setComment('')
     router.push(`/restaurant/${currentRestaurant.id}`)
@@ -59,7 +75,7 @@ const RestaurantReview = ({ reviews }: Props) => {
 
   const HandleSortOldest = () => {
     const sorted = [...reviews].sort((a, b) => {
-      return new Date(a.created_at) - new Date(b.created_at)
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     })
 
     setReviewsData(sorted)
@@ -68,7 +84,7 @@ const RestaurantReview = ({ reviews }: Props) => {
 
   const HandleSortLatest = () => {
     const sorted = [...reviews].sort((a, b) => {
-      return new Date(b.created_at) - new Date(a.created_at)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     })
     setReviewsData(sorted)
     setFilter('latest')
@@ -79,7 +95,7 @@ const RestaurantReview = ({ reviews }: Props) => {
       {reviewsData.length != 0 && (
         <div className="flex items-center gap-8 justify-end mb-3">
           <div className="flex flex-col gap-2 items-center  ">
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-between w-full">
               <Button
                 onClick={HandleSortRatingDesc}
                 className={`${
@@ -97,12 +113,12 @@ const RestaurantReview = ({ reviews }: Props) => {
                 Lowest Rating
               </Button>
             </div>
-            <div className="flex gap-3">
+            <div className="flex justify-between gap-3 w-full">
               <Button
                 onClick={HandleSortLatest}
                 className={`${
                   filter != 'latest' && 'bg-[#CBCBCB] text-[#646464]'
-                }  px-3 rounded-md`}
+                }  px-3 rounded-md w-full`}
               >
                 Latest
               </Button>
@@ -110,7 +126,7 @@ const RestaurantReview = ({ reviews }: Props) => {
                 onClick={HandleSortOldest}
                 className={`${
                   filter != 'oldest' && 'bg-[#CBCBCB] text-[#646464]'
-                }  px-3 rounded-md`}
+                }  px-3 rounded-md w-full`}
               >
                 Oldest
               </Button>
@@ -128,9 +144,25 @@ const RestaurantReview = ({ reviews }: Props) => {
         <div className="flex justify-between w-full">
           <h3 className="m-0">{user.username} (You)</h3>
         </div>
-        <div className="flex items-center gap-3 ">
-          <InputStarRating setRating={setRatingValue} />
-          <p className="m-0 pr-1">{ratingValue}</p>
+        <div className="flex items-center gap-1  ">
+          <InputStarRating
+            rating={ratingValue}
+            setRating={setRatingValue}
+            resetReview={resetReview}
+            setResetReview={setResetReview}
+          />
+          <input
+            type="number"
+            min={0}
+            max={5}
+            className="m-0 pt-1 outline-none  bg-transparent border-none w-[60px]  text-[16px]  "
+            step="0.1"
+            value={ratingValue}
+            onChange={(e) => {
+              const value = Math.max(0, Math.min(5, parseFloat(e.target.value)))
+              setRatingValue(value)
+            }}
+          />
         </div>
         <input
           type="text"
@@ -159,6 +191,13 @@ const RestaurantReview = ({ reviews }: Props) => {
         })
       ) : (
         <h2 className="text-center ">Reviews are empty</h2>
+      )}
+      {showSuccessErrorModal && (
+        <SuccessErrorModal
+          showModal={setShowSuccessErrorModal}
+          type={successOrError}
+          message={responseMessage}
+        />
       )}
     </div>
   )
