@@ -4,7 +4,7 @@
 
 RestoMatic is a user-friendly web platform designed to simplify and streamline the process of ordering food and drinks from various restaurants. The platform offers users a convenient way to navigate through a wide range of restaurants, each with its own unique menu. Additionally, users can add funds to their balance to make payments and share their experiences by leaving ratings and reviews for specific restaurants.
 
-![RestoMatic Logo](https://raw.githubusercontent.com/SistemBasisData2023/RestoMatic/main/Assets/logo.png)
+![RestoLogo](https://raw.githubusercontent.com/SistemBasisData2023/RestoMatic/main/Assets/logo-new.png)
 
 ## Contributors
 
@@ -65,9 +65,11 @@ Customers can easily rate and review the items they have ordered, sharing their 
 - [Express.js](https://expressjs.com/)
 - [Typescript](https://www.typescriptlang.org/)
 
-## API Documentation [*Postman*]
+## Documentation
 
-To see API documenations such as endpoints for retrieving and inserting data into the database and examples, click the link [here](https://documenter.getpostman.com/view/22652839/2s93sc5sxd)
+See API documentations that include endpoints for retrieving and inserting data into the database and its examples.
+
+[![Run In Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/22652839/2s93sc5sxd)
 
 ## Tables
 
