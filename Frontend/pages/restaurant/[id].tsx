@@ -8,32 +8,31 @@ import StarRating from '@components/Star Rating/StarRating'
 import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
-import {
-  BuildResponse,
-  Menu_Props,
-  Restaurant_Props,
-  Reviews_Props,
-} from '@interfaces/index'
+import { Menu_Props, Restaurant_Props, Reviews_Props } from '@interfaces/index'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
-import { ReviewModal } from '@components/Review/ReviewModal'
-import { GET_MENURESTAURANT, GET_RESTAURANTREVIEW } from '@utils/APIs'
+import {
+  GET_MENURESTAURANT,
+  GET_RESTAURANTREVIEW,
+  GET_RESTAURANTSBYID,
+} from '@utils/APIs'
 import RestaurantReview from '@components/Review/RestaurantReview'
 type Props = {
   menus: Menu_Props[]
   reviews: Reviews_Props[]
+  restaurant: Restaurant_Props
 }
-const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
+const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
   const router = useRouter()
-  const { currentRestaurant, user } = useUser()
+  const { currentRestaurant, ChangeCurrentRestaurant, user } = useUser()
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
 
   useEffect(() => {
-    if (currentRestaurant === null)
-      router.push('/login', undefined, { shallow: true })
-  }, [])
+    ChangeCurrentRestaurant(restaurant)
+    if (user == null) router.push('/login', undefined, { shallow: true })
+  }, [restaurant])
 
   const rating = currentRestaurant.average_rating
     ? currentRestaurant.average_rating
@@ -97,7 +96,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
           <Image
             width={150}
             height={150}
-            src={currentRestaurant.image}
+            src={currentRestaurant.image != null && currentRestaurant.image}
             alt="Restaurant Picture"
           />
         </div>
@@ -143,6 +142,9 @@ const Restaurant: NextPage<Props> = ({ menus, reviews }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const restaurant_id = context.params.id
   const menus: Menu_Props[] = (await GET_MENURESTAURANT(restaurant_id)).data
+  const restaurant: Restaurant_Props = (
+    await GET_RESTAURANTSBYID(restaurant_id)
+  ).data
   let reviews: Reviews_Props[] = []
   const reviewRespondsData = await (
     await GET_RESTAURANTREVIEW(restaurant_id)
@@ -155,6 +157,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       menus,
       reviews,
+      restaurant,
     },
   }
 }

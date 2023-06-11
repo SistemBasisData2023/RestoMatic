@@ -63,7 +63,9 @@ export async function GET_RESTAURANTS(): Promise<BuildResponse> {
   return await res.json()
 }
 
-export async function GET_RESTAURANTSBYID(id: number): Promise<BuildResponse> {
+export async function GET_RESTAURANTSBYID(
+  id: string | string[]
+): Promise<BuildResponse> {
   const res = await fetch(`http://localhost:4000/api/restaurants/${id}`)
   if (!res.ok) throw new Error('Could not fetch restaurant data')
   return await res.json()

@@ -1,4 +1,3 @@
-import StarRating from '@components/Star Rating/StarRating'
 import {
   faMinus,
   faPlus,

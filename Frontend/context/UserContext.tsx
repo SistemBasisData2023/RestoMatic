@@ -20,7 +20,13 @@ type userContextType = {
 
 const userContextDefaultValues: userContextType = {
   user: null,
-  currentRestaurant: null,
+  currentRestaurant: {
+    id: -1,
+    description: 'null',
+    image: null,
+    name: 'null',
+    average_rating: null,
+  },
   currentOrderItem: [],
   login: () => {},
   logout: () => {},
@@ -42,8 +48,13 @@ type Props = {
 
 export function UserProvider({ children }: Props) {
   const [user, setUser] = useState<Customer_Props>(null)
-  const [currentRestaurant, setCurrentRestaurant] =
-    useState<Restaurant_Props>(null)
+  const [currentRestaurant, setCurrentRestaurant] = useState<Restaurant_Props>({
+    id: -1,
+    description: 'null',
+    image: null,
+    name: 'null',
+    average_rating: null,
+  })
   const [currentOrderItem, setCurrentOrderItem] = useState<Order_Item[]>([])
 
   const login = (userData: Customer_Props) => {
