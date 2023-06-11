@@ -137,3 +137,17 @@ The flowchart provides a visual representation of the different stages involved 
   <summary>Click Here</summary>
 
 ![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/flowchart-1.jpg)
+
+## UML Diagram
+
+<details>
+  <summary>Click Here</summary>
+
+![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/DB_UML_Diagram.png)
+
+## Entity Relationship Diagram
+
+<details>
+  <summary>Click Here</summary>
+
+![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/ER_Diagram.png)
