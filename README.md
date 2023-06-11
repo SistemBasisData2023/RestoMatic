@@ -128,25 +128,29 @@ This table is designed to store customer ratings for specific menus
 3. menu_id
 4. rating
 ```
- ## Frontend Installation
+
+## Frontend Installation
+
 - Run yarn install to install all dependencies
   ```
   yarn install
-    ```
+  ```
 - Run with
   ```
   yarn dev
   ```
+
 ## Backend Installation
+
 - Run npm install to install all dependencies
   ```
   npm install
-    ```
-- Run with 
+  ```
+- Run with
   ```
   nodemon exec
   ```
-  
+
 ## Flowchart
 
 The flowchart provides a visual representation of the different stages involved in using RestoMatic, such as registration or login, menu exploration, item selection, order placement, balance management, and review submission. By following the flowchart, customers can seamlessly navigate through each stage and accomplish their desired tasks efficiently.
@@ -156,6 +160,8 @@ The flowchart provides a visual representation of the different stages involved 
   
 ![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/flowchart-1.jpg)
 
+</details>
+
 ## UML Diagram
 
 <details>
@@ -163,9 +169,13 @@ The flowchart provides a visual representation of the different stages involved 
 
 ![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/DB_UML_Diagram.png)
 
+</details>
+
 ## Entity Relationship Diagram
 
 <details>
   <summary>Click Here</summary>
 
 ![RestoMatic Flowchart](https://github.com/SistemBasisData2023/RestoMatic/blob/main/Assets/ER_Diagram.png)
+
+</details>
