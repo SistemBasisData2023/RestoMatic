@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import {
+  faArrowLeft,
+  faFilter,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons'
 import SearchBar from '@components/SearchBar/SearchBar'
 import Image from 'next/image'
 import StarRating from '@components/Star Rating/StarRating'
 import MenuModal from '@components/Menu/MenuModal'
 import CartModal from '@components/Cart/CartModal'
 import { useUser } from '@context/UserContext'
-import { Menu_Props, Restaurant_Props, Reviews_Props } from '@interfaces/index'
+import {
+  MenuType,
+  Menu_Props,
+  Restaurant_Props,
+  Reviews_Props,
+} from '@interfaces/index'
 import { GetServerSideProps, NextPage } from 'next'
 import { Button } from '@components/index'
 import {
@@ -30,6 +39,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
   const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
   const [loadingPage, setLoadingPage] = useState(false)
+  const [filter, setFilter] = useState<'All' | 'Food' | 'Beverage'>('All')
   useEffect(() => {
     const start = (url) => {
       if (url != `/restaurant/${currentRestaurant.id}`) setLoadingPage(true)
@@ -57,14 +67,67 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
     ? currentRestaurant.average_rating
     : 0
 
+  const HandleFilterAll = () => {
+    setMenuData(menus)
+    setFilter('All')
+  }
+
+  const HandleFilterFood = () => {
+    const sorted = [...menus].filter(
+      (menu) => menu.type == MenuType[MenuType.Food]
+    )
+    setMenuData(sorted)
+    setFilter('Food')
+  }
+
+  const HandleFilterBeverage = () => {
+    const sorted = [...menus].filter(
+      (menu) => menu.type == MenuType[MenuType.Beverage]
+    )
+    setMenuData(sorted)
+    setFilter('Beverage')
+  }
   const MenuModals = (
     <div>
-      <SearchBar
-        constantData={menus}
-        setState={setMenuData}
-        className="mb-5"
-        placeholder="Search your menu"
-      />
+      <div className="flex items-center mb-5 justify-between">
+        <SearchBar
+          constantData={menus}
+          setState={setMenuData}
+          className=""
+          placeholder="Search your menu"
+        />
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={HandleFilterAll}
+            className={`${
+              filter != 'All' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            All
+          </Button>
+          <Button
+            onClick={HandleFilterFood}
+            className={`${
+              filter != 'Food' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            Food
+          </Button>
+          <Button
+            onClick={HandleFilterBeverage}
+            className={`${
+              filter != 'Beverage' && 'bg-[#CBCBCB] text-[#646464]'
+            }  px-3 rounded-md`}
+          >
+            Beverage
+          </Button>
+          <FontAwesomeIcon
+            className="text-gray-700 "
+            icon={faFilter}
+            size="lg"
+          />
+        </div>
+      </div>
       {menuData.length !== 0 ? (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 ">
           {menuData.map(({ ...props }) => {
@@ -132,7 +195,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
 
       <div className="flex gap-5 mt-3 mb-5">
         <button
-          className={`btn-primary rounded-md px-3 ${
+          className={`btn-primary rounded-md px-3 text-[16px] ${
             !currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(true)}
@@ -140,7 +203,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
           Menu
         </button>
         <button
-          className={`btn-primary rounded-md px-3 ${
+          className={`btn-primary rounded-md px-3 text-[16px] ${
             currentViewMenu && 'bg-[#CBCBCB] text-[#646464]'
           }`}
           onClick={() => setCurrentViewMenu(false)}

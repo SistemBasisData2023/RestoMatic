@@ -18,7 +18,7 @@ export type Menu_Props = {
   restaurant_id: number // Foreign Key (FK)
   image: string
   name: string
-  type: MenuType
+  type: string
   description: string
   price: number
 }
