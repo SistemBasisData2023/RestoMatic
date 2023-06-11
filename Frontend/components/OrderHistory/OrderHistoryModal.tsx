@@ -14,7 +14,10 @@ const OrderHistoryModal: NextPage<Props> = ({
   customer_orders,
 }) => {
   return (
-    <PopUpModal className="p-4 w-[50%]" closePopUp={togglePopUp}>
+    <PopUpModal
+      className="p-4 w-[90%] sm:w-[57%] transition-all"
+      closePopUp={togglePopUp}
+    >
       <h1 className="mb-2 text-center">Order History</h1>
       {customer_orders != null && customer_orders.orders.length != 0 ? (
         <div className="flex flex-col gap-0 ">

@@ -87,8 +87,8 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
   return (
     <PopUpModal
       closePopUp={togglePopUp}
-      disableClickOutside={true}
-      className=" w-[50%] flex flex-col gap-5 p-5 px-7 rounded-md bg-white"
+      disableClickOutside={false}
+      className=" w-[90%] sm:w-[70%] md:w-[55%] lg:w-[48%] flex flex-col gap-5 p-5 px-7 rounded-md bg-white"
     >
       <h2 className="m-0 place-self-start font-bold text-[25px]">Order</h2>
       {filterOrder.length != 0 ? (
@@ -170,6 +170,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
               togglePopUp={() => {
                 setIsShowProfile(false)
               }}
+              className="pb-10"
             />
           )}
 

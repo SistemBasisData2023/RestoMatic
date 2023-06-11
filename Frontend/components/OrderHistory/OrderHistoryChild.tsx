@@ -16,7 +16,7 @@ const OrderHistoryChild = ({ order }: Props) => {
     total_price,
   } = order
   return (
-    <div className="flex items-center gap-5 py-5 border border-t-0 border-solid border-x-0">
+    <div className="flex flex-col md:flex-row items-center gap-5 py-5 border border-t-0 border-solid border-x-0">
       <div className="">
         <Image
           width={100}
@@ -25,8 +25,8 @@ const OrderHistoryChild = ({ order }: Props) => {
           alt="Restaurant picture"
         />
       </div>
-      <div className="flex flex-col w-full gap-1">
-        <h2 className="m-0">{restaurant_name}</h2>
+      <div className="flex flex-col w-full gap-5 md:gap-2">
+        <h2 className="m-0 text-center">{restaurant_name}</h2>
         <p className="m-0">{FormatTime(created_at)}</p>
         <p className="m-0 text-">{address}</p>
         <div className="mt-1">

@@ -93,7 +93,7 @@ const RestaurantReview = ({ reviews = [] }: Props) => {
   return (
     <div>
       {reviewsData.length != 0 && (
-        <div className="flex items-center gap-8 justify-end mb-3">
+        <div className="flex items-center flex-col-reverse justify-center mt-4 gap-5 sm:mt-0 sm:gap-8 sm:flex-row sm:justify-end mb-3">
           <div className="flex flex-col gap-2 items-center  ">
             <div className="flex gap-3 justify-between w-full">
               <Button
