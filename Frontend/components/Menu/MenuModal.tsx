@@ -51,13 +51,10 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       <div className="flex flex-col items-center justify-center gap-5 mt-3 mb-5">
         <h2 className="m-0">{props.name}</h2>
         <p className="m-0">{props.description}</p>
-        <h4 className="m-0">${props.price}</h4>
+        <h3 className="m-0">${props.price}</h3>
       </div>
-      {/* <div className="flex items-center justify-center gap-4 ">
-        <StarRating ratingAverage={props.rating} />
-        <p className="m-0">{props.rating}</p>
-      </div> */}
-      <div className="flex items-center justify-center gap-5 mt-4">
+
+      <div className="flex items-center justify-center gap-5 ">
         <Button
           className=" rounded-[50%] hover:scale-110 duration-300"
           onClick={DecrementHandler}

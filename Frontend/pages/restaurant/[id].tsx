@@ -162,7 +162,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
         </div>
         <Button
           onClick={() => setShowCart(true)}
-          className="flex items-center justify-center gap-2 p-0 px-2 border-none rounded-md cursor-pointer"
+          className="flex items-center justify-center gap-2 p-0 px-4 border-none rounded-md cursor-pointer"
         >
           <FontAwesomeIcon
             className="duration-300 bg-transparent text-primary-60 "
