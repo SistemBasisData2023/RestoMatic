@@ -17,6 +17,7 @@ import {
   GET_RESTAURANTSBYID,
 } from '@utils/APIs'
 import RestaurantReview from '@components/Review/RestaurantReview'
+import PageLoader from '@components/PageLoader/PageLoader'
 type Props = {
   menus: Menu_Props[]
   reviews: Reviews_Props[]
@@ -28,6 +29,24 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
   const [currentViewMenu, setCurrentViewMenu] = useState<boolean>(true)
   const [menuData, setMenuData] = useState<Menu_Props[]>(menus)
   const [showCart, setShowCart] = useState<boolean>(false)
+  const [loadingPage, setLoadingPage] = useState(false)
+  useEffect(() => {
+    const start = (url) => {
+      if (url != `/restaurant/${currentRestaurant.id}`) setLoadingPage(true)
+    }
+    const end = (url) => {
+      setLoadingPage(false)
+    }
+
+    router.events.on('routeChangeStart', start)
+    router.events.on('routeChangeComplete', end)
+    router.events.on('routeChangeError', end)
+    return () => {
+      router.events.off('routeChangeStart', start)
+      router.events.off('routeChangeComplete', end)
+      router.events.off('routeChangeError', end)
+    }
+  }, [])
 
   useEffect(() => {
     ChangeCurrentRestaurant(restaurant)
@@ -136,6 +155,7 @@ const Restaurant: NextPage<Props> = ({ menus, reviews, restaurant }) => {
           togglePopUp={() => setShowCart(false)}
         />
       )}
+      {loadingPage && <PageLoader />}
     </div>
   )
 }

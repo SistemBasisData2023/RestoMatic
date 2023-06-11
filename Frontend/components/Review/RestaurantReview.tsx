@@ -3,7 +3,7 @@ import { Post_Review, Reviews_Props } from '@interfaces/index'
 import React, { useEffect, useState } from 'react'
 import { ReviewModal } from './ReviewModal'
 import InputStarRating from '@components/Star Rating/InputStarRating'
-import { POST_REVIEW } from '@utils/APIs'
+import { GET_RESTAURANTREVIEW, POST_REVIEW } from '@utils/APIs'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
@@ -75,7 +75,7 @@ const RestaurantReview = ({ reviews = [] }: Props) => {
 
   const HandleSortOldest = () => {
     const sorted = [...reviews].sort((a, b) => {
-      return new Date(a.created_at) - new Date(b.created_at)
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     })
 
     setReviewsData(sorted)
@@ -84,7 +84,7 @@ const RestaurantReview = ({ reviews = [] }: Props) => {
 
   const HandleSortLatest = () => {
     const sorted = [...reviews].sort((a, b) => {
-      return new Date(b.created_at) - new Date(a.created_at)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     })
     setReviewsData(sorted)
     setFilter('latest')

@@ -33,6 +33,7 @@ const ReviewModal = ({ userReview }: Props) => {
       setSuccessOrError('error')
     }
     setShowSuccessErrorModal(true)
+    router.push(`/restaurant/${currentRestaurant.id}`)
   }
   return (
     <div className="flex flex-col gap-1 py-3  border-x-0 border-y border-[#C7C7C7] border-solid ">
@@ -61,7 +62,6 @@ const ReviewModal = ({ userReview }: Props) => {
         <SuccessErrorModal
           showModal={setShowSuccessErrorModal}
           type={successOrError}
-          routerPush={`/restaurant/${currentRestaurant.id}`}
           message={responseMessage}
         />
       )}
