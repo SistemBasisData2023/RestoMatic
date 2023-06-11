@@ -100,6 +100,17 @@ export async function POST_REVIEW(data: Post_Review): Promise<BuildResponse> {
   return await res.json()
 }
 
+export async function DELETE_REVIEW(id: number): Promise<BuildResponse> {
+  const res = await fetch(`http://localhost:4000/api/reviews/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  if (!res.ok) throw new Error('Could not delete review data')
+  return await res.json()
+}
+
 export async function POST_LOGINCUSTOMER(
   data: LoginFormValue_Props
 ): Promise<BuildResponse> {

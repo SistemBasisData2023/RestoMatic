@@ -13,18 +13,18 @@ type Props = {
   reviews: Reviews_Props[]
 }
 
-const RestaurantReview = ({ reviews }: Props) => {
+const RestaurantReview = ({ reviews = [] }: Props) => {
   const { user, currentRestaurant } = useUser()
   const [comment, setComment] = useState<string>('')
   const router = useRouter()
   const [filter, setFilter] = useState<
     'highest' | 'lowest' | 'latest' | 'oldest'
-  >('oldest')
+  >('latest')
   const [reviewsData, setReviewsData] = useState<Reviews_Props[]>(reviews)
   const [ratingValue, setRatingValue] = useState<number>(0)
 
   useEffect(() => {
-    HandleSortOldest()
+    HandleSortLatest()
     setReviewsData(reviews)
   }, [reviews])
 
