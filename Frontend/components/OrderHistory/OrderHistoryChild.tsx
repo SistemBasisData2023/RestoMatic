@@ -1,7 +1,7 @@
 import { Orders_Props } from '@interfaces/index'
 import React from 'react'
 import OrderItemChild from './OrderItemChild'
-import { FormatTime } from '@utils/functions'
+import { FormatTime, Round2Decimal } from '@utils/functions'
 import Image from 'next/image'
 type Props = {
   order: Orders_Props
@@ -37,7 +37,7 @@ const OrderHistoryChild = ({ order }: Props) => {
 
         <div className="flex justify-between mt-1">
           <p className="m-0 text-lg font-bold text-primary-100">Total</p>
-          <p className="m-0 text-lg font-bold">Rp {total_price}</p>
+          <p className="m-0 text-lg font-bold">${Round2Decimal(total_price)}</p>
         </div>
       </div>
     </div>

@@ -8,7 +8,6 @@ import { Menu_Props, Order_Item } from '@interfaces/index'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { Button } from '@components/index'
-import { DotEvery3Decimals } from '@utils/functions'
 import { useUser } from '@context/UserContext'
 import { PopUpModal } from '@components/index'
 
@@ -52,7 +51,7 @@ const MenuModal = ({ ...props }: Menu_Props) => {
       <div className="flex flex-col items-center justify-center gap-5 mt-3 mb-5">
         <h2 className="m-0">{props.name}</h2>
         <p className="m-0">{props.description}</p>
-        <h4 className="m-0">Rp {DotEvery3Decimals(props.price)}</h4>
+        <h4 className="m-0">${props.price}</h4>
       </div>
       {/* <div className="flex items-center justify-center gap-4 ">
         <StarRating ratingAverage={props.rating} />

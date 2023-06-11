@@ -15,6 +15,7 @@ import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
 import { GET_CUSTOMER, POST_ORDER } from '@utils/APIs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import { Round2Decimal } from '@utils/functions'
 
 type Props = {
   togglePopUp: () => void
@@ -114,7 +115,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
         <>
           <div>
             <p className="text-secondary text-[13px]">TOTAL PRICE</p>
-            <p className="m-0">Rp {sumTotal}</p>
+            <p className="m-0">${Round2Decimal(sumTotal)}</p>
           </div>
           <div className="flex justify-between">
             <div>
@@ -122,7 +123,7 @@ const CartModal = ({ togglePopUp, MenuRestaurantData }: Props) => {
               <p
                 className={`m-0 ${sumTotal > user.balance && 'text-error-100'}`}
               >
-                Rp {user.balance}
+                ${Round2Decimal(user.balance)}
               </p>
             </div>
             <button

@@ -2,6 +2,10 @@ export function DotEvery3Decimals(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
+export function Round2Decimal(value: number): number {
+  return Math.round(value * 100) / 100
+}
+
 export function FormatTime(value: Date): string {
   const date = addHours(new Date(value), 7)
   const year = date.getFullYear()

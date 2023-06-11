@@ -2,7 +2,7 @@ import { PopUpModal } from '@components/index'
 import React, { useRef, useState } from 'react'
 import { Button } from '@components/index'
 import { useUser } from '@context/UserContext'
-import { DotEvery3Decimals } from '@utils/functions'
+import { Round2Decimal } from '@utils/functions'
 import { useRouter } from 'next/router'
 import { BuildResponse } from '@interfaces/index'
 import { SuccessErrorModal } from '@components/Pop up/SuccessErrorModal'
@@ -65,7 +65,7 @@ const ProfileModal = ({ togglePopUp, noLogOutButton = false }: Props) => {
       </div>
       <div className="flex flex-col">
         <p className="text-[12px] m-0 text-primary-100 font-bold">BALANCE</p>
-        {user && <p className="m-0">Rp {DotEvery3Decimals(user.balance)}</p>}
+        {user && <p className="m-0">${Round2Decimal(user.balance)}</p>}
       </div>
       <div>
         <p className="text-[12px] m-0 mb-1 text-primary-100 font-bold">

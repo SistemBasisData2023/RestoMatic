@@ -5,7 +5,7 @@ import { Menu_Props } from '@interfaces/index'
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '..'
-import { DotEvery3Decimals } from '@utils/functions'
+import { DotEvery3Decimals, Round2Decimal } from '@utils/functions'
 interface Props extends Menu_Props {
   quantity: number
   order_id: number
@@ -34,7 +34,7 @@ const CartChildModal = ({ order_id, quantity, ...props }: Props) => {
           <p className="m-0 font-bold text-xl">{props.name}</p>
           <p className="m-0 font-bold text-[14px]">Total: {quantity}</p>
           <p className="m-0 font-bold text-[14px]">
-            Rp {props.price * quantity}
+            ${Round2Decimal(props.price * quantity)}
           </p>
         </div>
       </div>
