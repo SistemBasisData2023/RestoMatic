@@ -65,6 +65,10 @@ Customers can easily rate and review the items they have ordered, sharing their 
 - [Express.js](https://expressjs.com/)
 - [Typescript](https://www.typescriptlang.org/)
 
+## API Documentation [*Postman*]
+
+To see API documenations such as endpoints for retrieving and inserting data into the database and examples, click the link [here](https://documenter.getpostman.com/view/22652839/2s93sc5sxd)
+
 ## Tables
 
 The following are tables that is used in RestoMatic's database.
@@ -168,7 +172,7 @@ This table is used to store each menu selected and its quantities.
 ## Diagrams
 
 #### Flowchart
-  
+
 <details>
   <summary>Click Here</summary>
   
